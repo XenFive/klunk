@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klunk Log Viewer — User Guide</title>
+    <link rel="stylesheet" href="_shared.css">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#134f8f">
+</head>
+<body>
+
+<header class="site-header">
+    <a class="logo" href="index.html">Klunk <span>Log Viewer</span></a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html" class="active">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+    </nav>
+</header>
+
+<div class="page-hero">
+    <h1>User Guide</h1>
+    <p>Everything you need to know to get the most out of the Klunk Log Viewer.</p>
+</div>
+
+<div class="doc-shell">
+
+    <!-- ── Sidebar TOC ── -->
+    <aside class="toc-sidebar">
+        <h3>Contents</h3>
+        <ul style="list-style:none;padding:0">
+            <li class="h2-item"><a href="#quick-start">Quick Start</a></li>
+            <li class="h2-item"><a href="#importing">Importing Logs</a></li>
+            <li class="sub">
+                <ul>
+                    <li><a href="#local-files">Local Files</a></li>
+                    <li><a href="#databases">External Databases</a></li>
+                    <li><a href="#kubernetes">Kubernetes</a></li>
+                    <li><a href="#sftp">SFTP</a></li>
+                    <li><a href="#url">HTTP / URL</a></li>
+                </ul>
+            </li>
+            <li class="h2-item"><a href="#log-manager">Log Manager</a></li>
+            <li class="sub">
+                <ul>
+                    <li><a href="#docking">Docking &amp; Undocking</a></li>
+                    <li><a href="#layouts">Window Layouts</a></li>
+                    <li><a href="#merging">Merging Logs</a></li>
+                    <li><a href="#grouping">Grouping Windows</a></li>
+                </ul>
+            </li>
+            <li class="h2-item"><a href="#viewer">The Log Viewer</a></li>
+            <li class="sub">
+                <ul>
+                    <li><a href="#table">Table Overview</a></li>
+                    <li><a href="#row-detail">Row Detail</a></li>
+                    <li><a href="#filtering">Filtering</a></li>
+                    <li><a href="#syntax">Query Syntax</a></li>
+                    <li><a href="#filter-out">Filter-Out</a></li>
+                    <li><a href="#find">Search &amp; Find</a></li>
+                    <li><a href="#time-slider">Time Slider</a></li>
+                    <li><a href="#bookmarks">Bookmarks</a></li>
+                    <li><a href="#bookmark-time">Bookmark Time</a></li>
+                    <li><a href="#bookmark-filters">Bookmark Filters</a></li>
+                    <li><a href="#annotations">Annotations</a></li>
+                    <li><a href="#tailing">Live Tailing</a></li>
+                    <li><a href="#analysis">Log Analysis</a></li>
+                    <li><a href="#load-settings">Reload &amp; Load Settings</a></li>
+                </ul>
+            </li>
+            <li class="h2-item"><a href="#patterns">Log Patterns</a></li>
+            <li class="sub">
+                <ul>
+                    <li><a href="#auto-detect">Auto-Detection</a></li>
+                    <li><a href="#pattern-types">Pattern Types</a></li>
+                    <li><a href="#pattern-editor">Pattern Editor</a></li>
+                    <li><a href="#regex-generator">Regex Generator</a></li>
+                    <li><a href="#change-pattern">Changing a Pattern</a></li>
+                </ul>
+            </li>
+            <li class="h2-item"><a href="#datasources">Managing Datasources</a></li>
+            <li class="h2-item"><a href="#session">Session Persistence</a></li>
+            <li class="h2-item"><a href="#performance">Performance</a></li>
+            <li class="h2-item"><a href="#settings">Settings</a></li>
+            <li class="h2-item"><a href="#shortcuts">Keyboard Shortcuts</a></li>
+            <li class="h2-item"><a href="#troubleshooting">Troubleshooting</a></li>
+        </ul>
+    </aside>
+
+    <!-- ── Article ── -->
+    <article>
+
+        <!-- QUICK START -->
+        <h2 id="quick-start">Quick Start</h2>
+        <ol>
+            <li>Launch the application — the <strong>Import Data</strong> dialog opens automatically.
+                <div class="note">
+                    <div>You can always get to import data dialog by clicking the <strong>Import</strong> button in the Log Manager toolbar (or pressing <kbd>Ctrl+I</kbd>).</div>
+                </div>
+            </li>
+            <li>Pick a source type — <strong>File</strong>, <strong>SFTP</strong>, <strong>Kubernetes</strong>,
+                <strong>Database</strong>, or <strong>URL</strong> — and load it.
+                <div class="note">
+                    <div>Source type tabs for types other than file or url are disabled in the <strong>Import data</strong> dialog by default. These datasources can be added through the <strong>Settings</strong> dialog.</div>
+                </div>
+            </li>
+            <li>The viewer attempts to auto-detect the log format (pattern) and opens in a new tab.
+                <div class="note">
+                    <div>If no existing pattern matches, a catchall format is used.</div>
+                </div>
+            </li>
+            <li>Type a query in the filter bar (e.g. <code>level = 'ERROR'</code>) and press <kbd>Enter</kbd>.</li>
+            <li>Drag the time-slider thumbs (left edge of the table) to narrow to a time window.</li>
+        </ol>
+
+        <figure class="shot">
+            <img src="screenshots/log-file-viewer.png"
+                 alt="Log viewer showing a loaded file with level colours, a query filter, and the time slider">
+        </figure>
+
+        <hr>
+
+        <!-- IMPORTING -->
+        <h2 id="importing">Importing Logs</h2>
+        <p>Click <strong>Import</strong> in the Log Manager toolbar (or press <kbd>Ctrl+I</kbd>) to open the
+            <strong>Import Data</strong> dialog. It has one tab per source type — <strong>File</strong>,
+            <strong>SFTP</strong>, <strong>Kubernetes</strong>, <strong>Database</strong>, and <strong>URL</strong>.
+        </p>
+        <figure class="shot">
+            <img src="screenshots/add-file-dialog.png"
+                 alt="Import Data dialog with File/SFTP/Kubernetes/Database/URL tabs, browse/drag-drop area, and File Type / Pattern / Merge files options">
+        </figure>
+
+        <h3 id="local-files">Local Files</h3>
+        <ol>
+            <li>Select the <strong>File</strong> tab.</li>
+            <li>Click <strong>Browse…</strong> or drag and drop one or more files onto the drop area.</li>
+            <li>Choose a <strong>File Type</strong> (Generic, or a specific type) and a <strong>Pattern</strong> —
+                leave as <strong>Auto Detect</strong> to let the app pick the best match.
+            </li>
+            <li>Check <strong>Merge files</strong> to combine multiple selected files into one chronological view
+                immediately on import (equivalent to importing them separately and then using <strong>Merge</strong>
+                in the Log Manager).
+            </li>
+            <li>Click <strong>Import</strong>.</li>
+        </ol>
+        <div class="note">
+            <div>For <strong>CSV files</strong>, you'll be prompted to choose the delimiter (comma, tab,
+                pipe, semicolon, or custom). You will also be able to select if first row should be treated as a header row to define the column mames
+            </div>
+        </div>
+
+        <h3 id="databases">External Databases</h3>
+        <p>Supported drivers: <strong>MySQL, PostgreSQL, ClickHouse, Oracle, SQLite</strong>, and any custom JDBC
+            driver registered in the <a href="#datasources">Driver Editor</a>.</p>
+        <ol>
+            <li>Select the <strong>Database</strong> tab.</li>
+            <li>Pick a saved datasource, or create one via the <strong>DB Datasource Editor</strong> (host, port,
+                database, credentials).
+            </li>
+            <li>Choose the target table and a <strong>Log Pattern</strong> describing its columns.</li>
+            <li>Click <strong>Import</strong>.</li>
+        </ol>
+        <div class="note">
+            <div>The external table is queried once and cached in the internal SQLite store. Changes on the
+                source side aren't reflected until you <strong>Reload</strong>.
+            </div>
+        </div>
+
+        <h3 id="kubernetes">Kubernetes Logs</h3>
+        <ol>
+            <li>Select the <strong>Kubernetes</strong> tab.</li>
+            <li>Pick a saved cluster connection (configured via the <strong>Kubernetes Datasource Editor</strong> —
+                paste a kubeconfig or point at a config file).
+            </li>
+            <li>Choose a namespace and pod (or a pod-name filter for multi-pod streaming), then import.</li>
+        </ol>
+        <div class="tip">Multi-pod imports open a <strong>Merged View</strong> automatically, with each pod
+            colour-coded.
+        </div>
+
+        <h3 id="sftp">SFTP Remote Files</h3>
+        <ol>
+            <li>Select the <strong>SFTP</strong> tab.</li>
+            <li>Pick a saved connection, or create one via the <strong>SFTP Datasource Editor</strong> (host, port,
+                username, password, or an SSH private key — optionally the app-wide default key set in Settings).
+            </li>
+            <li>Browse the remote filesystem and select a file to import.</li>
+        </ol>
+        <p>The file downloads to a local temp cache and opens in the standard viewer; large files stream page by
+            page.</p>
+
+        <h3 id="url">HTTP / URL Sources</h3>
+        <ol>
+            <li>Select the <strong>URL</strong> tab.</li>
+            <li>Paste an HTTP or HTTPS URL that returns plain-text log data.</li>
+            <li>Select a log pattern and import.</li>
+        </ol>
+
+        <hr>
+
+        <!-- LOG MANAGER -->
+        <h2 id="log-manager">Log Manager Dashboard</h2>
+        <p>The <strong>Log Manager</strong> is the central hub. It lists every open log view with its name,
+            error/warning summary, and date range.</p>
+        <figure class="shot">
+            <img src="screenshots/log-manager.png"
+                 alt="Log Manager with one open viewer, its info summary, and the toolbar row (query filter, Filter Selected, Selected: actions, Group)">
+        </figure>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Meaning</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Log Window</td>
+                    <td>The file name or source description</td>
+                </tr>
+                <tr>
+                    <td>Info</td>
+                    <td>Error/warning counts and total row count for that view</td>
+                </tr>
+                <tr>
+                    <td>Date Range</td>
+                    <td>Earliest and latest timestamp in the data</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p><strong>Toolbar actions:</strong></p>
+        <ul>
+            <li><strong>Query filter</strong> — filters the list of windows itself (not their contents) by name.</li>
+            <li><strong>Filter Selected</strong> — opens a merged, filtered view scoped to the selected windows.</li>
+            <li><strong>Selected: + / 🔀 / ✕</strong> — with one or more rows checked: <strong>Merge</strong> the
+                selected windows, <strong>Group</strong> the selected windows, or <strong>Close</strong> the selected
+                windows.
+            </li>
+            <li><strong>Watches</strong> (bottom bar) — expand to manage cross-log watch/alert rules that scan open
+                logs for matching entries.
+            </li>
+        </ul>
+
+        <h3 id="docking">Docking and Undocking</h3>
+        <p>Every new view opens as a <strong>tab</strong> inside the main Log Docker by default.</p>
+        <ul>
+            <li><strong>Undock:</strong> Click <strong>Undock</strong> in the viewer header to pop the tab out into a
+                resizable standalone window.
+            </li>
+            <li><strong>Redock:</strong> Click <strong>Dock</strong> in the floating window's toolbar to return it to
+                the tab bar.
+            </li>
+            <li>Undocked windows keep all filters, bookmarks, and time-slider position when redocked.</li>
+        </ul>
+
+        <h3 id="layouts">Window Layouts</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Option</th>
+                    <th>Effect</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>Cascade Windows</strong></td>
+                    <td>Stack windows with an offset so each title bar is visible</td>
+                </tr>
+                <tr>
+                    <td><strong>Tile Windows</strong></td>
+                    <td>Fill the screen evenly</td>
+                </tr>
+                <tr>
+                    <td><strong>Minimize All Windows</strong></td>
+                    <td>Iconize every undocked window</td>
+                </tr>
+                <tr>
+                    <td><strong>Show All Windows</strong></td>
+                    <td>Bring every window to the front and un-minimise it</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 id="merging">Merging Logs</h3>
+        <p>Merging lets you view entries from several sources in a single chronological stream — ideal for
+            correlating events across microservices.</p>
+        <ol>
+            <li>In the Log Manager, check two or more windows.</li>
+            <li>Click the merge icon under <strong>Selected:</strong>. A new <strong>Merged View</strong> tab opens.
+            </li>
+            <li>Each source gets a distinct colour. The <strong>Source</strong> column shows every row's origin.</li>
+        </ol>
+        <div class="note">
+            <div>If you reload a source file, use <strong>Re-merge</strong> in the merged viewer to rebuild
+                with fresh data.
+            </div>
+        </div>
+        <div class="tip">Right-click any row in a merged view → <strong>Change Colour</strong> to reassign a source's
+            colour. The time-slider markers update instantly.
+        </div>
+
+        <h3 id="grouping">Grouping Windows</h3>
+        <p>Groups tag a set of open windows with a shared name and colour, so they can be <strong>saved</strong> and
+            <strong>reloaded together</strong> later, or <strong>analyzed</strong> as a set.</p>
+        <ol>
+            <li>Select two or more windows in the Log Manager and click the group icon under <strong>Selected:</strong>
+                (or <kbd>Ctrl+G</kbd>).
+            </li>
+            <li>In <strong>Group Windows</strong>, enter a name (or pick an existing group to reuse its colour),
+                choose a colour, and leave <strong>Save group for later reloading</strong> checked to persist the
+                group to disk immediately.
+            </li>
+            <li>Click <strong>Set Group</strong>, or <strong>Clear Group</strong> to remove the tag from the selected
+                windows.
+            </li>
+        </ol>
+        <figure class="shot">
+            <img src="screenshots/log-manager-set-group.png"
+                 alt="Group Windows dialog with a group name, colour swatch, and Save group for later reloading checkbox">
+        </figure>
+        <div class="note">
+            <div>Leaving the checkbox checked (the default) is equivalent to also running <strong>Save
+                Group</strong> afterwards — the group's current windows are written to disk immediately so they can be
+                reloaded later from the Import dialog's <strong>Groups</strong> tab. Uncheck it to tag windows for the
+                current session only, without persisting them yet.
+            </div>
+        </div>
+
+        <p>Once at least one group exists, the Log Manager shows <strong>Save Group</strong> and <strong>Analyze
+            Group</strong> buttons:</p>
+        <ul>
+            <li><strong>Save Group</strong> — pick a group and persist its currently open windows to disk for later
+                reloading (the same action the checkbox above performs automatically).
+            </li>
+            <li><strong>Analyze Group</strong> — pick a group and generate an aggregated analysis report across every
+                log file in it.
+            </li>
+        </ul>
+        <figure class="shot">
+            <img src="screenshots/log-manager-analyze-group-dialog.png"
+                 alt="Analyze Group dialog with a Group dropdown and Analyze / Cancel buttons">
+        </figure>
+
+        <p>The resulting <strong>Group Analysis</strong> report aggregates severity counts and an hourly
+            issue-frequency chart across every file in the group, plus a per-file breakdown table (rows, errors,
+            warnings). Additional tabs cover <strong>Issues &amp; Clusters</strong> and <strong>Token Linkage</strong>
+            for deeper cross-file correlation.</p>
+        <figure class="shot">
+            <img src="screenshots/log-manager-group-analysis.png"
+                 alt="Group Analysis report: global severity pie chart, aggregated issues-over-time bar chart, and a per-file rows/errors/warnings table">
+        </figure>
+        <div class="tip">Like the single-file <a href="#analysis">Log Analysis</a> report, group analysis can be
+            redacted, copied as markdown, or saved to a file — handy for pasting into an AI assistant or a ticket.
+        </div>
+
+        <hr>
+
+        <!-- THE LOG VIEWER -->
+        <h2 id="viewer">The Log Viewer</h2>
+
+        <h3 id="table">Table Overview</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Timestamp</td>
+                    <td>Sortable; drives the time slider</td>
+                </tr>
+                <tr>
+                    <td>Level</td>
+                    <td>Colour-coded: <span style="color:#c0392b">ERROR</span>, <span style="color:#e67e22">WARN</span>,
+                        INFO/other in the default colour
+                    </td>
+                </tr>
+                <tr>
+                    <td>Thread</td>
+                    <td>Originating thread</td>
+                </tr>
+                <tr>
+                    <td>Message</td>
+                    <td>Full log message; wraps for multi-line entries</td>
+                </tr>
+                <tr>
+                    <td>Source</td>
+                    <td>Merged views only — origin file or pod</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul>
+            <li><strong>Column resize:</strong> Drag any column edge. The rightmost column fills remaining space.
+            </li>
+            <li><strong>Sort:</strong> Click a header — ascending, then descending. Available for in-memory datasets
+                — see <a href="#performance">Performance</a>.
+            </li>
+            <li><strong>Column widths</strong> are saved with the session.</li>
+        </ul>
+
+        <h3 id="row-detail">Row Detail View</h3>
+        <p>Double-click a row (or press <kbd>Enter</kbd>) to open the <strong>Row Detail</strong> panel. It shows
+            every field fully wrapped, with one-click copy for individual fields or the entire entry.</p>
+
+        <h3 id="filtering">Filtering Logs</h3>
+        <p>The <strong>filter bar</strong> at the top of every viewer accepts SQL-style WHERE expressions. Press
+            <kbd>Enter</kbd> to apply, <kbd>Escape</kbd> to clear. Previously used filters appear in the dropdown,
+            and the row count updates immediately to show how many entries match.</p>
+
+        <h3 id="syntax">Filter Query Syntax</h3>
+        <p>Column names match the pattern's field names: <code>timestamp</code>, <code>level</code>,
+            <code>message</code>, <code>thread</code>, and <code>source</code> (merged views).</p>
+
+        <h4>Equality and inequality</h4>
+        <pre><code>level = 'ERROR'
+thread = 'http-nio-8080-exec-1'
+level != 'DEBUG'</code></pre>
+
+        <h4>Pattern matching (LIKE / NOT LIKE)</h4>
+        <p><code>%</code> matches any sequence; <code>_</code> matches exactly one character.</p>
+        <pre><code>message LIKE '%NullPointerException%'
+logger  LIKE 'com.example.%'
+message NOT LIKE '%health%'</code></pre>
+
+        <h4>Comparison and range (timestamps and numbers)</h4>
+        <pre><code>timestamp &gt;= '2026-06-01T08:00:00Z'
+timestamp &lt;  '2026-06-01T09:00:00Z'
+timestamp BETWEEN '2026-06-01T08:00:00Z' AND '2026-06-01T09:00:00Z'</code></pre>
+
+        <div class="note">
+            <div><strong>Accepted timestamp formats:</strong>
+                <ul style="margin-top:6px">
+                    <li>ISO-8601 with offset: <code>2026-06-03T04:15:48Z</code> or <code>2026-06-03T04:15:48.000Z</code>
+                    </li>
+                    <li>ISO-8601 with offset: <code>2026-06-03T04:15:48+05:30</code></li>
+                    <li>Display format: <code>2026-06-03 - 04:15:48.000</code></li>
+                    <li>Display format (no separator): <code>2026-06-03 04:15:48</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <h4>Boolean logic — AND / OR / parentheses</h4>
+        <p>AND binds tighter than OR. Use parentheses to group sub-expressions.</p>
+        <pre><code>level = 'ERROR' AND thread = 'main'
+
+(message LIKE '%timeout%' OR message LIKE '%connection refused%') AND level = 'ERROR'
+
+-- Slow DB calls in one package:
+logger LIKE 'com.example.db.%' AND message LIKE '%ms%' AND level != 'DEBUG'</code></pre>
+
+        <h3 id="filter-out">Filter-Out (Exclusion)</h3>
+        <p>Use <strong>Filter Out</strong> to hide noise without changing the main filter.</p>
+        <ol>
+            <li>Click <strong>Filter Out</strong> in the toolbar.</li>
+            <li>Enter exclusion rules using the same syntax as the main filter.</li>
+            <li>Apply. Matching rows are hidden.</li>
+        </ol>
+        <pre><code>-- Exclude health-check and metric noise:
+message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
+        <div class="tip">Filter-out rules persist with the session and are shown in a distinct colour in the toolbar
+            when active.
+        </div>
+
+        <h3 id="find">Search and Find</h3>
+        <p>Find (<strong>Aa</strong> field, or <kbd>Ctrl+F</kbd>) highlights all occurrences of a text string within
+            the visible rows.</p>
+        <div class="table-wrap">
+            <table class="shortcuts">
+                <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Shortcut</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Open find bar</td>
+                    <td><kbd>Ctrl+F</kbd></td>
+                </tr>
+                <tr>
+                    <td>Find next</td>
+                    <td><kbd>F3</kbd></td>
+                </tr>
+                <tr>
+                    <td>Find previous</td>
+                    <td><kbd>Shift+F3</kbd></td>
+                </tr>
+                <tr>
+                    <td>Toggle case-sensitive find</td>
+                    <td>Click the <strong>Aa</strong> toggle next to the field</td>
+                </tr>
+                <tr>
+                    <td>Clear / close</td>
+                    <td><kbd>Escape</kbd></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tip">Find searches the rendered cell text, not the raw stored value — display-formatted
+            timestamps (e.g. <code>2026-06-03 - 04:15:48.000</code>) are searchable as displayed.
+        </div>
+
+        <p><strong>Turn the find text into a filter:</strong> click the magnifier button beside the find field
+            (tooltip <em>Add filter for find text</em>) to build a query that matches the current find text
+            across <em>every</em> column — <code>col1 LIKE '%text%' OR col2 LIKE '%text%' …</code> — apply it to
+            the filter bar, and clear the find field. Where Find only highlights matches in the loaded rows,
+            this narrows the table to matching rows and runs over the full dataset, including SQLite-paged
+            files.</p>
+        <figure class="shot">
+            <img src="screenshots/find-button.png"
+                 alt="Find bar with 'Missing' typed; the magnifier button beside it is tooltipped 'Add filter for find text'">
+            <figcaption>The magnifier beside the find field filters every column for the find text.</figcaption>
+        </figure>
+
+        <h3 id="time-slider">Time Slider</h3>
+        <p>The vertical slider on the left edge of the table represents the full time range of the loaded (and
+            filtered) log. It only appears for patterns that include a timestamp column.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Meaning</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Top / bottom thumb</td>
+                    <td>Upper and lower bounds of the selected time range</td>
+                </tr>
+                <tr>
+                    <td>Red bars</td>
+                    <td>Rows with level ERROR or FATAL</td>
+                </tr>
+                <tr>
+                    <td>Orange bars</td>
+                    <td>Rows with level WARN</td>
+                </tr>
+                <tr>
+                    <td>Coloured ticks</td>
+                    <td>Bookmarked rows, in their bookmark colour</td>
+                </tr>
+                <tr>
+                    <td>Shaded band</td>
+                    <td>The currently visible portion of the table</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul>
+            <li><strong>Drag a thumb</strong> to narrow or expand the time window. The table filters on mouse
+                release.
+            </li>
+            <li><strong>Click the track</strong> (not a thumb) to scroll the table to that position without
+                filtering.
+            </li>
+            <li><strong>Hover</strong> over any marker or thumb for a tooltip showing the exact timestamp.</li>
+        </ul>
+        <div class="note">The selected time range is saved with the session and restored on next open.</div>
+
+        <h3 id="bookmarks">Bookmarks and Highlights</h3>
+        <p>Bookmarks let you pin important rows for navigation, review, and later filtering.</p>
+        <p><strong>Creating a bookmark:</strong> right-click a row → <strong>Bookmark</strong> (uses the last-used
+            colour), or <strong>Bookmark [choose color]</strong> to pick a colour from the palette (10 colours). A
+            coloured marker appears on the row background and on the time slider.</p>
+
+        <p>Right-clicking an already-bookmarked row shows options to manage it:</p>
+        <figure class="shot">
+            <img src="screenshots/log-file-viewer-menu-bookmarks.png"
+                 alt="Row context menu with Bookmark, Bookmark [choose color] colour palette, Bookmark time…, Copy, View, Filter, Filter Out, Annotate, Select All">
+        </figure>
+        <ul>
+            <li><strong>Remove bookmark</strong> — clears the bookmark from the row.</li>
+            <li><strong>Change color</strong> — reassign the bookmark's colour.</li>
+            <li><strong>Bookmark comment…</strong> — attach a free-text note to the bookmarks of this color, useful context when
+                reviewing or feeding an analysis to an AI prompt.
+            </li>
+        </ul>
+        <div class="table-wrap">
+            <table class="shortcuts">
+                <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>How</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Jump to next bookmark</td>
+                    <td>Click <strong>↓</strong> in the viewer header, or <kbd>Ctrl+Down</kbd></td>
+                </tr>
+                <tr>
+                    <td>Jump to previous</td>
+                    <td>Click <strong>↑</strong>, or <kbd>Ctrl+Up</kbd></td>
+                </tr>
+                <tr>
+                    <td>Show bookmarks only</td>
+                    <td>Toggle the bookmark button — non-bookmarked rows are hidden</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 id="bookmark-time">Bookmark Time (Time Correlation)</h3>
+        <p><strong>Bookmark time…</strong> (on the row context menu) bookmarks a row <em>and</em> automatically
+            bookmarks all rows matching timestamp — within a configurable leeway — in every other open log or in a chosen
+            <a href="#grouping">group</a>. It's the fastest way to line up related events across several logs that
+            don't share a common request ID.</p>
+        <ol>
+            <li>Right-click the row of interest → <strong>Bookmark time…</strong>.</li>
+            <li>Choose a <strong>Leeway</strong> window (±5 ms up to ±1 min, or a custom value).</li>
+            <li>Pick a <strong>Bookmark color</strong>.</li>
+            <li>If the current log viewer belongs to a correlation group, a <strong>Target</strong> dropdown lets you scope the
+                correlation to that group instead of every open log.
+            </li>
+            <li>Click <strong>Bookmark</strong>.</li>
+        </ol>
+        <figure class="shot">
+            <img src="screenshots/log-file-viewer-bookmark-time.png"
+                 alt="Bookmark time dialog with a leeway dropdown and a row of bookmark colour swatches">
+        </figure>
+
+        <h3 id="bookmark-filters">Bookmark Filters</h3>
+        <p>Toggle the bookmark button in the viewer header to switch on <strong>Show bookmarks only</strong>, which
+            hides every non-bookmarked row. From there, use <strong>Bookmark Filters</strong> (the settings icon
+            next to the bookmark toggle) to narrow that down further to specific bookmark colors — useful once
+            you have several bookmark colors in play for different purposes (e.g. using distinct colors for grouping rows of interest)</p>
+        <figure class="shot">
+            <img src="screenshots/log-file-viewer-bookmarks-filtering-dialog.png"
+                 alt="Bookmark Filters dialog listing Annotations, Notes, and Color 1–10 with checkboxes, plus Select All / Deselect All">
+        </figure>
+        <p>Toggle individual colours (or <strong>Annotations</strong> / <strong>Notes</strong>, the special bookmark
+            categories) on or off, then <strong>OK</strong> to apply.</p>
+
+        <h3 id="annotations">Annotation Bookmarks</h3>
+        <p>Annotations are saved queries that are automatically applied as bookmarks whenever a matching log file is
+            loaded — and optionally raise a watch/alert.</p>
+        <ol>
+            <li>Right-click a row → <strong>Annotate</strong> (or manage them via <strong>Settings → Annotations →
+                Annotation Manager…</strong>).
+            </li>
+            <li>Give the annotation a description, and confirm or edit the <strong>Query Pattern</strong> (pre-filled
+                from the row you right-clicked, e.g. <code>Message LIKE '%Potential hang on request id=%'</code>).
+            </li>
+            <li>Optionally restrict it to files whose name contains a given string via <strong>Filename
+                Filter</strong>.
+            </li>
+            <li>Optionally set <strong>Watch Severity</strong> (<code>None</code>, <code>INFO</code>,
+                <code>WARN</code>, <code>ERROR</code>) to also raise a watch alert during tailing and on file open —
+                leave it at <strong>None (annotation only)</strong> for a silent bookmark.
+            </li>
+            <li><strong>Save</strong>.</li>
+        </ol>
+        <figure class="shot">
+            <img src="screenshots/log-file-viewer-annotations.png"
+                 alt="Create Annotation dialog with description text area, Query Pattern, Filename Filter, and a Watch Severity dropdown">
+        </figure>
+        <p>On every load, the application runs each matching annotation in the background and marks the matching
+            rows. Annotation bookmarks are listed as their own category in the <a href="#bookmark-filters">Bookmark
+                Filters</a> dialog, separate from the numbered colour bookmarks.</p>
+        <div class="note">
+            <div>Annotations only apply on load when <strong>Apply bookmark annotations on load</strong> is
+                enabled in <strong>Settings → Annotations</strong>, and can optionally read/write from an external
+                database instead of the internal store.
+            </div>
+        </div>
+
+        <h3 id="tailing">Live Tailing</h3>
+        <ol>
+            <li>Click <strong>Tail</strong> (▶) in the viewer toolbar.</li>
+            <li>New entries appear at the bottom as they arrive. The table auto-scrolls to the latest entry.</li>
+            <li>Click anywhere in the table to pause auto-scroll; it resumes when you scroll back to the bottom.</li>
+            <li>Click <strong>Tail</strong> again (■) to stop.</li>
+        </ol>
+        <ul>
+            <li><strong>File rotation:</strong> Detects when <code>app.log</code> is replaced by a new file and
+                restarts reading automatically.
+            </li>
+            <li><strong>Kubernetes tailing:</strong> Streams new pod log lines with minimal delay.</li>
+            <li><strong>Filters during tail:</strong> All active filters apply in real time — keep an
+                <code>ERROR</code> filter to see only exceptions as they occur.
+            </li>
+        </ul>
+
+        <h3 id="analysis">Log Analysis</h3>
+        <p>Click the bar-chart icon (<strong>Analyze Currently Displayed Log Rows</strong>) in the viewer toolbar to
+            generate a report over whatever is currently shown — the full file, or the result of your active filter
+            and time range.</p>
+        <figure class="shot">
+            <img src="screenshots/log-file-viewer-analysis.png"
+                 alt="Log Analysis dialog: Summary tab with an error/warning frequency chart, a severity breakdown pie chart, and totals; Errors/Warnings/Frequency tabs; Redact sensitive data checkbox">
+        </figure>
+        <ul>
+            <li><strong>Summary</strong> — total entries, error/warning counts and percentages, an error/warning
+                frequency-over-time chart, and a severity breakdown pie chart.
+            </li>
+            <li><strong>Errors</strong> / <strong>Warnings</strong> — the individual matching rows.</li>
+            <li><strong>Frequency</strong> — a time-bucketed breakdown of activity.</li>
+        </ul>
+        <p>At the bottom:</p>
+        <ul>
+            <li><strong>Redact sensitive data</strong> (checked by default) — scrubs values before they're shown
+                or exported, applying your custom <a href="#settings">Redaction</a> find/replace rules first, then
+                pattern-based redaction (IPs, emails, etc.).
+            </li>
+            <li><strong>Unredact text</strong> — reveals the original text again (only enabled once redaction
+                has been applied).
+            </li>
+            <li><strong>Copy as markdown</strong> / <strong>Save as file</strong> — export the report, e.g. to paste
+                into a ticket or an AI assistant.
+            </li>
+        </ul>
+
+        <h3 id="load-settings">Reloading and Load Settings</h3>
+        <p>Click <strong>Reload</strong> to re-read the source with its current pattern and settings, or click the
+            gear icon (<strong>Log Settings</strong>) to change how it's loaded before reloading:</p>
+        <figure class="shot">
+            <img src="screenshots/log-file-viewer-load-settings.png"
+                 alt="Load Settings dialog: File Type, Log Pattern, Source Timezone, Display Timezone, an Append non-matching lines checkbox, and Filter Annotations / Cancel / Reload buttons">
+        </figure>
+        <ul>
+            <li><strong>File Type</strong> / <strong>Log Pattern</strong> — switch which <a href="#patterns">pattern</a>
+                is used to parse the file.
+            </li>
+            <li><strong>Source Timezone</strong> — the timezone the raw timestamps are written in (if not embedded
+                in the format itself).
+            </li>
+            <li><strong>Display Timezone</strong> — the timezone timestamps are rendered in in the table (independent
+                of the source timezone).
+            </li>
+            <li><strong>Append non-matching lines to previous row's last field</strong> — when a physical line
+                doesn't match the pattern (e.g. a stack-trace continuation line), append it to the previous row
+                instead of dropping it or creating a malformed row.
+            </li>
+            <li><strong>Filter Annotations</strong> — jump straight to managing annotations that apply to this file.
+            </li>
+        </ul>
+        <p>Click <strong>Reload</strong> to apply the changes.</p>
+
+        <hr>
+
+        <!-- PATTERNS -->
+        <h2 id="patterns">Log Patterns</h2>
+        <p>A <strong>Log Pattern</strong> tells the application how to split each log line into structured columns. The
+            correct pattern is essential for filtering, sorting, and merging.</p>
+
+        <h3 id="auto-detect">Auto-Detection</h3>
+        <p>When you open a file, the application scans the first several hundred lines and tries every known pattern in
+            order of specificity. If a pattern matches, it is selected automatically.</p>
+        <p>If auto-detection fails, the file is opened with the <strong>Catchall</strong> pattern, which loads every
+            line as a single unstructured message column with no timestamp.</p>
+
+        <h3 id="pattern-types">Built-in Pattern Types</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Example source</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>Text / Log4j</strong></td>
+                    <td>Regex-based; covers Log4j, Logback, and custom text formats</td>
+                    <td><code>app.log</code></td>
+                </tr>
+                <tr>
+                    <td><strong>CSV</strong></td>
+                    <td>Delimiter-separated columns; first row is header</td>
+                    <td><code>access.log</code>, exported data</td>
+                </tr>
+                <tr>
+                    <td><strong>JSON</strong></td>
+                    <td>Newline-delimited JSON objects</td>
+                    <td>Structured logging, Fluentd</td>
+                </tr>
+                <tr>
+                    <td><strong>XML</strong></td>
+                    <td>Element-per-entry XML</td>
+                    <td>Some application servers</td>
+                </tr>
+                <tr>
+                    <td><strong>Catchall</strong></td>
+                    <td>One column per line, no parsing, no timestamp</td>
+                    <td>Any unknown format</td>
+                </tr>
+                <tr>
+                    <td><strong>Database</strong></td>
+                    <td>Column layout discovered from the DB schema</td>
+                    <td>External DB tables</td>
+                </tr>
+                <tr>
+                    <td><strong>Kubernetes</strong></td>
+                    <td>Kubernetes API log format</td>
+                    <td><code>kubectl logs</code> output</td>
+                </tr>
+                <tr>
+                    <td><strong>SFTP</strong></td>
+                    <td>Delegates to one of the above after download</td>
+                    <td>Remote servers</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 id="pattern-editor">Pattern Editor</h3>
+        <p>Open the <strong>Log Pattern Editor</strong> from <strong>Settings → Patterns → Log Pattern Editor…</strong>,
+            or click <strong>Change Pattern</strong> from an open viewer.</p>
+        <ol>
+            <li><strong>Load Existing Pattern</strong> to edit one, or start fresh by filling in <strong>Pattern
+                Name</strong>, <strong>Pattern Type</strong>, and a <strong>Sample Log Line</strong>.
+            </li>
+            <li>Write (or generate — see <a href="#regex-generator">Regex Pattern Generator</a>) a <strong>Regex
+                Pattern</strong> with capture groups.
+            </li>
+            <li>Set the <strong>Time Parse Format</strong> (Java <code>DateTimeFormatter</code> syntax), or click
+                <strong>ISO</strong> for a standard ISO-8601 shortcut.
+            </li>
+            <li>Click <strong>Apply Regex to Sample</strong> to populate <strong>Column Mappings</strong> from the
+                sample line, then adjust each column's <strong>Column Name</strong>, <strong>Column Type</strong>,
+                and <strong>Column Size</strong> (<code>FILL</code> lets a column absorb remaining width).
+            </li>
+            <li><strong>Save Pattern</strong>. Patterns can also be <strong>Import</strong>ed / <strong>Export</strong>ed
+                as files to share between installs.
+            </li>
+        </ol>
+        <figure class="shot">
+            <img src="screenshots/log-pattern-editor-2.png"
+                 alt="Log Pattern Editor with a loaded FILE pattern, its regex, ISO timestamp format, and a populated Column Mappings table">
+        </figure>
+
+        <p>Example pattern for a typical Logback line:</p>
+        <pre><code>^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\s+(\w+)\s+\[([^\]]+)\]\s+([\w.$]+)\s+-\s+(.*)$</code></pre>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Format string</th>
+                    <th>Matches</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>yyyy-MM-dd HH:mm:ss,SSS</code></td>
+                    <td><code>2026-06-03 04:15:48,123</code></td>
+                </tr>
+                <tr>
+                    <td><code>yyyy-MM-dd'T'HH:mm:ss.SSSXXX</code></td>
+                    <td><code>2026-06-03T04:15:48.123+00:00</code></td>
+                </tr>
+                <tr>
+                    <td><code>dd/MMM/yyyy:HH:mm:ss Z</code></td>
+                    <td><code>03/Jun/2026:04:15:48 +0000</code> (Apache)</td>
+                </tr>
+                <tr>
+                    <td><code>EEE MMM dd HH:mm:ss zzz yyyy</code></td>
+                    <td><code>Wed Jun 03 04:15:48 UTC 2026</code> (syslog)</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 id="regex-generator">Regex Pattern Generator</h3>
+        <p>Don't want to hand-write a regex? Click <strong>Generate Regex</strong> next to the sample line in the
+            Pattern Editor.</p>
+        <ol>
+            <li>Working left to right along the <strong>Sample Log Line</strong>, select the portion you want as a
+                capture group and click <strong>Add Selected as Group</strong>. Repeat for each field (timestamp,
+                level, thread, message, …).
+            </li>
+            <li>Unselected text between groups is kept as <strong>Literal</strong> text the regex must match
+                exactly.
+            </li>
+            <li>The <strong>Generated Regex Preview</strong> builds up live as you add groups.</li>
+            <li>Click <strong>Apply</strong> to copy the generated regex back into the Pattern Editor's <strong>Regex
+                Pattern</strong> field, then map each group to a column as usual.
+            </li>
+        </ol>
+        <figure class="shot">
+            <img src="screenshots/pattern-editor-regex-pattern-generator.png"
+                 alt="Regex Pattern Generator with a sample log line, a Regex Components table, and a live Generated Regex Preview">
+        </figure>
+        <div class="tip"><strong>Reset</strong> clears all selected groups and starts over from the plain sample
+            line.
+        </div>
+
+        <h3 id="change-pattern">Changing a Pattern After Load</h3>
+        <p>You can switch patterns on an already-loaded file without closing and re-opening it: click the gear icon
+            in the viewer toolbar to open <a href="#load-settings">Load Settings</a>, change <strong>Log
+                Template</strong>, and click <strong>Reload</strong>.</p>
+        <div class="note">
+            <div>Switching from Catchall (no timestamp) to a pattern with timestamps adds the timestamp column
+                and enables the time slider.
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- DATASOURCES -->
+        <h2 id="datasources">Managing Datasources</h2>
+        <p>Beyond the one-off <strong>Import</strong> dialog, connection details for databases, Kubernetes clusters,
+            and SFTP servers can be saved as reusable <strong>datasources</strong> so you don't have to re-enter
+            credentials each time. Manage them from <strong>Settings → Datasource: Database / Kubernetes /
+                SFTP</strong>, or directly from the <strong>Import Data</strong> dialog's respective tab.</p>
+
+        <p><strong>DB Datasource Editor</strong> — create, edit, test, and delete saved database connections (name,
+            DB type, driver, host, port, database, username, password, or a raw JDBC URL). Passwords are stored
+            encrypted unless <strong>Save password</strong> is unchecked.</p>
+        <figure class="shot">
+            <img src="screenshots/db-datasource-editor.png"
+                 alt="DB Datasource Editor with connection fields and New / Save / Delete / Test Connection / Manage Drivers buttons">
+        </figure>
+
+        <p>Click <strong>Manage Drivers</strong> to register a custom JDBC driver (name and main class) beyond the
+            built-in ones:</p>
+        <figure class="shot">
+            <img src="screenshots/db-datasource-editor-driver-editor.png"
+                 alt="Driver Editor listing registered JDBC drivers by Name and Main Class, with Add / Delete buttons">
+        </figure>
+
+        <p><strong>Kubernetes Datasource Editor</strong> — save a named cluster connection, either by <strong>pasting
+            a kubeconfig</strong> directly or pointing at a <strong>config file</strong> on disk, then <strong>Test
+            Connection</strong> before saving.</p>
+        <figure class="shot">
+            <img src="screenshots/kubernetes-datasource-editor.png"
+                 alt="Kubernetes Datasource Editor with a Name field, Paste config / Config file radio buttons, and a Config text area">
+        </figure>
+
+        <p><strong>SFTP Datasource Editor</strong> — save host, port, username, and either a password or an SSH
+            private-key path (with optional passphrase). If a <strong>default SSH key</strong> is configured in
+            <strong>Settings → Datasource: SFTP</strong>, individual connections can rely on it instead of specifying
+            their own key.</p>
+        <figure class="shot">
+            <img src="screenshots/sftp-datasource-editor.png"
+                 alt="SFTP Datasource Editor with host/port/username/password fields and Private Key Path / Passphrase fields">
+        </figure>
+
+        <hr>
+
+        <!-- SESSION -->
+        <h2 id="session">Session Persistence</h2>
+        <p>Klunk - Log Viewer can save your workspace when you close it and restore it on next launch — toggle
+            <strong>Save Session on Close</strong> in the Log Manager toolbar.</p>
+        <p><strong>What is saved per viewer:</strong></p>
+        <ul>
+            <li>Source file paths or database/Kubernetes/SFTP connection details</li>
+            <li>Active log pattern</li>
+            <li>Applied text filter and filter-out rules</li>
+            <li>Selected time range</li>
+            <li>Bookmarked rows and their colours</li>
+            <li>Column widths</li>
+            <li>Window position and size (for undocked windows)</li>
+            <li>Whether tailing was active</li>
+        </ul>
+
+        <hr>
+
+        <!-- PERFORMANCE -->
+        <h2 id="performance">Performance and Virtualization</h2>
+        <p>Klunk - Log Viewer handles very large log files through <strong>adaptive virtualization</strong>.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Dataset size</th>
+                    <th>Mode</th>
+                    <th>Behaviour</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Below the threshold</td>
+                    <td><strong>In-memory</strong></td>
+                    <td>All rows in RAM; instant sorting, instant filtering</td>
+                </tr>
+                <tr>
+                    <td>At or above the threshold</td>
+                    <td><strong>SQLite-paged</strong></td>
+                    <td>Pages fetched on demand; never switches back to in-memory</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>In SQLite-paged mode, sorting is disabled (data is pre-ordered by timestamp at load time). Filtering uses SQL
+            WHERE clauses executed in SQLite — no memory overhead.</p>
+
+        <p><strong>Tuning virtualization</strong> — raw properties editable under <strong>Settings → Advanced</strong>:
+        </p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Effect</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>log.virtualization.threshold</code></td>
+                    <td>Row count above which SQLite paging is used</td>
+                </tr>
+                <tr>
+                    <td><code>log.virtualization.pagesize</code></td>
+                    <td>Rows fetched per page in SQLite mode</td>
+                </tr>
+                <tr>
+                    <td><code>log.tail.interval.seconds</code></td>
+                    <td>How often a tailed source is polled for new lines</td>
+                </tr>
+                <tr>
+                    <td><code>log.file.check.enabled</code> / <code>log.file.check.interval.secs</code></td>
+                    <td>Whether — and how often — open files are checked for external changes (the reload
+                        indicator)
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>Raise the threshold if you have ample RAM and prefer the faster in-memory experience. Lower it if you see
+            high memory usage with large files.</p>
+
+        <hr>
+
+        <!-- SETTINGS -->
+        <h2 id="settings">Application Settings</h2>
+        <p>Open <strong>Settings</strong> from the Log Manager toolbar. It's a collapsible accordion — click a
+            section header to expand it.</p>
+        <figure class="shot">
+            <img src="screenshots/application-settings.png"
+                 alt="Application Settings accordion listing Appearance, Patterns, Datasource: SFTP, Datasource: Kubernetes, Datasource: Database, Annotations, General Settings, Redaction, and Advanced">
+        </figure>
+
+        <h3>Appearance</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Font Settings…</td>
+                    <td>Opens the font-family / size picker for the log table</td>
+                </tr>
+                <tr>
+                    <td>Row height pixels tweak</td>
+                    <td>Nudge row height by −8 to +8 px</td>
+                </tr>
+                <tr>
+                    <td>Maximum height of rows with wrapped lines</td>
+                    <td>Cap on how tall a wrapped multi-line row can grow (<code>-1</code> disables the cap)</td>
+                </tr>
+                <tr>
+                    <td>Enable Dark Mode</td>
+                    <td>Toggle the Light/Dark theme</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Patterns</h3>
+        <p>Opens the <a href="#pattern-editor">Log Pattern Editor</a>.</p>
+
+        <h3>Datasource: SFTP / Kubernetes / Database</h3>
+        <p>Each opens the corresponding <a href="#datasources">datasource editor</a>. The SFTP section also lets you
+            <strong>Browse…</strong> to or <strong>Generate New…</strong> a default SSH private key used
+            automatically by SFTP connections that don't specify their own.</p>
+
+        <h3>Annotations</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Annotation Manager…</td>
+                    <td>Create, edit, and delete <a href="#annotations">annotation</a> rules</td>
+                </tr>
+                <tr>
+                    <td>Apply bookmark annotations on load</td>
+                    <td>Whether annotations are auto-applied when a matching file is opened</td>
+                </tr>
+                <tr>
+                    <td>Use external database for annotations</td>
+                    <td>Store/read annotations from an external database instead of the internal SQLite store</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>General Settings</h3>
+        <figure class="shot">
+            <img src="screenshots/settings-general.png"
+                 alt="General Settings panel: working directory, external editor path, Force purge database on close, and Scroll to last row checkboxes">
+        </figure>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Setting</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Working directory</td>
+                    <td>Default directory for log files and user data</td>
+                </tr>
+                <tr>
+                    <td>External editor path</td>
+                    <td>Application used to open raw log files from the launch icon</td>
+                </tr>
+                <tr>
+                    <td>Force purge database on close</td>
+                    <td>Applies when Save Session on Close is disabled — clears the internal database on exit
+                        instead of leaving it for next launch
+                    </td>
+                </tr>
+                <tr>
+                    <td>Scroll to the last row when a log file/source is initially opened</td>
+                    <td>Jump straight to the newest entry on open</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Redaction</h3>
+        <p>Literal find/replace substitutions (case-insensitive) applied <em>before</em> pattern-based redaction when
+            generating <a href="#analysis">Log Analysis</a> or <a href="#grouping">Group Analysis</a> reports — e.g.
+            replacing a real company or hostname with a generic placeholder before pasting a report into an AI
+            assistant.</p>
+        <figure class="shot">
+            <img src="screenshots/settings-redaction.png"
+                 alt="Redaction panel with a Find text / Replace with table and Add / Remove buttons">
+        </figure>
+
+        <h3>Advanced</h3>
+        <p>Directly edit raw configuration properties not exposed elsewhere in the UI — useful for the
+            <a href="#performance">virtualization tuning</a> properties and any <code>watch.alert.*</code> export
+            settings. Some changes may require a restart.</p>
+        <figure class="shot">
+            <img src="screenshots/settings-advanced.png"
+                 alt="Advanced settings: a Property/Value table showing log.file.check.enabled, log.file.check.interval.secs, log.virtualization.threshold, log.virtualization.pagesize, log.tail.interval.seconds, and watch.alert.* properties">
+        </figure>
+
+        <hr>
+
+        <!-- SHORTCUTS -->
+        <h2 id="shortcuts">Keyboard Shortcuts</h2>
+
+        <h3>Log Manager</h3>
+        <div class="table-wrap">
+            <table class="shortcuts">
+                <thead>
+                <tr>
+                    <th>Shortcut</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><kbd>Ctrl+I</kbd></td>
+                    <td>Open the Import dialog</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+F</kbd></td>
+                    <td>Focus the window-search filter</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+W</kbd></td>
+                    <td>Close selected windows</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+M</kbd></td>
+                    <td>Merge selected windows</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+G</kbd></td>
+                    <td>Group selected windows</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+Shift+G</kbd></td>
+                    <td>Save a group's windows for later reloading</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+Alt+A</kbd></td>
+                    <td>Analyze a group</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Log Viewer</h3>
+        <div class="table-wrap">
+            <table class="shortcuts">
+                <thead>
+                <tr>
+                    <th>Shortcut</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><kbd>Ctrl+F</kbd></td>
+                    <td>Open / focus Find bar</td>
+                </tr>
+                <tr>
+                    <td><kbd>F3</kbd></td>
+                    <td>Find next</td>
+                </tr>
+                <tr>
+                    <td><kbd>Shift+F3</kbd></td>
+                    <td>Find previous</td>
+                </tr>
+                <tr>
+                    <td><kbd>Escape</kbd></td>
+                    <td>Clear Find bar / clear filter</td>
+                </tr>
+                <tr>
+                    <td><kbd>Enter</kbd></td>
+                    <td>Open Row Detail for selected row</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+A</kbd></td>
+                    <td>Select all visible rows</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+C</kbd></td>
+                    <td>Copy selected rows to clipboard (tab-separated)</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+↑</kbd></td>
+                    <td>Jump to previous bookmark</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+↓</kbd></td>
+                    <td>Jump to next bookmark</td>
+                </tr>
+                <tr>
+                    <td><kbd>↑ / ↓</kbd></td>
+                    <td>Move selection one row</td>
+                </tr>
+                <tr>
+                    <td><kbd>Page Up/Down</kbd></td>
+                    <td>Scroll one screen</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+E</kbd></td>
+                    <td>Export Log…</td>
+                </tr>
+                <tr>
+                    <td><kbd>F5</kbd></td>
+                    <td>Reload log from source</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- TROUBLESHOOTING -->
+        <h2 id="troubleshooting">Troubleshooting</h2>
+
+        <h3>"No content available" after opening a file</h3>
+        <p>The log pattern did not match any lines. Try:</p>
+        <ol>
+            <li>Click the gear icon (<strong>Log Settings</strong>) → change <strong>Log Pattern</strong> to a
+                different pattern.
+            </li>
+            <li>If no built-in pattern fits, open the <strong>Pattern Editor</strong> and create a custom one.</li>
+            <li>As a last resort, use the <strong>Catchall</strong> pattern — it loads every line as a raw message.</li>
+        </ol>
+
+        <h3>Time slider is not visible</h3>
+        <p>The time slider only appears for patterns that include a <strong>timestamp</strong> column. Add a timestamp
+            field in the Pattern Editor to enable it.</p>
+
+        <h3>Filter returns no results for a valid timestamp</h3>
+        <p>Both <code>2026-06-03T04:15:48Z</code> and <code>2026-06-03T04:15:48.000Z</code> are equivalent and both
+            accepted. Display-format queries like <code>2026-06-03 - 04:15:48.000</code> also work.</p>
+
+        <h3>Application is slow when scrolling a large file</h3>
+        <ul>
+            <li>Check whether the file exceeded the virtualization threshold — SQLite-paged files fetch pages on
+                demand rather than holding everything in RAM.
+            </li>
+            <li>If you're on a large file still in in-memory mode, lower <code>log.virtualization.threshold</code>
+                in <strong>Settings → Advanced</strong> so paging activates earlier.
+            </li>
+        </ul>
+
+        <h3>"Parsing and inserting log entries" progress never clears</h3>
+        <p>A background query (e.g. an annotation lookup) may be holding a read lock when the reload starts. The lock
+            releases automatically. If it happens frequently, try disabling <strong>Apply bookmark annotations on
+                load</strong> in <strong>Settings → Annotations</strong> while working with very large files.</p>
+
+        <h3>Session does not restore a window</h3>
+        <p>If a source file has moved or is unavailable at startup, that viewer is skipped during session restore.
+            Re-open the file from its new location and the saved filters and bookmarks are picked up on the next
+            close.</p>
+
+        <a class="back-to-top" href="#quick-start">↑ Back to top</a>
+
+    </article>
+</div>
+
+<footer class="site-footer">
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+    </nav>
+    <p>Klunk - Log Viewer &mdash; free to use. &copy; 2026 KookaKlunka, LLC.</p>
+</footer>
+
+</body>
+</html>

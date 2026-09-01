@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klunk - Log Viewer — Privacy Policy</title>
+    <link rel="stylesheet" href="_shared.css">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#134f8f">
+</head>
+<body>
+
+<header class="site-header">
+    <a class="logo" href="index.html">Klunk <span>Log Viewer</span></a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html" class="active">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+    </nav>
+</header>
+
+<div class="page-hero">
+    <h1>Privacy Policy</h1>
+    <p>How Klunk - Log Viewer handles your data.</p>
+    <p class="meta">Last Updated: November 20, 2024</p>
+</div>
+
+<div class="doc-shell no-sidebar">
+    <article>
+
+        <div class="note">
+            Klunk - Log Viewer is a <strong>local desktop application</strong>. It does not collect, transmit, or
+            store any of your data on external servers. Everything stays on your machine.
+        </div>
+
+        <div class="legal-section">
+            <h2 id="s1">1. Data Processing and Storage</h2>
+            <p>All primary data processing occurs on your local machine.</p>
+            <ul>
+                <li>
+                    <strong>Log Data:</strong> When you open log files (local or remote), the application parses them
+                    and may store them in a temporary local SQLite database to enable high-performance viewing
+                    and filtering. This data remains on your local machine and is <em>never</em> transmitted
+                    to the developers or any third party.
+                </li>
+                <li>
+                    <strong>Remote Connections:</strong> If you connect to external sources (SFTP servers,
+                    Kubernetes clusters, external databases, or URLs), the application transmits only the
+                    credentials and requests you provide. These connections are initiated solely by your
+                    actions and go directly to the target system — not through any developer-controlled infrastructure.
+                </li>
+                <li>
+                    <strong>Configuration:</strong> Your settings, Most Recently Used (MRU) items, saved
+                    patterns, and bookmarks are stored locally in the application's data directory on your device.
+                </li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2 id="s2">2. No Data Collection or Telemetry</h2>
+            <ul>
+                <li>Klunk - Log Viewer <strong>does not</strong> collect, store, or transmit any personal
+                    information, usage data, or telemetry to the developers or any third parties.
+                </li>
+                <li>The application does <strong>not</strong> use cookies, tracking pixels, analytics SDKs, or any other
+                    tracking technology.
+                </li>
+                <li>No crash reports, diagnostics, or feature-usage metrics are sent anywhere.</li>
+            </ul>
+            <div class="tip">Your log data never leaves your machine unless <em>you</em> connect it to an external
+                source.
+            </div>
+        </div>
+
+        <div class="legal-section">
+            <h2 id="s3">3. Third-Party Services</h2>
+            <p>
+                The application allows you to connect to third-party services such as your own SFTP servers,
+                Kubernetes clusters, or databases. Your use of those services is governed entirely by their
+                respective privacy policies and terms of use. Klunk - Log Viewer has no visibility into or
+                control over those systems.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 id="s4">4. Credential Security</h2>
+            <p>
+                Passwords and SSH key passphrases you enter for remote connections are encrypted before
+                being stored in the local configuration. We recommend:
+            </p>
+            <ul>
+                <li>Using standard OS-level security (disk encryption, screen lock) to protect your device.</li>
+                <li>Using SSH key authentication rather than passwords where possible.</li>
+                <li>Not sharing your application data directory with untrusted users.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2 id="s5">5. Changes to This Policy</h2>
+            <p>
+                We may update this Privacy Policy from time to time. Any changes will be reflected in
+                the <strong>Last Updated</strong> date at the top of this document and in the application's
+                release notes.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 id="s6">6. Contact</h2>
+            <p>
+                If you have questions about this policy, please open an issue in the project repository.
+            </p>
+        </div>
+
+        <a class="back-to-top" href="#s1">↑ Back to top</a>
+
+    </article>
+</div>
+
+<footer class="site-footer">
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+    </nav>
+    <p>Klunk - Log Viewer &mdash; free to use. &copy; 2026 KookaKlunka, LLC.</p>
+</footer>
+
+</body>
+</html>

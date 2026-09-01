@@ -1,2 +1,0 @@
-# klunk
-Klunk - Log Viewer

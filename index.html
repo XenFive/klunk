@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klunk - Log Viewer</title>
+    <link rel="stylesheet" href="_shared.css">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#134f8f">
+    <style>
+        /* ── Landing page overrides ── */
+        .landing-hero {
+            background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 100%);
+            color: #fff;
+            padding: 72px 32px 64px;
+            text-align: center;
+        }
+
+        .landing-hero h1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            margin-bottom: 14px;
+            color: #ff9e33;
+            -webkit-text-stroke: 2px #222222;
+            paint-order: stroke fill;
+        }
+
+        .landing-hero h1 img {
+            height: 1.5em;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .landing-hero p.tagline {
+            font-size: 1.15rem;
+            opacity: .9;
+            max-width: 620px;
+            margin: 0 auto 32px;
+        }
+
+        .dl-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            color: var(--brand-dark);
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: var(--radius);
+            text-decoration: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .25);
+            transition: transform .12s ease, box-shadow .12s ease;
+        }
+
+        .btn-download:hover {
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(0, 0, 0, .3);
+        }
+
+        .btn-download .arrow {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .5);
+            font-size: .95rem;
+            font-weight: 600;
+            padding: 14px 22px;
+            border-radius: var(--radius);
+            text-decoration: none;
+        }
+
+        .btn-ghost:hover {
+            text-decoration: none;
+            background: rgba(255, 255, 255, .12);
+        }
+
+        .dl-meta {
+            margin-top: 18px;
+            font-size: .82rem;
+            opacity: .7;
+        }
+
+        .hero-shot {
+            max-width: 940px;
+            margin: -36px auto 0;
+            padding: 0 24px;
+        }
+
+        .hero-shot img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .22);
+        }
+
+        .landing-body {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 56px 24px 8px;
+        }
+
+        .landing-body h2 {
+            text-align: center;
+            border-bottom: none;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+        }
+
+        .landing-body > p {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 14px;
+        }
+
+        .req-note {
+            max-width: 620px;
+            margin: 28px auto 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 22px;
+            font-size: .9rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .req-note strong {
+            color: var(--text);
+        }
+
+        @media (max-width: 820px) {
+            .landing-hero {
+                padding: 48px 20px 44px;
+            }
+
+            .landing-hero h1 {
+                font-size: 1.9rem;
+            }
+
+            .hero-shot {
+                margin-top: -20px;
+                padding: 0 14px;
+            }
+
+            .landing-body {
+                padding: 40px 16px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <a class="logo" href="index.html">Klunk <span>Log Viewer</span></a>
+    <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+    </nav>
+</header>
+
+<section class="landing-hero">
+    <h1><img src="icon.svg" alt="" aria-hidden="true"> Klunk - Log Viewer</h1>
+    <p class="tagline">
+        A fast, no-fuss desktop log viewer for local files, databases, Kubernetes pods, SFTP,
+        and HTTP sources &mdash; with merging, SQL-like filtering and analysis.
+    </p>
+
+    <div class="dl-actions">
+        <a class="btn-download" id="btn-download"
+           href="https://github.com/XenFive/demo/releases/latest">
+            <span class="arrow">&#x2B07;</span> <span id="btn-download-label">Download</span>
+        </a>
+        <a class="btn-ghost" href="https://github.com/XenFive/demo/releases/latest">All platforms &amp; versions</a>
+    </div>
+    <p class="dl-meta"><span id="dl-version">v0.9.85</span> &middot; Free to use &middot; Windows, macOS &amp; Linux</p>
+</section>
+
+<div class="hero-shot">
+    <img src="screenshots/Dark-logviewer.png" alt="Klunk Log Viewer main window">
+</div>
+
+<div class="landing-body">
+
+    <h2>Key Features</h2>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="icon">📂</div>
+            <strong>Multiple Data Sources</strong>
+            <p>Local files, databases, Kubernetes pods, SFTP, HTTP get/post URLs.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔀</div>
+            <strong>Log Merging</strong>
+            <p>Combine files into one chronological stream with colour-coded sources.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔍</div>
+            <strong>Advanced Filtering</strong>
+            <p>SQL-like syntax — <code>LIKE</code>, <code>=</code>, <code>AND</code>, <code>OR</code>, nested
+                groups.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔖</div>
+            <strong>Bookmarks</strong>
+            <p>Pin important rows with multi-colour bookmarks, comments, and time markers — then filter down to
+                just what you've flagged.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">⏱</div>
+            <strong>Visual Time Slider</strong>
+            <p>Dual-thumb vertical slider with error/warning markers and live viewport tracking.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🗄</div>
+            <strong>Data Virtualization</strong>
+            <p>Handles millions of rows via SQLite-backed paging — smooth scrolling at any scale.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📡</div>
+            <strong>Live Tailing</strong>
+            <p>Real-time monitoring with automatic file-rotation detection.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">💾</div>
+            <strong>Session Persistence</strong>
+            <p>Saves and restores opened files, filters, window positions, and bookmarks.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🧩</div>
+            <strong>Customisable Patterns</strong>
+            <p>Regex-based pattern engine supports Log4j, Logback, CSV, JSON, XML, and custom formats.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🎨</div>
+            <strong>Interactive UI</strong>
+            <p>Dockable tabs, in-text search with highlighting, multi-colour bookmarks, timestamp timezone
+                conversion, light/dark theme.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📊</div>
+            <strong>Log Analysis</strong>
+            <p>Error/warning reports and charts with best-effort redaction of sensitive data — plus custom
+                find/replace overrides — before anything is copied or exported. (useful for AI prompting)</p>
+        </div>
+    </div>
+
+    <div class="req-note">
+        Klunk is a <strong>JavaFX desktop application</strong>, but it's <strong>self-contained</strong> — the
+        installer bundles its own Java runtime, so there's nothing else to install.
+        It is <strong>free to use</strong> under a proprietary licence &mdash; see the
+        <a href="TERMS.html">Terms of Use</a>. New here? Start with the <a href="USER_GUIDE.html">User Guide</a>.
+    </div>
+
+    <hr>
+
+    <h2 id="documentation">Documentation</h2>
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Document</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><a href="USER_GUIDE.html">User Guide</a></td>
+                <td>Detailed instructions for all application features</td>
+            </tr>
+            <tr>
+                <td><a href="PRIVACY.html">Privacy Policy</a></td>
+                <td>How the application handles your data</td>
+            </tr>
+            <tr>
+                <td><a href="TERMS.html">Terms of Use</a></td>
+                <td>Licence and usage conditions</td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <h2 id="legal">Legal</h2>
+    <p>Klunk - Log Viewer is free to use under a proprietary licence.
+        See the full <a href="../LICENSE">LICENSE</a> text and the <a href="TERMS.html">Terms of Use</a>.</p>
+    <p>
+        <a href="TERMS.html">Terms of Use</a> ·
+        <a href="PRIVACY.html">Privacy Policy</a>
+    </p>
+
+</div>
+
+<footer class="site-footer">
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+    </nav>
+    <p>Klunk - Log Viewer &mdash; free to use. &copy; 2026 KookaKlunka, LLC.</p>
+</footer>
+
+<script>
+    (function () {
+        // Release-asset file names on the GitHub "latest" release.
+        // GitHub redirects /releases/latest/download/<name> to the newest release's
+        // matching asset, so keep these names identical across every release.
+        // ── Adjust to match your actual uploaded asset names. ──
+        var BASE = "https://github.com/XenFive/demo/releases/latest";
+        var ASSETS = {
+            windows: BASE + "/download/Klunk-Windows.exe",
+            mac: BASE + "/download/Klunk-macOS.dmg",
+            linux: BASE + "/download/Klunk-Linux.AppImage"
+        };
+        var LABELS = {
+            windows: "Download for Windows",
+            mac: "Download for macOS",
+            linux: "Download for Linux"
+        };
+
+        function detectOS() {
+            var data = navigator.userAgentData;
+            var plat = (data && data.platform) || navigator.platform || "";
+            var s = (plat + " " + navigator.userAgent).toLowerCase();
+            if (s.indexOf("android") !== -1) return null;      // mobile — use neutral page
+            if (s.indexOf("iphone") !== -1 || s.indexOf("ipad") !== -1) return null;
+            if (s.indexOf("win") !== -1) return "windows";
+            if (s.indexOf("mac") !== -1) return "mac";
+            if (s.indexOf("linux") !== -1 || s.indexOf("x11") !== -1 || s.indexOf("cros") !== -1) return "linux";
+            return null;
+        }
+
+        var os = detectOS();
+        var btn = document.getElementById("btn-download");
+        var label = document.getElementById("btn-download-label");
+        if (label) {
+            if (os && btn) {
+                btn.href = ASSETS[os];
+                label.textContent = LABELS[os];
+            } else {
+                label.textContent = "Download";   // falls back to the releases page
+            }
+        }
+    })();
+</script>
+
+</body>
+</html>
