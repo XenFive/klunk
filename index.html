@@ -333,11 +333,11 @@
         // GitHub redirects /releases/latest/download/<name> to the newest release's
         // matching asset, so keep these names identical across every release.
         // ── Adjust to match your actual uploaded asset names. ──
-        var BASE = "https://www.kookaklunka.com/klunk/downloads/latest";
+        var BASE = "https://www.kookaklunka.com/klunk/downloads/latest/";
         var ASSETS = {
-            windows: BASE + "/download/Klunk-Windows.exe",
-            mac: BASE + "/download/Klunk-macOS.dmg",
-            linux: BASE + "/download/Klunk-Linux.AppImage"
+            windows: BASE + "Klunk-Windows.exe",
+            mac: BASE + "Klunk-macOS.dmg",
+            linux: BASE + "Klunk-Linux.AppImage"
         };
         var LABELS = {
             windows: "Download for Windows",
