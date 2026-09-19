@@ -20,6 +20,7 @@
         <a href="USER_GUIDE.html" class="active">User Guide</a>
         <a href="PRIVACY.html">Privacy</a>
         <a href="TERMS.html">Terms</a>
+        <a href="ABOUT.html">About</a>
     </nav>
 </header>
 
@@ -180,8 +181,8 @@
             </li>
             <li>Choose a namespace and pod (or a pod-name filter for multi-pod streaming), then import.</li>
         </ol>
-        <div class="tip">Multi-pod imports open a <strong>Merged View</strong> automatically, with each pod
-            colour-coded.
+        <div class="tip">
+            <div>Multi-pod imports open a <strong>Merged View</strong> automatically, with each pod colour-coded.</div>
         </div>
 
         <h3 id="sftp">SFTP Remote Files</h3>
@@ -201,6 +202,93 @@
             <li>Paste an HTTP or HTTPS URL that returns plain-text log data.</li>
             <li>Select a log pattern and import.</li>
         </ol>
+
+        <h4 id="url-request-options">Request Options — Headers &amp; Pagination</h4>
+        <p>Click <strong>Request Options…</strong> on the URL tab to add custom request headers, a POST body, and
+            multi-page fetching for APIs that don't return everything in one response.</p>
+        <figure class="shot">
+            <img src="screenshots/log-import-url-request-options.png"
+                 alt="URL Request Options dialog with a Payload/Body text area, a Name/Value Headers table with Add/Remove buttons, and an Enable Pagination checkbox with Type and Param Name fields">
+        </figure>
+
+        <h4>Payload / Body</h4>
+        <p>Only sent with <strong>POST</strong> requests (set the method on the URL tab first). A body starting with
+            <code>{</code> or <code>[</code> automatically gets a <code>Content-Type: application/json</code>
+            header. Reference the current pagination value with <code>${paramName}</code>, matching whatever you
+            type into <strong>Param Name</strong> below:</p>
+        <pre><code>{"query": "level:ERROR", "page": ${page}, "pageSize": 100}</code></pre>
+
+        <h4>Headers</h4>
+        <p>Click <strong>Add</strong> to insert a row — the Name cell is focused immediately so you can type right
+            away. Press <kbd>Enter</kbd>, <kbd>Tab</kbd>, or type <kbd>:</kbd> to jump from Name to Value. Headers
+            are sent with every request, including every page of a paginated fetch:</p>
+        <pre><code>Authorization: Bearer eyJhbGciOi...
+Accept: application/x-ndjson
+X-Api-Key: 3f29a1c0-...</code></pre>
+
+        <h4>Pagination</h4>
+        <p>Check <strong>Enable Pagination</strong> and pick a <strong>Type</strong>. <strong>Param Name</strong> is
+            the query parameter (GET) or <code>${placeholder}</code> key (POST payload) that carries the page
+            value; <strong>Page Size</strong> and <strong>Max Pages</strong> cap how far the import will keep
+            fetching — it also stops early the moment a page comes back empty.</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>What it sends</th>
+                    <th>Stops when</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>PAGE</strong></td>
+                    <td>Param Name = a page number, starting at <code>1</code> and incrementing each request</td>
+                    <td>A page returns no rows, or Max Pages is reached</td>
+                </tr>
+                <tr>
+                    <td><strong>OFFSET</strong></td>
+                    <td>Param Name = a row offset, starting at <code>0</code> and increasing by Page Size each
+                        request
+                    </td>
+                    <td>A page returns no rows, or Max Pages is reached</td>
+                </tr>
+                <tr>
+                    <td><strong>CURSOR</strong></td>
+                    <td>Param Name = the cursor value read out of the <em>previous</em> response's JSON at
+                        <strong>Cursor JSON Path</strong> (dot-separated, e.g. <code>meta.next_cursor</code>)
+                    </td>
+                    <td>The cursor path comes back empty or missing, or Max Pages is reached</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p><strong>Example — PAGE, GET request.</strong> URL <code>https://api.example.com/logs</code>, Method
+            <code>GET</code>, Param Name <code>page</code>, Page Size <code>100</code>, Max Pages <code>5</code>:</p>
+        <pre><code>GET https://api.example.com/logs?page=1
+GET https://api.example.com/logs?page=2
+GET https://api.example.com/logs?page=3
+...</code></pre>
+
+        <p><strong>Example — OFFSET, POST request.</strong> Method <code>POST</code>, Param Name <code>offset</code>,
+            Page Size <code>500</code>, Payload:</p>
+        <pre><code>{"query": "level:ERROR", "offset": ${offset}, "limit": 500}</code></pre>
+        <p>sends bodies with <code>offset</code> equal to <code>0</code>, then <code>500</code>, then
+            <code>1000</code>, and so on for up to Max Pages requests.</p>
+
+        <p><strong>Example — CURSOR, GET request.</strong> Param Name <code>cursor</code>, Cursor JSON Path
+            <code>meta.next_cursor</code>. If page 1's response body is:</p>
+        <pre><code>{"items": [...], "meta": {"next_cursor": "abc123"}}</code></pre>
+        <p>page 2 is fetched as <code>...?cursor=abc123</code>; fetching stops as soon as a response has no
+            <code>meta.next_cursor</code> value.</p>
+
+        <div class="note">
+            <div>Headers and pagination settings are saved with the URL's MRU entry, so re-importing (or
+                double-clicking) a previously used URL reuses the same request options automatically.
+            </div>
+        </div>
 
         <hr>
 
@@ -307,8 +395,10 @@
                 with fresh data.
             </div>
         </div>
-        <div class="tip">Right-click any row in a merged view → <strong>Change Colour</strong> to reassign a source's
-            colour. The time-slider markers update instantly.
+        <div class="tip">
+            <div>Right-click any row in a merged view → <strong>Change Colour</strong> to reassign a source's colour.
+                The time-slider markers update instantly.
+            </div>
         </div>
 
         <h3 id="grouping">Grouping Windows</h3>
@@ -361,8 +451,10 @@
             <img src="screenshots/log-manager-group-analysis.png"
                  alt="Group Analysis report: global severity pie chart, aggregated issues-over-time bar chart, and a per-file rows/errors/warnings table">
         </figure>
-        <div class="tip">Like the single-file <a href="#analysis">Log Analysis</a> report, group analysis can be
-            redacted, copied as markdown, or saved to a file — handy for pasting into an AI assistant or a ticket.
+        <div class="tip">
+            <div>Like the single-file <a href="#analysis">Log Analysis</a> report, group analysis can be redacted,
+                copied as markdown, or saved to a file — handy for pasting into an AI assistant or a ticket.
+            </div>
         </div>
 
         <hr>
@@ -406,7 +498,7 @@
             </table>
         </div>
         <ul>
-            <li><strong>Column resize:</strong> Drag any column edge. The rightmost column fills remaining space.
+            <li><strong>Column resize:</strong> Drag any column edge.
             </li>
             <li><strong>Sort:</strong> Click a header — ascending, then descending. Available for in-memory datasets
                 — see <a href="#performance">Performance</a>.
@@ -431,6 +523,10 @@
         <pre><code>level = 'ERROR'
 thread = 'http-nio-8080-exec-1'
 level != 'DEBUG'</code></pre>
+
+        <h4>Set membership (IN / NOT IN)</h4>
+        <pre><code>level in ('ERROR','WARN')
+level not in ('ERROR','WARN')</code></pre>
 
         <h4>Pattern matching (LIKE / NOT LIKE)</h4>
         <p><code>%</code> matches any sequence; <code>_</code> matches exactly one character.</p>
@@ -473,8 +569,10 @@ logger LIKE 'com.example.db.%' AND message LIKE '%ms%' AND level != 'DEBUG'</cod
         </ol>
         <pre><code>-- Exclude health-check and metric noise:
 message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
-        <div class="tip">Filter-out rules persist with the session and are shown in a distinct colour in the toolbar
-            when active.
+        <div class="tip">
+            <div>Filter-out rules persist with the session and are shown in a distinct colour in the toolbar when
+                active.
+            </div>
         </div>
 
         <h3 id="find">Search and Find</h3>
@@ -512,8 +610,10 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 </tbody>
             </table>
         </div>
-        <div class="tip">Find searches the rendered cell text, not the raw stored value — display-formatted
-            timestamps (e.g. <code>2026-06-03 - 04:15:48.000</code>) are searchable as displayed.
+        <div class="tip">
+            <div>Find searches the rendered cell text, not the raw stored value — display-formatted timestamps
+                (e.g. <code>2026-06-03 - 04:15:48.000</code>) are searchable as displayed.
+            </div>
         </div>
 
         <p><strong>Turn the find text into a filter:</strong> click the magnifier button beside the find field
@@ -572,7 +672,9 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </li>
             <li><strong>Hover</strong> over any marker or thumb for a tooltip showing the exact timestamp.</li>
         </ul>
-        <div class="note">The selected time range is saved with the session and restored on next open.</div>
+        <div class="note">
+            <div>The selected time range is saved with the session and restored on next open.</div>
+        </div>
 
         <h3 id="bookmarks">Bookmarks and Highlights</h3>
         <p>Bookmarks let you pin important rows for navigation, review, and later filtering.</p>
@@ -899,8 +1001,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             <img src="screenshots/pattern-editor-regex-pattern-generator.png"
                  alt="Regex Pattern Generator with a sample log line, a Regex Components table, and a live Generated Regex Preview">
         </figure>
-        <div class="tip"><strong>Reset</strong> clears all selected groups and starts over from the plain sample
-            line.
+        <div class="tip">
+            <div><strong>Reset</strong> clears all selected groups and starts over from the plain sample line.</div>
         </div>
 
         <h3 id="change-pattern">Changing a Pattern After Load</h3>
@@ -1335,6 +1437,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <a href="USER_GUIDE.html">User Guide</a>
         <a href="PRIVACY.html">Privacy</a>
         <a href="TERMS.html">Terms</a>
+        <a href="ABOUT.html">About</a>
     </nav>
     <p>Klunk - Log Viewer &mdash; free to use. &copy; 2026 KookaKlunka, LLC.</p>
 </footer>

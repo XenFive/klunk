@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klunk - Log Viewer — About</title>
+    <link rel="stylesheet" href="shared-styles.css">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#134f8f">
+</head>
+<body>
+
+<header class="site-header">
+    <a class="logo" href="index.html">Klunk <span>Log Viewer</span></a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+        <a href="ABOUT.html" class="active">About</a>
+    </nav>
+</header>
+
+<div class="page-hero">
+    <h1>About</h1>
+    <p>The story behind Klunk - Log Viewer, and the person who makes it.</p>
+</div>
+
+<div class="doc-shell no-sidebar">
+    <article>
+
+        <h2 id="intro">What Klunk is</h2>
+        <p>
+            Klunk - Log Viewer is a desktop application for reading logs from &mdash; local files, databases,
+            Kubernetes pods, SFTP servers, and HTTP endpoints &mdash; in one place. It merges multiple sources
+            into a single timeline, filters them with a SQL-like query language, and stays responsive at
+            millions of rows. Everything runs on your own machine.
+        </p>
+
+        <h2 id="why">Why I built it</h2>
+        <p>
+            Klunk started as a personal tool to help me read and analyze logs more efficiently. It
+            has grown from a weekend utility into the log viewer that I now reach for when I need to dig
+            through dev logs, and it is shared in the hope that it is useful to other people who
+            spend their time in logs.
+        </p>
+
+        <h2 id="who">Who makes it</h2>
+        <p>
+            Klunk was designed and built by Michael Dow, operating as <strong>KookaKlunka, LLC</strong>.
+            It is an independent, self-funded project &mdash; no investors, no outside stakeholders,
+            just one developer and hopefully further progressed by any users who find it useful and/or
+            send in bug reports and ideas.
+        </p>
+
+        <h2 id="principles">What it stands for</h2>
+        <ul>
+            <li>
+                <strong>Local-first.</strong> Your log data is parsed, indexed, and stored only on your own
+                machine. Nothing is uploaded. See the <a href="PRIVACY.html">Privacy Policy</a>.
+            </li>
+            <li>
+                <strong>No telemetry.</strong> No analytics, no crash reporting, no feature-usage metrics.
+                Not now, not later.
+            </li>
+            <li>
+                <strong>Free to use.</strong> No license key, no seat count, no subscription &mdash; see the
+                <a href="TERMS.html">Terms of Use</a>.
+            </li>
+            <li>
+                <strong>A real desktop app.</strong> Native windows, keyboard shortcuts, dockable tabs, and
+                session persistence &mdash; not a browser tab pretending to be an application.
+            </li>
+            <li>
+                <strong>Built to last.</strong> A focused tool that does one job well and is maintained over
+                the long term.
+            </li>
+        </ul>
+
+        <h2 id="built">How it's built</h2>
+        <p>
+            Klunk is a Java&nbsp;25 application built on JavaFX&nbsp;26, with an embedded SQLite database powering
+            its virtual-scrolling and filtering engine. It builds on a number of open-source libraries, each
+            under its own license &mdash; they are listed under <a href="#third-party">Third-party software</a>
+            below. The installer bundles its own Java runtime, so there is nothing else to install.
+        </p>
+
+        <h2 id="third-party">Third-party software</h2>
+        <p>
+            Klunk bundles and depends on the following open-source components. Each remains under its own
+            license; the license terms and copyright notices for each component are preserved in the
+            application distribution.
+        </p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>License</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><a href="https://openjdk.org/">OpenJDK</a> (bundled Java runtime)</td>
+                    <td><a href="https://openjdk.org/legal/gplv2+ce.html">GPL v2 with Classpath Exception</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://openjfx.io/">OpenJFX / JavaFX</a> (base, graphics, controls, fxml)</td>
+                    <td><a href="https://openjdk.org/legal/gplv2+ce.html">GPL v2 with Classpath Exception</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.sqlite.org/">SQLite</a> (embedded database engine)</td>
+                    <td><a href="https://www.sqlite.org/copyright.html">Public Domain</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://github.com/xerial/sqlite-jdbc">SQLite JDBC</a> (org.xerial)</td>
+                    <td><a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://github.com/FasterXML/jackson">Jackson</a> (core, databind, annotations, jsr310)</td>
+                    <td><a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://logging.apache.org/log4j/2.x/">Apache Log4j</a> (api, core, slf4j2-impl, jul)</td>
+                    <td><a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.slf4j.org/">SLF4J API</a></td>
+                    <td><a href="https://opensource.org/license/mit">MIT License</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a></td>
+                    <td><a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://commons.apache.org/proper/commons-compress/">Apache Commons Compress</a></td>
+                    <td><a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://github.com/kubernetes-client/java">Kubernetes Java Client</a> (io.kubernetes:client-java)</td>
+                    <td><a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.bouncycastle.org/">Bouncy Castle</a> (bcprov, bcpkix, bcutil &mdash; jdk18on)</td>
+                    <td><a href="https://www.bouncycastle.org/licence.html">Bouncy Castle License</a> (MIT-style)</td>
+                </tr>
+                <tr>
+                    <td><a href="https://github.com/mwiede/jsch">JSch</a> (mwiede fork, com.github.mwiede:jsch)</td>
+                    <td><a href="https://github.com/mwiede/jsch/blob/master/LICENSE.txt">BSD-style License</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>
+            This list covers Klunk's direct dependencies. Some of these libraries pull in further
+            transitive open-source components; the complete set of licenses and notices is included with
+            the installed application.
+        </p>
+
+        <h2 id="pricing">Pricing and licensing</h2>
+        <p>
+            Klunk is free to use under a proprietary license: install it and use it at no cost, on as many
+            machines as you like. Copying, modification, redistribution, and reverse engineering are not
+            permitted &mdash; the full terms are in the <a href="TERMS.html">Terms of Use</a> and the
+            <a href="../LICENSE">LICENSE</a> file.
+        </p>
+
+        <h2 id="status">Status and roadmap</h2>
+        <p>
+            Klunk is currently in beta and believed to be very stable, but please report any bugs you find.
+            The roadmap is to continue improving the core log-viewing experience, but of course, depends on
+            whether users find it useful enough to keep it going. Feature requests are welcome, but there are no
+            guarantees that they will be implemented.
+            Releases and release notes will be published on the
+            <a href="https://www.kookaklunka.com/klunk/releases/latest">releases page</a>.
+        </p>
+
+        <h2 id="contact">Contact and support</h2>
+        <p>
+            Found a bug, or have an idea? <a href="https://github.com/XenFive/klunk/issues">GitHub Issues</a> is the best
+            place to report it.
+            <em>kookaklunka@gmail.com</em>
+            Klunk is a one-person project, so a reply may take a little time, but every report is read.
+        </p>
+
+        <h2 id="thanks">Acknowledgements</h2>
+        <p>
+            Thanks to the maintainers of the projects Klunk depends on and to everyone who
+            takes the time to use it, file a bug report or a feature request.
+        </p>
+
+        <a class="back-to-top" href="#intro">↑ Back to top</a>
+
+    </article>
+</div>
+
+<footer class="site-footer">
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+        <a href="ABOUT.html">About</a>
+    </nav>
+    <p>Klunk - Log Viewer &mdash; free to use. &copy; 2026 KookaKlunka, LLC.</p>
+</footer>
+
+</body>
+</html>
