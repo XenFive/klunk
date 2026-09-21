@@ -666,8 +666,8 @@ kbd {
 
 .hero-shot video {
     display: block;
-    width: auto;
-    height: 550px;
+    width: 100%;
+    height: auto;
     margin: 0 auto;
     border: 1px solid var(--border);
     border-radius: var(--radius);
