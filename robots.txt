@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow private or administrative areas
+Disallow: /admin/
+
+# Host and Sitemap
+Sitemap: https://kookaklunka.com

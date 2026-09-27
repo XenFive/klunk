@@ -87,7 +87,7 @@
             <li class="h2-item"><a href="#datasources">Managing Datasources</a></li>
             <li class="h2-item"><a href="#session">Session Persistence</a></li>
             <li class="h2-item"><a href="#performance">Performance</a></li>
-            <li class="h2-item"><a href="#settings">Settings</a></li>
+            <li class="h2-item"><a href="#settings">Configuration</a></li>
             <li class="h2-item"><a href="#shortcuts">Keyboard Shortcuts</a></li>
             <li class="h2-item"><a href="#troubleshooting">Troubleshooting</a></li>
         </ul>
@@ -107,7 +107,7 @@
             <li>Pick a source type — <strong>File</strong>, <strong>SFTP</strong>, <strong>Kubernetes</strong>,
                 <strong>Database</strong>, or <strong>URL</strong> — and load it.
                 <div class="note">
-                    <div>Source type tabs for types other than file or url are disabled in the <strong>Import data</strong> dialog by default. These datasources can be added through the <strong>Settings</strong> dialog.</div>
+                    <div>Source type tabs for types other than file or url are disabled in the <strong>Import data</strong> dialog by default. These datasources can be added through the <strong>Configuration</strong> dialog.</div>
                 </div>
             </li>
             <li>The viewer attempts to auto-detect the log format (pattern) and opens in a new tab.
@@ -189,7 +189,7 @@
         <ol>
             <li>Select the <strong>SFTP</strong> tab.</li>
             <li>Pick a saved connection, or create one via the <strong>SFTP Datasource Editor</strong> (host, port,
-                username, password, or an SSH private key — optionally the app-wide default key set in Settings).
+                username, password, or an SSH private key — optionally the app-wide default key set in Configuration).
             </li>
             <li>Browse the remote filesystem and select a file to import.</li>
         </ol>
@@ -754,7 +754,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <p>Annotations are saved queries that are automatically applied as bookmarks whenever a matching log file is
             loaded — and optionally raise a watch/alert.</p>
         <ol>
-            <li>Right-click a row → <strong>Annotate</strong> (or manage them via <strong>Settings → Annotations →
+            <li>Right-click a row → <strong>Annotate</strong> (or manage them via <strong>Configuration → Annotations →
                 Annotation Manager…</strong>).
             </li>
             <li>Give the annotation a description, and confirm or edit the <strong>Query Pattern</strong> (pre-filled
@@ -778,7 +778,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 Filters</a> dialog, separate from the numbered colour bookmarks.</p>
         <div class="note">
             <div>Annotations only apply on load when <strong>Apply bookmark annotations on load</strong> is
-                enabled in <strong>Settings → Annotations</strong>, and can optionally read/write from an external
+                enabled in <strong>Configuration → Annotations</strong>, and can optionally read/write from an external
                 database instead of the internal store.
             </div>
         </div>
@@ -924,7 +924,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         </div>
 
         <h3 id="pattern-editor">Pattern Editor</h3>
-        <p>Open the <strong>Log Pattern Editor</strong> from <strong>Settings → Patterns → Log Pattern Editor…</strong>,
+        <p>Open the <strong>Log Pattern Editor</strong> from <strong>Configuration → Patterns → Log Pattern Editor…</strong>,
             or click <strong>Change Pattern</strong> from an open viewer.</p>
         <ol>
             <li><strong>Load Existing Pattern</strong> to edit one, or start fresh by filling in <strong>Pattern
@@ -1021,7 +1021,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <h2 id="datasources">Managing Datasources</h2>
         <p>Beyond the one-off <strong>Import</strong> dialog, connection details for databases, Kubernetes clusters,
             and SFTP servers can be saved as reusable <strong>datasources</strong> so you don't have to re-enter
-            credentials each time. Manage them from <strong>Settings → Datasource: Database / Kubernetes /
+            credentials each time. Manage them from <strong>Configuration → Datasource: Database / Kubernetes /
                 SFTP</strong>, or directly from the <strong>Import Data</strong> dialog's respective tab.</p>
 
         <p><strong>DB Datasource Editor</strong> — create, edit, test, and delete saved database connections (name,
@@ -1049,7 +1049,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
 
         <p><strong>SFTP Datasource Editor</strong> — save host, port, username, and either a password or an SSH
             private-key path (with optional passphrase). If a <strong>default SSH key</strong> is configured in
-            <strong>Settings → Datasource: SFTP</strong>, individual connections can rely on it instead of specifying
+            <strong>Configuration → Datasource: SFTP</strong>, individual connections can rely on it instead of specifying
             their own key.</p>
         <figure class="shot">
             <img src="screenshots/sftp-datasource-editor.png"
@@ -1105,7 +1105,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <p>In SQLite-paged mode, sorting is disabled (data is pre-ordered by timestamp at load time). Filtering uses SQL
             WHERE clauses executed in SQLite — no memory overhead.</p>
 
-        <p><strong>Tuning virtualization</strong> — raw properties editable under <strong>Settings → Advanced</strong>:
+        <p><strong>Tuning virtualization</strong> — raw properties editable under <strong>Configuration → Advanced</strong>:
         </p>
         <div class="table-wrap">
             <table>
@@ -1143,8 +1143,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <hr>
 
         <!-- SETTINGS -->
-        <h2 id="settings">Application Settings</h2>
-        <p>Open <strong>Settings</strong> from the Log Manager toolbar. It's a collapsible accordion — click a
+        <h2 id="settings">Application Configuration</h2>
+        <p>Open <strong>Configuration</strong> from the Log Manager toolbar. It's a collapsible accordion — click a
             section header to expand it.</p>
         <figure class="shot">
             <img src="screenshots/application-settings.png"
@@ -1412,14 +1412,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 demand rather than holding everything in RAM.
             </li>
             <li>If you're on a large file still in in-memory mode, lower <code>log.virtualization.threshold</code>
-                in <strong>Settings → Advanced</strong> so paging activates earlier.
+                in <strong>Configuration → Advanced</strong> so paging activates earlier.
             </li>
         </ul>
 
         <h3>"Parsing and inserting log entries" progress never clears</h3>
         <p>A background query (e.g. an annotation lookup) may be holding a read lock when the reload starts. The lock
             releases automatically. If it happens frequently, try disabling <strong>Apply bookmark annotations on
-                load</strong> in <strong>Settings → Annotations</strong> while working with very large files.</p>
+                load</strong> in <strong>Configuration → Annotations</strong> while working with very large files.</p>
 
         <h3>Session does not restore a window</h3>
         <p>If a source file has moved or is unavailable at startup, that viewer is skipped during session restore.
