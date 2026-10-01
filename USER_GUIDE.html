@@ -87,7 +87,7 @@
             <li class="h2-item"><a href="#datasources">Managing Datasources</a></li>
             <li class="h2-item"><a href="#session">Session Persistence</a></li>
             <li class="h2-item"><a href="#performance">Performance</a></li>
-            <li class="h2-item"><a href="#settings">Configuration</a></li>
+            <li class="h2-item"><a href="#settings">Settings</a></li>
             <li class="h2-item"><a href="#shortcuts">Keyboard Shortcuts</a></li>
             <li class="h2-item"><a href="#troubleshooting">Troubleshooting</a></li>
         </ul>
@@ -107,7 +107,7 @@
             <li>Pick a source type — <strong>File</strong>, <strong>SFTP</strong>, <strong>Kubernetes</strong>,
                 <strong>Database</strong>, or <strong>URL</strong> — and load it.
                 <div class="note">
-                    <div>Source type tabs for types other than file or url are disabled in the <strong>Import data</strong> dialog by default. These datasources can be added through the <strong>Configuration</strong> dialog.</div>
+                    <div>Source type tabs for types other than file or url are disabled in the <strong>Import data</strong> dialog by default. These datasources can be added through the <strong>Settings</strong> dialog.</div>
                 </div>
             </li>
             <li>The viewer attempts to auto-detect the log format (pattern) and opens in a new tab.
@@ -121,7 +121,7 @@
 
         <figure class="shot">
             <img src="screenshots/log-file-viewer.png"
-                 alt="Log viewer showing a loaded file with level colours, a query filter, and the time slider">
+                 alt="Log viewer showing a loaded file with level colors, a query filter, and the time slider">
         </figure>
 
         <hr>
@@ -182,14 +182,14 @@
             <li>Choose a namespace and pod (or a pod-name filter for multi-pod streaming), then import.</li>
         </ol>
         <div class="tip">
-            <div>Multi-pod imports open a <strong>Merged View</strong> automatically, with each pod colour-coded.</div>
+            <div>Multi-pod imports open a <strong>Merged View</strong> automatically, with each pod color-coded.</div>
         </div>
 
         <h3 id="sftp">SFTP Remote Files</h3>
         <ol>
             <li>Select the <strong>SFTP</strong> tab.</li>
             <li>Pick a saved connection, or create one via the <strong>SFTP Datasource Editor</strong> (host, port,
-                username, password, or an SSH private key — optionally the app-wide default key set in Configuration).
+                username, password, or an SSH private key — optionally the app-wide default key set in Settings).
             </li>
             <li>Browse the remote filesystem and select a file to import.</li>
         </ol>
@@ -388,7 +388,7 @@ GET https://api.example.com/logs?page=3
             <li>In the Log Manager, check two or more windows.</li>
             <li>Click the merge icon under <strong>Selected:</strong>. A new <strong>Merged View</strong> tab opens.
             </li>
-            <li>Each source gets a distinct colour. The <strong>Source</strong> column shows every row's origin.</li>
+            <li>Each source gets a distinct color. The <strong>Source</strong> column shows every row's origin.</li>
         </ol>
         <div class="note">
             <div>If you reload a source file, use <strong>Re-merge</strong> in the merged viewer to rebuild
@@ -396,20 +396,20 @@ GET https://api.example.com/logs?page=3
             </div>
         </div>
         <div class="tip">
-            <div>Right-click any row in a merged view → <strong>Change Colour</strong> to reassign a source's colour.
+            <div>Right-click any row in a merged view → <strong>Change Color</strong> to reassign a source's color.
                 The time-slider markers update instantly.
             </div>
         </div>
 
         <h3 id="grouping">Grouping Windows</h3>
-        <p>Groups tag a set of open windows with a shared name and colour, so they can be <strong>saved</strong> and
+        <p>Groups tag a set of open windows with a shared name and color, so they can be <strong>saved</strong> and
             <strong>reloaded together</strong> later, or <strong>analyzed</strong> as a set.</p>
         <ol>
             <li>Select two or more windows in the Log Manager and click the group icon under <strong>Selected:</strong>
                 (or <kbd>Ctrl+G</kbd>).
             </li>
-            <li>In <strong>Group Windows</strong>, enter a name (or pick an existing group to reuse its colour),
-                choose a colour, and leave <strong>Save group for later reloading</strong> checked to persist the
+            <li>In <strong>Group Windows</strong>, enter a name (or pick an existing group to reuse its color),
+                choose a color, and leave <strong>Save group for later reloading</strong> checked to persist the
                 group to disk immediately.
             </li>
             <li>Click <strong>Set Group</strong>, or <strong>Clear Group</strong> to remove the tag from the selected
@@ -418,7 +418,7 @@ GET https://api.example.com/logs?page=3
         </ol>
         <figure class="shot">
             <img src="screenshots/log-manager-set-group.png"
-                 alt="Group Windows dialog with a group name, colour swatch, and Save group for later reloading checkbox">
+                 alt="Group Windows dialog with a group name, color swatch, and Save group for later reloading checkbox">
         </figure>
         <div class="note">
             <div>Leaving the checkbox checked (the default) is equivalent to also running <strong>Save
@@ -478,8 +478,8 @@ GET https://api.example.com/logs?page=3
                 </tr>
                 <tr>
                     <td>Level</td>
-                    <td>Colour-coded: <span style="color:#c0392b">ERROR</span>, <span style="color:#e67e22">WARN</span>,
-                        INFO/other in the default colour
+                    <td>Color-coded: <span style="color:#c0392b">ERROR</span>, <span style="color:#e67e22">WARN</span>,
+                        INFO/other in the default color
                     </td>
                 </tr>
                 <tr>
@@ -570,7 +570,7 @@ logger LIKE 'com.example.db.%' AND message LIKE '%ms%' AND level != 'DEBUG'</cod
         <pre><code>-- Exclude health-check and metric noise:
 message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <div class="tip">
-            <div>Filter-out rules persist with the session and are shown in a distinct colour in the toolbar when
+            <div>Filter-out rules persist with the session and are shown in a distinct color in the toolbar when
                 active.
             </div>
         </div>
@@ -653,8 +653,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td>Rows with level WARN</td>
                 </tr>
                 <tr>
-                    <td>Coloured ticks</td>
-                    <td>Bookmarked rows, in their bookmark colour</td>
+                    <td>Colored ticks</td>
+                    <td>Bookmarked rows, in their bookmark color</td>
                 </tr>
                 <tr>
                     <td>Shaded band</td>
@@ -679,17 +679,17 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <h3 id="bookmarks">Bookmarks and Highlights</h3>
         <p>Bookmarks let you pin important rows for navigation, review, and later filtering.</p>
         <p><strong>Creating a bookmark:</strong> right-click a row → <strong>Bookmark</strong> (uses the last-used
-            colour), or <strong>Bookmark [choose color]</strong> to pick a colour from the palette (10 colours). A
-            coloured marker appears on the row background and on the time slider.</p>
+            color), or <strong>Bookmark [choose color]</strong> to pick a color from the palette (10 colors). A
+            colored marker appears on the row background and on the time slider.</p>
 
         <p>Right-clicking an already-bookmarked row shows options to manage it:</p>
         <figure class="shot">
             <img src="screenshots/log-file-viewer-menu-bookmarks.png"
-                 alt="Row context menu with Bookmark, Bookmark [choose color] colour palette, Bookmark time…, Copy, View, Filter, Filter Out, Annotate, Select All">
+                 alt="Row context menu with Bookmark, Bookmark [choose color] color palette, Bookmark time…, Copy, View, Filter, Filter Out, Annotate, Select All">
         </figure>
         <ul>
             <li><strong>Remove bookmark</strong> — clears the bookmark from the row.</li>
-            <li><strong>Change color</strong> — reassign the bookmark's colour.</li>
+            <li><strong>Change color</strong> — reassign the bookmark's color.</li>
             <li><strong>Bookmark comment…</strong> — attach a free-text note to the bookmarks of this color, useful context when
                 reviewing or feeding an analysis to an AI prompt.
             </li>
@@ -735,7 +735,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         </ol>
         <figure class="shot">
             <img src="screenshots/log-file-viewer-bookmark-time.png"
-                 alt="Bookmark time dialog with a leeway dropdown and a row of bookmark colour swatches">
+                 alt="Bookmark time dialog with a leeway dropdown and a row of bookmark color swatches">
         </figure>
 
         <h3 id="bookmark-filters">Bookmark Filters</h3>
@@ -747,14 +747,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             <img src="screenshots/log-file-viewer-bookmarks-filtering-dialog.png"
                  alt="Bookmark Filters dialog listing Annotations, Notes, and Color 1–10 with checkboxes, plus Select All / Deselect All">
         </figure>
-        <p>Toggle individual colours (or <strong>Annotations</strong> / <strong>Notes</strong>, the special bookmark
+        <p>Toggle individual colors (or <strong>Annotations</strong> / <strong>Notes</strong>, the special bookmark
             categories) on or off, then <strong>OK</strong> to apply.</p>
 
         <h3 id="annotations">Annotation Bookmarks</h3>
         <p>Annotations are saved queries that are automatically applied as bookmarks whenever a matching log file is
             loaded — and optionally raise a watch/alert.</p>
         <ol>
-            <li>Right-click a row → <strong>Annotate</strong> (or manage them via <strong>Configuration → Annotations →
+            <li>Right-click a row → <strong>Annotate</strong> (or manage them via <strong>Settings → Annotations →
                 Annotation Manager…</strong>).
             </li>
             <li>Give the annotation a description, and confirm or edit the <strong>Query Pattern</strong> (pre-filled
@@ -775,10 +775,10 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         </figure>
         <p>On every load, the application runs each matching annotation in the background and marks the matching
             rows. Annotation bookmarks are listed as their own category in the <a href="#bookmark-filters">Bookmark
-                Filters</a> dialog, separate from the numbered colour bookmarks.</p>
+                Filters</a> dialog, separate from the numbered color bookmarks.</p>
         <div class="note">
             <div>Annotations only apply on load when <strong>Apply bookmark annotations on load</strong> is
-                enabled in <strong>Configuration → Annotations</strong>, and can optionally read/write from an external
+                enabled in <strong>Settings → Annotations</strong>, and can optionally read/write from an external
                 database instead of the internal store.
             </div>
         </div>
@@ -924,7 +924,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         </div>
 
         <h3 id="pattern-editor">Pattern Editor</h3>
-        <p>Open the <strong>Log Pattern Editor</strong> from <strong>Configuration → Patterns → Log Pattern Editor…</strong>,
+        <p>Open the <strong>Log Pattern Editor</strong> from <strong>Settings → Patterns → Log Pattern Editor…</strong>,
             or click <strong>Change Pattern</strong> from an open viewer.</p>
         <ol>
             <li><strong>Load Existing Pattern</strong> to edit one, or start fresh by filling in <strong>Pattern
@@ -1021,7 +1021,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <h2 id="datasources">Managing Datasources</h2>
         <p>Beyond the one-off <strong>Import</strong> dialog, connection details for databases, Kubernetes clusters,
             and SFTP servers can be saved as reusable <strong>datasources</strong> so you don't have to re-enter
-            credentials each time. Manage them from <strong>Configuration → Datasource: Database / Kubernetes /
+            credentials each time. Manage them from <strong>Settings → Datasource: Database / Kubernetes /
                 SFTP</strong>, or directly from the <strong>Import Data</strong> dialog's respective tab.</p>
 
         <p><strong>DB Datasource Editor</strong> — create, edit, test, and delete saved database connections (name,
@@ -1049,7 +1049,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
 
         <p><strong>SFTP Datasource Editor</strong> — save host, port, username, and either a password or an SSH
             private-key path (with optional passphrase). If a <strong>default SSH key</strong> is configured in
-            <strong>Configuration → Datasource: SFTP</strong>, individual connections can rely on it instead of specifying
+            <strong>Settings → Datasource: SFTP</strong>, individual connections can rely on it instead of specifying
             their own key.</p>
         <figure class="shot">
             <img src="screenshots/sftp-datasource-editor.png"
@@ -1068,7 +1068,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             <li>Active log pattern</li>
             <li>Applied text filter and filter-out rules</li>
             <li>Selected time range</li>
-            <li>Bookmarked rows and their colours</li>
+            <li>Bookmarked rows and their colors</li>
             <li>Column widths</li>
             <li>Window position and size (for undocked windows)</li>
             <li>Whether tailing was active</li>
@@ -1105,7 +1105,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <p>In SQLite-paged mode, sorting is disabled (data is pre-ordered by timestamp at load time). Filtering uses SQL
             WHERE clauses executed in SQLite — no memory overhead.</p>
 
-        <p><strong>Tuning virtualization</strong> — raw properties editable under <strong>Configuration → Advanced</strong>:
+        <p><strong>Tuning virtualization</strong> — raw properties editable under <strong>Settings → Advanced</strong>:
         </p>
         <div class="table-wrap">
             <table>
@@ -1143,8 +1143,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <hr>
 
         <!-- SETTINGS -->
-        <h2 id="settings">Application Configuration</h2>
-        <p>Open <strong>Configuration</strong> from the Log Manager toolbar. It's a collapsible accordion — click a
+        <h2 id="settings">Application Settings</h2>
+        <p>Open <strong>Settings</strong> from the Log Manager toolbar. It's a collapsible accordion — click a
             section header to expand it.</p>
         <figure class="shot">
             <img src="screenshots/application-settings.png"
@@ -1412,14 +1412,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 demand rather than holding everything in RAM.
             </li>
             <li>If you're on a large file still in in-memory mode, lower <code>log.virtualization.threshold</code>
-                in <strong>Configuration → Advanced</strong> so paging activates earlier.
+                in <strong>Settings → Advanced</strong> so paging activates earlier.
             </li>
         </ul>
 
         <h3>"Parsing and inserting log entries" progress never clears</h3>
         <p>A background query (e.g. an annotation lookup) may be holding a read lock when the reload starts. The lock
             releases automatically. If it happens frequently, try disabling <strong>Apply bookmark annotations on
-                load</strong> in <strong>Configuration → Annotations</strong> while working with very large files.</p>
+                load</strong> in <strong>Settings → Annotations</strong> while working with very large files.</p>
 
         <h3>Session does not restore a window</h3>
         <p>If a source file has moved or is unavailable at startup, that viewer is skipped during session restore.
