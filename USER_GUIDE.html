@@ -74,6 +74,15 @@
                     <li><a href="#load-settings">Reload &amp; Load Settings</a></li>
                 </ul>
             </li>
+            <li class="h2-item"><a href="#compare">Comparing</a></li>
+            <li class="sub">
+                <ul>
+                    <li><a href="#compare-window">Compare Window</a></li>
+                    <li><a href="#send-to-compare">Send to Compare</a></li>
+                    <li><a href="#compare-rows">Compare Rows</a></li>
+                    <li><a href="#compare-copy">Selecting &amp; Copying</a></li>
+                </ul>
+            </li>
             <li class="h2-item"><a href="#patterns">Log Patterns</a></li>
             <li class="sub">
                 <ul>
@@ -670,6 +679,11 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             <li><strong>Click the track</strong> (not a thumb) to scroll the table to that position without
                 filtering.
             </li>
+            <li><strong>Right-click a row</strong> → <strong>Set Time Range</strong> → <strong>Start</strong> or
+                <strong>End</strong> to move that end of the range to the row's timestamp, without dragging. The
+                other end stays where it is, unless it would end up on the wrong side; then it opens up to the
+                start or end of the log.
+            </li>
             <li><strong>Hover</strong> over any marker or thumb for a tooltip showing the exact timestamp.</li>
         </ul>
         <div class="note">
@@ -854,6 +868,172 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </li>
         </ul>
         <p>Click <strong>Reload</strong> to apply the changes.</p>
+
+        <hr>
+
+        <!-- COMPARE -->
+        <h2 id="compare">Comparing</h2>
+        <p>Two tools answer "what's different?" without leaving the application: the <strong>Compare</strong>
+            window for anything you paste or send to it (text, lists, timestamps), and <strong>Compare Rows</strong>
+            for two rows of a log.</p>
+
+        <h3 id="compare-window">The Compare Window</h3>
+        <p>Open it any of these ways:</p>
+        <ul>
+            <li>Click the <strong>Compare</strong> button (two arrows) in the main toolbar, next to Notepad.</li>
+            <li>Press <kbd>Ctrl+Shift+D</kbd> in any window — the docker, an undocked log viewer, or a dialog.</li>
+            <li>Right-click rows in a log viewer → <strong>Send to Compare</strong> → <strong>Left</strong> or
+                <strong>Right</strong> (see <a href="#send-to-compare">below</a>).
+            </li>
+        </ul>
+        <p>There is one Compare window for the whole application. It isn't tied to the log view that opened it, so
+            you can keep it beside your logs as a scratch tool and paste or send text into it from any window;
+            opening it again just brings it to the front.</p>
+        <p>Paste into <strong>Left</strong> and <strong>Right</strong> — the result updates as you type.
+            <strong>Swap</strong> exchanges the two sides and <strong>Clear</strong> empties both. Choose what
+            kind of comparison you want with the <strong>Text</strong> / <strong>Lists</strong> /
+            <strong>Time</strong> buttons:</p>
+
+        <h4>Text</h4>
+        <figure class="shot">
+            <img src="screenshots/compare-text.png"
+                 alt="Compare window in Text mode: two pasted log excerpts above a side-by-side diff with removed lines in red, added lines in green and the changed characters highlighted">
+        </figure>
+        <ul>
+            <li>A side-by-side, line-by-line diff with line numbers. Removed and changed lines are shown in red on
+                the left, added and changed lines in green on the right, and the characters that changed are
+                highlighted — <code>v2.3.1</code> → <code>v2.4.0</code> highlights just <code>3.1</code> /
+                <code>4.0</code>.
+            </li>
+            <li>Lines that are edits of each other are lined up even when lines were added or removed around
+                them, and a mostly rewritten line is highlighted as a whole.
+            </li>
+            <li>The heading summarises the result, e.g. <em>3 changed · 1 added · 1 removed lines</em>, or
+                <em>Identical</em>.
+            </li>
+            <li><strong>Ignore case</strong> and <strong>Ignore whitespace</strong> compare loosely;
+                <strong>Collapse unchanged lines</strong> (on by default) shrinks long unchanged stretches to
+                <em>… 42 unchanged lines …</em>, keeping two lines of context around each change.
+            </li>
+            <li>Above 50,000 lines on either side the diff waits for you to click <strong>Compare</strong>.</li>
+        </ul>
+
+        <h4>Lists</h4>
+        <figure class="shot">
+            <img src="screenshots/compare-lists.png"
+                 alt="Compare window in Lists mode with Comma auto-picked: comma-separated order-ID lists with Only in Left, Only in Right and In both, different count columns below a 'Different' verdict">
+        </figure>
+        <p>Answers "are these the same list, ignoring order?". Each side is split into items and compared as a
+            whole, counting duplicates — <code>a, a, b</code> and <code>a, b, b</code> hold the same values but are
+            <em>different</em> lists.</p>
+        <p><strong>Split on</strong> chooses what separates the items: <strong>Lines</strong> (one item per line),
+            <strong>Whitespace</strong> (any run of spaces, tabs or line breaks), one of the same delimiters
+            offered for CSV patterns — <strong>Comma</strong>, <strong>Semicolon</strong>, <strong>Colon</strong>,
+            <strong>Pipe</strong>, <strong>Tab</strong> — or type your own (any length, taken literally). With a
+            delimiter, line breaks still separate items too, so a delimited list spread over several lines
+            compares correctly.</p>
+        <p><strong>Picked for you:</strong> the delimiter is chosen automatically — whichever CSV delimiter
+            appears most in the two sides, if it clearly beats the others (otherwise Lines). Colons inside times of
+            day such as <code>10:54</code> don't count, and Whitespace is never picked automatically.
+            <em>auto</em> next to <strong>Split on</strong> shows it was picked for you; choose one yourself and it
+            stays until you press <strong>Clear</strong>.</p>
+        <ul>
+            <li>The verdict is <strong>Identical</strong>, <strong>Same items, different order</strong>, or
+                <strong>Different</strong>, with the item counts for each side.
+            </li>
+            <li><strong>Only in Left</strong> / <strong>Only in Right</strong> list the items missing from the
+                other side. When an item is on both sides but repeated a different number of times, a third
+                column, <strong>In both, different count</strong>, lists it (e.g. <code>ORD-1004 (2 vs 1)</code>);
+                it's hidden when there are none.
+            </li>
+            <li>Options: <strong>Trim</strong> spaces around each item, <strong>Ignore case</strong>, and
+                <strong>Ignore blank lines</strong> (also skips empty items, e.g. from a trailing delimiter).
+            </li>
+            <li>Select entries and press <kbd>Ctrl+C</kbd> (or right-click → <strong>Copy</strong>) to copy them;
+                <strong>Copy all</strong> copies the whole column, even past the first 10,000 entries shown.
+            </li>
+        </ul>
+
+        <h4>Time</h4>
+        <figure class="shot">
+            <img src="screenshots/compare-time.png"
+                 alt="Compare window in Time mode: three timestamps on each side and a table with each pair's difference and the gaps between consecutive timestamps">
+        </figure>
+        <p>Paste one timestamp on each side to get the time between them (<em>Right − Left</em>), e.g.
+            <strong>+2m 14.381s</strong> and the exact <em>134,381 ms</em>. Paste several, one per line, and the
+            table pairs them up line by line and also shows the gap between consecutive timestamps on each
+            side — handy for latency questions.</p>
+        <p>To look at the gaps in a single list of times, paste it into <strong>Left</strong> only (or Right
+            only): the table shows each timestamp and the gap before it, and the heading gives the count, the total
+            span, the average gap and the <strong>largest gap</strong> with where it occurs.</p>
+        <figure class="shot">
+            <img src="screenshots/compare-time-gaps.png"
+                 alt="Compare window in Time mode with only Left filled: five timestamps with the gap before each, and a heading with the span, average gap and the largest gap (+7.589s before #4)">
+        </figure>
+        <p>Accepted formats include:</p>
+        <ul>
+            <li>The viewer's own display format — <code>2026-09-03 - 10:54:14.074</code>, also with
+                <code>/</code> or <code>.</code> in the date (<code>2026/09/03 - 10:54:14.074</code>).
+            </li>
+            <li>ISO-8601 with or without an offset — <code>2026-09-03T10:54:14.074Z</code>,
+                <code>2026-09-03T12:54:14+02:00</code>.
+            </li>
+            <li>Space-separated, including log4j's comma milliseconds — <code>2026-09-03 10:54:14,074</code>.</li>
+            <li>Epoch seconds, milliseconds, microseconds or nanoseconds — <code>1788432854</code>,
+                <code>1788432854074</code>.
+            </li>
+            <li>A time of day on its own — <code>10:54:14.074</code> (taken as today).</li>
+        </ul>
+        <div class="note">
+            <div>Timestamps without a timezone are read in your system timezone, or — when they were sent from a
+                log viewer — in that viewer's display timezone. The result line says which zone was assumed.
+            </div>
+        </div>
+
+        <h3 id="send-to-compare">Send to Compare</h3>
+        <p>Right-click in a log viewer → <strong>Send to Compare</strong> → <strong>Left</strong> or
+            <strong>Right</strong> puts the text into that side of the Compare window (opening it if needed) and
+            leaves the other side as it is. It sends exactly what <strong>Copy</strong> would copy: text you've
+            selected inside a cell, otherwise the selected cells or rows, otherwise the row you right-clicked.
+            Several selected rows arrive one per line, ready for Lists mode.</p>
+        <p>Send Left from one viewer and Right from another to compare across windows — for example a merged
+            view against one of its source logs.</p>
+
+        <h3 id="compare-rows">Compare Rows</h3>
+        <p>Select exactly two rows in a log viewer, right-click → <strong>Compare Rows</strong>. To select the
+            two rows, click the first, then <strong>Ctrl+click</strong> the second (it can be anywhere in the view).
+            If they're next to each other, you can also <strong>Shift+click</strong> or drag over the two. Any cells
+            will do, as long as they're in exactly two rows; the menu item only appears then.</p>
+        <figure class="shot">
+            <img src="screenshots/compare-rows.png"
+                 alt="Compare Rows window: Swap at the top right, +2m 14.381s between the rows below it, and the timestamp, level, thread and message columns side by side with the changed characters highlighted">
+        </figure>
+        <ul>
+            <li>The headline is the <strong>time between the rows</strong>, with the exact milliseconds and the
+                timezone the times are shown in (the viewer's display timezone).
+            </li>
+            <li>Every column, the timestamp included, is shown side by side — <strong>First row</strong> is the
+                upper row in the viewer — with the changed characters highlighted. In a merged view the source
+                file is included.
+            </li>
+            <li><strong>Show only differing columns</strong> (on by default) hides the columns that match; the count
+                beside it says how many differ.
+            </li>
+            <li>Long values (a stack trace, a JSON payload) wrap, and scroll within their own cell once they're
+                taller than about 12 lines.
+            </li>
+            <li><strong>Swap</strong> reverses the two rows.</li>
+            <li>There is only one Compare Rows window. Comparing two more rows replaces what it shows and brings
+                it to the front. If you compare from a different log viewer, the window moves to that viewer.
+                It closes when its log viewer closes.
+            </li>
+        </ul>
+
+        <h3 id="compare-copy">Selecting and Copying</h3>
+        <p>All the compared text can be selected: drag to select, double-click for a word, triple-click for the
+            whole value, then <kbd>Ctrl+C</kbd>. Right-click offers <strong>Copy</strong>, <strong>Select
+            All</strong> and <strong>Copy All</strong>. In the Lists and Time tables, select rows and press
+            <kbd>Ctrl+C</kbd>.</p>
 
         <hr>
 
@@ -1274,6 +1454,24 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
 
         <!-- SHORTCUTS -->
         <h2 id="shortcuts">Keyboard Shortcuts</h2>
+
+        <h3>Any Window</h3>
+        <div class="table-wrap">
+            <table class="shortcuts">
+                <thead>
+                <tr>
+                    <th>Shortcut</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><kbd>Ctrl+Shift+D</kbd></td>
+                    <td>Open the Compare window (or bring it to the front)</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
         <h3>Log Manager</h3>
         <div class="table-wrap">
