@@ -32,11 +32,18 @@
 
     <div class="dl-actions">
         <a class="btn-download" id="btn-download"
-           href="https://www.kookaklunka.com/klunk/releases/latest">
+           href="https://github.com/XenFive/klunk/releases/tag/v0.9.85">
             <span class="arrow">&#x2B07;</span> <span id="btn-download-label">Download</span>
         </a>
-        <a class="btn-ghost" href="https://www.kookaklunka.com/klunk/releases/latest">All platforms &amp; versions</a>
     </div>
+    <!-- Versions in these URLs (and VERSION in the script below) are stamped from app.version in
+         default.properties by the stamp-docs-version step in pom.xml -->
+    <p class="dl-platforms">
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.85/Klunk-windows.zip">Windows</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.85/Klunk-macos.zip">macOS</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.85/Klunk-linux-x64.zip">Linux x64</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.85/Klunk-linux-arm64.zip">Linux ARM64</a>
+    </p>
     <p class="dl-meta">Current version: <span id="dl-version">v0.9.85</span> &middot; (this beta version is valid until 4/15/2027)</p>
     <p> Free to use &middot; Available for Linux, Windows and macOS (macOS version currently untested)</p>
 </section>
@@ -176,20 +183,21 @@
 
 <script>
     (function () {
-        // Release-asset file names on the GitHub "latest" release.
-        // GitHub redirects /releases/latest/download/<name> to the newest release's
-        // matching asset, so keep these names identical across every release.
-        // ── Adjust to match your actual uploaded asset names. ──
-        var BASE = "https://www.kookaklunka.com/klunk/downloads/latest/";
+        // Stamped from app.version in default.properties by the build (stamp-docs-version in pom.xml)
+        var VERSION = "v0.9.85";
+        // Release assets on GitHub; keep these names identical across every release
+        var BASE = "https://github.com/XenFive/klunk/releases/download/" + VERSION + "/";
         var ASSETS = {
-            windows: BASE + "Klunk-Windows.exe",
-            mac: BASE + "Klunk-macOS.dmg",
-            linux: BASE + "Klunk-Linux.AppImage"
+            windows: BASE + "Klunk-windows.zip",
+            mac: BASE + "Klunk-macos.zip",
+            linux: BASE + "Klunk-linux-x64.zip",
+            linuxArm: BASE + "Klunk-linux-arm64.zip"
         };
         var LABELS = {
             windows: "Download for Windows",
             mac: "Download for macOS",
-            linux: "Download for Linux"
+            linux: "Download for Linux (x64)",
+            linuxArm: "Download for Linux (ARM64)"
         };
 
         function detectOS() {
@@ -207,12 +215,28 @@
         var os = detectOS();
         var btn = document.getElementById("btn-download");
         var label = document.getElementById("btn-download-label");
-        if (label) {
-            if (os && btn) {
-                btn.href = ASSETS[os];
-                label.textContent = LABELS[os];
-            } else {
-                label.textContent = "Download";   // falls back to the releases page
+
+        function show(key) {
+            if (btn && label) {
+                btn.href = ASSETS[key];
+                label.textContent = LABELS[key];
+            }
+        }
+
+        if (os) {
+            show(os);
+        } else if (label) {
+            label.textContent = "Download";   // falls back to the release page
+        }
+
+        // Linux on ARM: Firefox says so in the user agent; Chromium only via client hints
+        if (os === "linux") {
+            if (/aarch64|arm64/i.test(navigator.userAgent)) {
+                show("linuxArm");
+            } else if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+                navigator.userAgentData.getHighEntropyValues(["architecture"]).then(function (v) {
+                    if (v.architecture === "arm") show("linuxArm");
+                }).catch(function () { });
             }
         }
     })();
