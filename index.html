@@ -32,19 +32,19 @@
 
     <div class="dl-actions">
         <a class="btn-download" id="btn-download"
-           href="https://github.com/XenFive/klunk/releases/tag/v0.9.85">
+           href="https://github.com/XenFive/klunk/releases/tag/v0.9.86">
             <span class="arrow">&#x2B07;</span> <span id="btn-download-label">Download</span>
         </a>
     </div>
     <!-- Versions in these URLs (and VERSION in the script below) are stamped from app.version in
          default.properties by the stamp-docs-version step in pom.xml -->
     <p class="dl-platforms">
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.85/Klunk-windows.zip">Windows</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.85/Klunk-macos.zip">macOS</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.85/Klunk-linux-x64.zip">Linux x64</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.85/Klunk-linux-arm64.zip">Linux ARM64</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.86/Klunk-windows.zip">Windows</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.86/Klunk-macos.zip">macOS</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.86/Klunk-linux-x64.zip">Linux x64</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.86/Klunk-linux-arm64.zip">Linux ARM64</a>
     </p>
-    <p class="dl-meta">Current version: <span id="dl-version">v0.9.85</span> &middot; (this beta version is valid until 4/15/2027)</p>
+    <p class="dl-meta">Current version: <span id="dl-version">v0.9.86</span> &middot; (this beta version is valid until 4/15/2027)</p>
     <p> Free to use &middot; Available for Linux, Windows and macOS (macOS version currently untested)</p>
 </section>
 
@@ -184,7 +184,7 @@
 <script>
     (function () {
         // Stamped from app.version in default.properties by the build (stamp-docs-version in pom.xml)
-        var VERSION = "v0.9.85";
+        var VERSION = "v0.9.86";
         // Release assets on GitHub; keep these names identical across every release
         var BASE = "https://github.com/XenFive/klunk/releases/download/" + VERSION + "/";
         var ASSETS = {
@@ -236,7 +236,8 @@
             } else if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
                 navigator.userAgentData.getHighEntropyValues(["architecture"]).then(function (v) {
                     if (v.architecture === "arm") show("linuxArm");
-                }).catch(function () { });
+                }).catch(function () {
+                });
             }
         }
     })();
