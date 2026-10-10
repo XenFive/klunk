@@ -65,6 +65,7 @@
                     <li><a href="#filter-out">Filter-Out</a></li>
                     <li><a href="#find">Search &amp; Find</a></li>
                     <li><a href="#time-slider">Time Slider</a></li>
+                    <li><a href="#synch-all">Synch All</a></li>
                     <li><a href="#bookmarks">Bookmarks</a></li>
                     <li><a href="#bookmark-time">Bookmark Time</a></li>
                     <li><a href="#bookmark-filters">Bookmark Filters</a></li>
@@ -409,6 +410,10 @@ GET https://api.example.com/logs?page=3
                 The time-slider markers update instantly.
             </div>
         </div>
+        <div class="tip">
+            <div>Don't need a combined stream? Keep the logs in separate windows and use
+                <a href="#synch-all">Synch All</a> to scroll them all to the same time.</div>
+        </div>
 
         <h3 id="grouping">Grouping Windows</h3>
         <p>Groups tag a set of open windows with a shared name and color, so they can be <strong>saved</strong> and
@@ -483,7 +488,7 @@ GET https://api.example.com/logs?page=3
                 <tbody>
                 <tr>
                     <td>Timestamp</td>
-                    <td>Sortable; drives the time slider</td>
+                    <td>Drives the time slider</td>
                 </tr>
                 <tr>
                     <td>Level</td>
@@ -509,8 +514,8 @@ GET https://api.example.com/logs?page=3
         <ul>
             <li><strong>Column resize:</strong> Drag any column edge.
             </li>
-            <li><strong>Sort:</strong> Click a header — ascending, then descending. Available for in-memory datasets
-                — see <a href="#performance">Performance</a>.
+            <li><strong>Row order:</strong> Rows stay in log order (chronological in merged views); clicking a
+                header doesn't re-sort them.
             </li>
             <li><strong>Column widths</strong> are saved with the session.</li>
         </ul>
@@ -690,6 +695,22 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             <div>The selected time range is saved with the session and restored on next open.</div>
         </div>
 
+        <h3 id="synch-all">Synch All (Line Up Open Logs by Time)</h3>
+        <p>When you'd rather keep logs in separate windows than <a href="#merging">merge</a> them, <strong>Synch
+            All</strong> in a viewer's toolbar scrolls every other open log to the moment you're looking at. The
+            reference time is the timestamp of the row in the middle of the current view.</p>
+        <ul>
+            <li>If the viewer you click it in has a filter or time range active, those are cleared first so
+                the full log is available, and your selected row is kept.</li>
+            <li>The other logs keep their own filters. Each one centers on the row closest to the reference time,
+                or scrolls to its start or end if that time falls outside its range.</li>
+            <li>Logs without a timestamp column are skipped.</li>
+        </ul>
+        <div class="tip">
+            <div>To <em>mark</em> the same moment in every log rather than just scroll to it, use
+                <a href="#bookmark-time">Bookmark Time</a>.</div>
+        </div>
+
         <h3 id="bookmarks">Bookmarks and Highlights</h3>
         <p>Bookmarks let you pin important rows for navigation, review, and later filtering.</p>
         <p><strong>Creating a bookmark:</strong> right-click a row → <strong>Bookmark</strong> (uses the last-used
@@ -734,19 +755,22 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         </div>
 
         <h3 id="bookmark-time">Bookmark Time (Time Correlation)</h3>
-        <p><strong>Bookmark time…</strong> (on the row context menu) bookmarks a row <em>and</em> automatically
-            bookmarks all rows matching timestamp — within a configurable leeway — in every other open log or in a chosen
+        <p><strong>Bookmark time…</strong> (on the row context menu) bookmarks every row whose timestamp falls
+            within a configurable leeway of the selected row, in every open log (including this one) or in a chosen
             <a href="#grouping">group</a>. It's the fastest way to line up related events across several logs that
             don't share a common request ID.</p>
         <ol>
-            <li>Right-click the row of interest → <strong>Bookmark time…</strong>.</li>
-            <li>Choose a <strong>Leeway</strong> window (±5 ms up to ±1 min, or a custom value).</li>
+            <li>Right-click the row of interest → <strong>Bookmark time…</strong>. If several rows are selected, the
+                window runs from the earliest to the latest of them.</li>
+            <li>Choose a <strong>Leeway</strong> window (±5 ms up to ±1 min, default ±50 ms, or a custom value).</li>
             <li>Pick a <strong>Bookmark color</strong>.</li>
-            <li>If the current log viewer belongs to a correlation group, a <strong>Target</strong> dropdown lets you scope the
-                correlation to that group instead of every open log.
+            <li>If any open windows have been <a href="#grouping">grouped</a>, a <strong>Target</strong> dropdown
+                lets you limit the bookmarks to one group instead of <strong>All Logs</strong>.
             </li>
             <li>Click <strong>Bookmark</strong>.</li>
         </ol>
+        <p>The chosen color gets an automatic comment recording the source row and leeway, so you can tell later
+            where those bookmarks came from.</p>
         <figure class="shot">
             <img src="screenshots/log-file-viewer-bookmark-time.png"
                  alt="Bookmark time dialog with a leeway dropdown and a row of bookmark color swatches">
@@ -1040,7 +1064,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <!-- PATTERNS -->
         <h2 id="patterns">Log Patterns</h2>
         <p>A <strong>Log Pattern</strong> tells the application how to split each log line into structured columns. The
-            correct pattern is essential for filtering, sorting, and merging.</p>
+            correct pattern is essential for filtering, the time slider, and merging.</p>
 
         <h3 id="auto-detect">Auto-Detection</h3>
         <p>When you open a file, the application scans the first several hundred lines and tries every known pattern in
@@ -1258,7 +1282,9 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
 
         <!-- PERFORMANCE -->
         <h2 id="performance">Performance and Virtualization</h2>
-        <p>Klunk - Log Viewer handles very large log files through <strong>adaptive virtualization</strong>.</p>
+        <p>Klunk - Log Viewer handles very large log files through <strong>adaptive storage</strong>: smaller
+            logs are held fully in memory, and larger ones switch to SQLite-backed paging. The switch-over point is
+            <code>log.virtualization.threshold</code> (default <strong>50,000 rows</strong>).</p>
         <div class="table-wrap">
             <table>
                 <thead>
@@ -1270,20 +1296,19 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>Below the threshold</td>
+                    <td>Up to the threshold</td>
                     <td><strong>In-memory</strong></td>
-                    <td>All rows in RAM; instant sorting, instant filtering</td>
+                    <td>All rows held in RAM</td>
                 </tr>
                 <tr>
-                    <td>At or above the threshold</td>
+                    <td>Above the threshold</td>
                     <td><strong>SQLite-paged</strong></td>
                     <td>Pages fetched on demand; never switches back to in-memory</td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <p>In SQLite-paged mode, sorting is disabled (data is pre-ordered by timestamp at load time). Filtering uses SQL
-            WHERE clauses executed in SQLite — no memory overhead.</p>
+        <p>In SQLite-paged mode, filtering uses SQL WHERE clauses executed in SQLite — no memory overhead.</p>
 
         <p><strong>Tuning virtualization</strong> — raw properties editable under <strong>Settings → Advanced</strong>:
         </p>
@@ -1298,7 +1323,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tbody>
                 <tr>
                     <td><code>log.virtualization.threshold</code></td>
-                    <td>Row count above which SQLite paging is used</td>
+                    <td>Row count above which SQLite paging is used (default 50,000). Set it to <code>0</code> to
+                    always page, even for small logs.</td>
                 </tr>
                 <tr>
                     <td><code>log.virtualization.pagesize</code></td>
