@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klunk Log Viewer — User Guide</title>
+    <link rel="canonical" href="https://www.kookaklunka.com/klunk/USER_GUIDE.html">
     <link rel="stylesheet" href="shared-styles.css">
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -412,7 +413,8 @@ GET https://api.example.com/logs?page=3
         </div>
         <div class="tip">
             <div>Don't need a combined stream? Keep the logs in separate windows and use
-                <a href="#synch-all">Synch All</a> to scroll them all to the same time.</div>
+                <a href="#synch-all">Synch All</a> to scroll them all to the same time.
+            </div>
         </div>
 
         <h3 id="grouping">Grouping Windows</h3>
@@ -697,18 +699,20 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
 
         <h3 id="synch-all">Synch All (Line Up Open Logs by Time)</h3>
         <p>When you'd rather keep logs in separate windows than <a href="#merging">merge</a> them, <strong>Synch
-            All</strong> in a viewer's toolbar scrolls every other open log to the moment you're looking at. The
-            reference time is the timestamp of the row in the middle of the current view.</p>
+            All</strong> in a viewer's toolbar scrolls every other open log to the moment you're looking at.</p>
         <ul>
-            <li>If the viewer you click it in has a filter or time range active, those are cleared first so
-                the full log is available, and your selected row is kept.</li>
-            <li>The other logs keep their own filters. Each one centers on the row closest to the reference time,
-                or scrolls to its start or end if that time falls outside its range.</li>
-            <li>Logs without a timestamp column are skipped.</li>
+            <li>If a row is selected and on screen, its timestamp is the reference time. Otherwise the row in the
+                middle of the current view is used.
+            </li>
+            <li>Each other log centers on the row closest to that time, or scrolls to its start or end if the time
+                falls outside it.
+            </li>
+            <li>Logs without a timestamp column, or still loading, are skipped.</li>
         </ul>
         <div class="tip">
             <div>To <em>mark</em> the same moment in every log rather than just scroll to it, use
-                <a href="#bookmark-time">Bookmark Time</a>.</div>
+                <a href="#bookmark-time">Bookmark Time</a>.
+            </div>
         </div>
 
         <h3 id="bookmarks">Bookmarks and Highlights</h3>
@@ -761,7 +765,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             don't share a common request ID.</p>
         <ol>
             <li>Right-click the row of interest → <strong>Bookmark time…</strong>. If several rows are selected, the
-                window runs from the earliest to the latest of them.</li>
+                window runs from the earliest to the latest of them.
+            </li>
             <li>Choose a <strong>Leeway</strong> window (±5 ms up to ±1 min, default ±50 ms, or a custom value).</li>
             <li>Pick a <strong>Bookmark color</strong>.</li>
             <li>If any open windows have been <a href="#grouping">grouped</a>, a <strong>Target</strong> dropdown
@@ -1324,7 +1329,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tr>
                     <td><code>log.virtualization.threshold</code></td>
                     <td>Row count above which SQLite paging is used (default 50,000). Set it to <code>0</code> to
-                    always page, even for small logs.</td>
+                        always page, even for small logs.
+                    </td>
                 </tr>
                 <tr>
                     <td><code>log.virtualization.pagesize</code></td>
