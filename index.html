@@ -3,8 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klunk - Log Viewer</title>
+    <title>Klunk – Fast Log Viewer for Huge Files, Kubernetes &amp; SFTP</title>
+    <meta name="description" content="Free log viewer for Windows, Linux and macOS. Open log files with millions of rows, merge logs from files, databases, Kubernetes pods, SFTP and URLs into one timeline, filter with SQL-like queries, and tail live.">
     <link rel="canonical" href="https://www.kookaklunka.com/klunk/">
+    <!-- Link previews (Reddit, Slack, LinkedIn, X, ...) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Klunk">
+    <meta property="og:title" content="Klunk – Fast Log Viewer for Huge Files, Kubernetes &amp; SFTP">
+    <meta property="og:description" content="Free log viewer: millions of rows, merged sources, SQL-like filters, live tailing.">
+    <meta property="og:url" content="https://www.kookaklunka.com/klunk/">
+    <meta property="og:image" content="https://www.kookaklunka.com/klunk/screenshots/Dark-logviewer.png">
+    <meta property="og:image:width" content="1090">
+    <meta property="og:image:height" content="757">
+    <meta property="og:image:alt" content="Klunk log viewer showing a large log with the time slider and color-coded levels">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- No version here on purpose: releases/latest isn't touched by the stamp-version step -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Klunk - Log Viewer",
+            "url": "https://www.kookaklunka.com/klunk/",
+            "description": "Log viewer for very large log files. Merges files, databases, Kubernetes pods, SFTP and URL sources into one timeline, with SQL-like filtering, bookmarks and live tailing.",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Windows, Linux, macOS",
+            "downloadUrl": "https://github.com/XenFive/klunk/releases/latest",
+            "screenshot": "https://www.kookaklunka.com/klunk/screenshots/Dark-logviewer.png",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            }
+        }
+    </script>
     <link rel="stylesheet" href="shared-styles.css">
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -33,20 +64,20 @@
 
     <div class="dl-actions">
         <a class="btn-download" id="btn-download"
-           href="https://github.com/XenFive/klunk/releases/tag/v0.9.86">
+           href="https://github.com/XenFive/klunk/releases/tag/v0.9.88">
             <span class="arrow">&#x2B07;</span> <span id="btn-download-label">Download</span>
         </a>
     </div>
     <!-- Versions in these URLs (and VERSION in the script below) are stamped from app.version in
-         default.properties by the stamp-docs-version step in pom.xml -->
+         default.properties by the stamp-version step in pom.xml -->
     <p class="dl-platforms">
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.86/Klunk-windows.zip">Windows</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.86/Klunk-macos.zip">macOS</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.86/Klunk-linux-x64.zip">Linux x64</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.86/Klunk-linux-arm64.zip">Linux ARM64</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-windows.zip">Windows</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-macos.zip">macOS</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-linux-x64.zip">Linux x64</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-linux-arm64.zip">Linux ARM64</a>
     </p>
-    <p class="dl-meta">Current version: <span id="dl-version">v0.9.86</span> &middot; (this beta version is valid until 4/15/2027)</p>
-    <p> Free to use &middot; Available for Linux, Windows and macOS (macOS version currently untested)</p>
+    <p class="dl-meta">Current version: <span id="dl-version">v0.9.88</span> &middot; (this beta version is valid until 4/15/2027)</p>
+    <p> Free to use &middot; Available for Linux, Windows and macOS</p>
 </section>
 
 <div class="hero-shot">
@@ -115,7 +146,7 @@
             <div class="icon">🎨</div>
             <strong>Interactive UI</strong>
             <p>Dockable tabs, in-text search with highlighting, multicolor bookmarks, timestamp timezone
-                conversion, light/dark theme.</p>
+                conversion, light/dark theme, customizable table font/colors.</p>
         </div>
         <div class="feature-card">
             <div class="icon">📊</div>
@@ -188,8 +219,8 @@
 
 <script>
     (function () {
-        // Stamped from app.version in default.properties by the build (stamp-docs-version in pom.xml)
-        var VERSION = "v0.9.86";
+        // Stamped from app.version in default.properties by the build (stamp-version in pom.xml)
+        var VERSION = "v0.9.88";
         // Release assets on GitHub; keep these names identical across every release
         var BASE = "https://github.com/XenFive/klunk/releases/download/" + VERSION + "/";
         var ASSETS = {

@@ -528,7 +528,7 @@ GET https://api.example.com/logs?page=3
 
         <h3 id="filtering">Filtering Logs</h3>
         <p>The <strong>filter bar</strong> at the top of every viewer accepts SQL-style WHERE expressions. Press
-            <kbd>Enter</kbd> to apply, <kbd>Escape</kbd> to clear. Previously used filters appear in the dropdown,
+            <kbd>Enter</kbd> to apply; click the <strong>X</strong> next to it, press <kbd>Ctrl+Shift+L</kbd>, or press <kbd>Escape</kbd> in the field to clear (Escape first undoes an edit you haven't applied). Previously used filters appear in the dropdown,
             and the row count updates immediately to show how many entries match.</p>
 
         <h3 id="syntax">Filter Query Syntax</h3>
@@ -620,8 +620,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td>Click the <strong>Aa</strong> toggle next to the field</td>
                 </tr>
                 <tr>
-                    <td>Clear / close</td>
-                    <td><kbd>Escape</kbd></td>
+                    <td>Clear</td>
+                    <td>Click the <strong>X</strong> next to the field</td>
                 </tr>
                 </tbody>
             </table>
@@ -1134,7 +1134,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
 
         <h3 id="pattern-editor">Pattern Editor</h3>
         <p>Open the <strong>Log Pattern Editor</strong> from <strong>Settings → Patterns → Log Pattern Editor…</strong>,
-            or click <strong>Change Pattern</strong> from an open viewer.</p>
+            or, in a log that loaded as a single Message column, right-click a row and choose
+            <strong>Create Pattern from This Row...</strong> to start from that line.</p>
         <ol>
             <li><strong>Load Existing Pattern</strong> to edit one, or start fresh by filling in <strong>Pattern
                 Name</strong>, <strong>Pattern Type</strong>, and a <strong>Sample Log Line</strong>.
@@ -1147,7 +1148,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </li>
             <li>Click <strong>Apply Regex to Sample</strong> to populate <strong>Column Mappings</strong> from the
                 sample line, then adjust each column's <strong>Column Name</strong>, <strong>Column Type</strong>,
-                and <strong>Column Size</strong> (<code>FILL</code> lets a column absorb remaining width).
+                and <strong>Column Size</strong> (see <a href="#column-types-sizes">Column types and sizes</a>).
             </li>
             <li><strong>Save Pattern</strong>. Patterns can also be <strong>Import</strong>ed / <strong>Export</strong>ed
                 as files to share between installs.
@@ -1185,6 +1186,76 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tr>
                     <td><code>EEE MMM dd HH:mm:ss zzz yyyy</code></td>
                     <td><code>Wed Jun 03 04:15:48 UTC 2026</code> (syslog)</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4 id="column-types-sizes">Column types and sizes</h4>
+        <p>Each row in <strong>Column Mappings</strong> sets how one captured value is stored and shown.
+            <strong>Column Type</strong> controls what Klunk does with it:</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Use it for</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>datetime</code></td>
+                    <td>The timestamp. Drives the time slider, time ordering, merging and Synch All. One per pattern.</td>
+                </tr>
+                <tr>
+                    <td><code>level</code></td>
+                    <td>The severity (ERROR, WARN, INFO...). Colors the rows and counts errors and warnings. One per pattern.</td>
+                </tr>
+                <tr>
+                    <td><code>number</code></td>
+                    <td>Numeric values such as durations, counts or status codes.</td>
+                </tr>
+                <tr>
+                    <td><code>string</code></td>
+                    <td>Everything else.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p><strong>Column Size</strong> sets how wide the column starts in the viewer. New columns start at
+            <code>MEDIUM</code>; you can always drag column edges afterwards.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>Typical column</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>EXTRA_SMALL</code>, <code>VERY_SMALL</code></td>
+                    <td>Short values: level, thread, a job or host id (about 10 characters at <code>VERY_SMALL</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>SMALL</code></td>
+                    <td>Class or component names (about 18 characters)</td>
+                </tr>
+                <tr>
+                    <td><code>MEDIUM_SMALL</code></td>
+                    <td>Timestamps</td>
+                </tr>
+                <tr>
+                    <td><code>MEDIUM</code>, <code>MEDIUM_LARGE</code></td>
+                    <td>URLs, paths, longer identifiers</td>
+                </tr>
+                <tr>
+                    <td><code>LARGE</code>, <code>VERY_LARGE</code>, <code>EXTRA_LARGE</code></td>
+                    <td>Long text that isn't the main message</td>
+                </tr>
+                <tr>
+                    <td><code>FILL</code></td>
+                    <td>Takes whatever width is left over. Give it to the message and keep that column last.</td>
                 </tr>
                 </tbody>
             </table>
@@ -1570,8 +1641,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td>Find previous</td>
                 </tr>
                 <tr>
-                    <td><kbd>Escape</kbd></td>
-                    <td>Clear Find bar / clear filter</td>
+                    <td><kbd>Ctrl+Shift+L</kbd></td>
+                    <td>Clear the filter</td>
                 </tr>
                 <tr>
                     <td><kbd>Enter</kbd></td>
