@@ -1,0 +1,81 @@
+[2026.03.12 08:00:00] <INFO> BATCH-07 InvoiceExport: Run 32 started, 169 invoices to export
+[2026.03.12 08:00:13] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 08:00:18] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 08:00:29] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 08:00:40] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (19 invoices)
+[2026.03.12 08:00:41] <INFO> BATCH-07 InvoiceExport: Run 32 finished: 169 of 169 exported
+[2026.03.12 08:15:00] <INFO> BATCH-07 InvoiceExport: Run 33 started, 224 invoices to export
+[2026.03.12 08:15:12] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 08:15:16] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 08:15:24] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 08:15:35] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (50 invoices)
+[2026.03.12 08:15:40] <INFO> BATCH-07 InvoiceExport: Chunk 5 exported (24 invoices)
+[2026.03.12 08:15:41] <INFO> BATCH-07 InvoiceExport: Run 33 finished: 224 of 224 exported
+[2026.03.12 08:30:00] <INFO> BATCH-07 InvoiceExport: Run 34 started, 251 invoices to export
+[2026.03.12 08:30:09] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 08:30:18] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 08:30:30] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 08:30:37] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (50 invoices)
+[2026.03.12 08:30:48] <INFO> BATCH-07 InvoiceExport: Chunk 5 exported (50 invoices)
+[2026.03.12 08:30:57] <INFO> BATCH-07 InvoiceExport: Chunk 6 exported (1 invoices)
+[2026.03.12 08:30:58] <INFO> BATCH-07 InvoiceExport: Run 34 finished: 251 of 251 exported
+[2026.03.12 08:45:00] <INFO> BATCH-07 InvoiceExport: Run 35 started, 217 invoices to export
+[2026.03.12 08:45:08] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 08:45:18] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 08:45:26] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 08:45:35] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (50 invoices)
+[2026.03.12 08:45:42] <INFO> BATCH-07 InvoiceExport: Chunk 5 exported (17 invoices)
+[2026.03.12 08:45:43] <INFO> BATCH-07 InvoiceExport: Run 35 finished: 217 of 217 exported
+[2026.03.12 09:00:00] <INFO> BATCH-07 InvoiceExport: Run 36 started, 162 invoices to export
+[2026.03.12 09:00:09] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 09:00:21] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 09:00:30] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 09:00:36] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (12 invoices)
+[2026.03.12 09:00:37] <INFO> BATCH-07 InvoiceExport: Run 36 finished: 162 of 162 exported
+[2026.03.12 09:15:00] <INFO> BATCH-07 InvoiceExport: Run 37 started, 226 invoices to export
+[2026.03.12 09:15:10] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 09:15:16] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 09:15:28] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 09:15:34] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (50 invoices)
+[2026.03.12 09:15:43] <INFO> BATCH-07 InvoiceExport: Chunk 5 exported (26 invoices)
+[2026.03.12 09:15:44] <INFO> BATCH-07 InvoiceExport: Run 37 finished: 226 of 226 exported
+[2026.03.12 09:30:00] <INFO> BATCH-07 InvoiceExport: Run 38 started, 162 invoices to export
+[2026.03.12 09:30:11] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 09:30:16] <WARN> BATCH-07 InvoiceExport: Invoice INV-52533 skipped: customer has no billing address
+[2026.03.12 09:30:16] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 09:30:25] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 09:30:34] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (12 invoices)
+[2026.03.12 09:30:35] <INFO> BATCH-07 InvoiceExport: Run 38 finished: 162 of 162 exported
+[2026.03.12 09:45:00] <INFO> BATCH-07 InvoiceExport: Run 39 started, 215 invoices to export
+[2026.03.12 09:45:07] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 09:45:19] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 09:45:27] <ERROR> BATCH-07 InvoiceExport: Chunk 3 failed: payments ledger did not answer within 30 s
+[2026.03.12 09:45:57] <ERROR> BATCH-07 InvoiceExport: Retry of chunk 3 failed, giving up
+[2026.03.12 09:45:58] <WARN> BATCH-07 InvoiceExport: Run 39 ended early: 100 of 215 exported, 115 left for next run
+[2026.03.12 10:00:00] <INFO> BATCH-07 InvoiceExport: Run 40 started, 219 invoices to export
+[2026.03.12 10:00:07] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 10:00:14] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 10:00:20] <ERROR> BATCH-07 InvoiceExport: Chunk 3 failed: payments ledger did not answer within 30 s
+[2026.03.12 10:00:50] <ERROR> BATCH-07 InvoiceExport: Retry of chunk 3 failed, giving up
+[2026.03.12 10:00:51] <WARN> BATCH-07 InvoiceExport: Run 40 ended early: 100 of 219 exported, 119 left for next run
+[2026.03.12 10:15:00] <INFO> BATCH-07 InvoiceExport: Run 41 started, 249 invoices to export
+[2026.03.12 10:15:06] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 10:15:15] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 10:15:27] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 10:15:32] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (50 invoices)
+[2026.03.12 10:15:40] <INFO> BATCH-07 InvoiceExport: Chunk 5 exported (49 invoices)
+[2026.03.12 10:15:41] <INFO> BATCH-07 InvoiceExport: Run 41 finished: 249 of 249 exported
+[2026.03.12 10:30:00] <INFO> BATCH-07 InvoiceExport: Run 42 started, 132 invoices to export
+[2026.03.12 10:30:09] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 10:30:15] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 10:30:20] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (32 invoices)
+[2026.03.12 10:30:21] <INFO> BATCH-07 InvoiceExport: Run 42 finished: 132 of 132 exported
+[2026.03.12 10:45:00] <INFO> BATCH-07 InvoiceExport: Run 43 started, 221 invoices to export
+[2026.03.12 10:45:08] <INFO> BATCH-07 InvoiceExport: Chunk 1 exported (50 invoices)
+[2026.03.12 10:45:13] <INFO> BATCH-07 InvoiceExport: Chunk 2 exported (50 invoices)
+[2026.03.12 10:45:25] <INFO> BATCH-07 InvoiceExport: Chunk 3 exported (50 invoices)
+[2026.03.12 10:45:33] <WARN> BATCH-07 InvoiceExport: Invoice INV-59901 skipped: customer has no billing address
+[2026.03.12 10:45:33] <INFO> BATCH-07 InvoiceExport: Chunk 4 exported (50 invoices)
+[2026.03.12 10:45:40] <WARN> BATCH-07 InvoiceExport: Invoice INV-59278 skipped: customer has no billing address
+[2026.03.12 10:45:40] <INFO> BATCH-07 InvoiceExport: Chunk 5 exported (21 invoices)
+[2026.03.12 10:45:41] <INFO> BATCH-07 InvoiceExport: Run 43 finished: 221 of 221 exported
