@@ -72,7 +72,8 @@
          default.properties by the stamp-version step in pom.xml -->
     <p class="dl-platforms">
         <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-windows.zip">Windows</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-macos.zip">macOS</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-macos.zip">macOS (Apple Silicon)</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.89/Klunk-macos-x64.zip">macOS (Intel)</a>
         <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-linux-x64.zip">Linux x64</a>
         <a href="https://github.com/XenFive/klunk/releases/download/v0.9.88/Klunk-linux-arm64.zip">Linux ARM64</a>
     </p>
@@ -223,15 +224,18 @@
         var VERSION = "v0.9.88";
         // Release assets on GitHub; keep these names identical across every release
         var BASE = "https://github.com/XenFive/klunk/releases/download/" + VERSION + "/";
+        var BASETEMP = "https://github.com/XenFive/klunk/releases/download/v0.9.89/";
         var ASSETS = {
             windows: BASE + "Klunk-windows.zip",
             mac: BASE + "Klunk-macos.zip",
+            macIntel: BASETEMP + "Klunk-macos-x64.zip",
             linux: BASE + "Klunk-linux-x64.zip",
             linuxArm: BASE + "Klunk-linux-arm64.zip"
         };
         var LABELS = {
             windows: "Download for Windows",
-            mac: "Download for macOS",
+            mac: "Download for macOS (Apple Silicon)",
+            macIntel: "Download for macOS (Intel)",
             linux: "Download for Linux (x64)",
             linuxArm: "Download for Linux (ARM64)"
         };
@@ -275,6 +279,16 @@
                 }).catch(function () {
                 });
             }
+        }
+
+        // Intel Mac: every browser's user agent says "Intel Mac OS X", even on Apple Silicon, so
+        // only Chromium's client hints can tell; others keep the Apple Silicon build and the
+        // "macOS (Intel)" link below the button
+        if (os === "mac" && navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+            navigator.userAgentData.getHighEntropyValues(["architecture"]).then(function (v) {
+                if (v.architecture === "x86") show("macIntel");
+            }).catch(function () {
+            });
         }
     })();
 </script>
