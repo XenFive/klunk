@@ -98,6 +98,11 @@
             <li class="h2-item"><a href="#datasources">Managing Datasources</a></li>
             <li class="h2-item"><a href="#session">Session Persistence</a></li>
             <li class="h2-item"><a href="#performance">Performance</a></li>
+            <li class="sub">
+                <ul>
+                    <li><a href="#memory-tuning">Memory Tuning Tips</a></li>
+                </ul>
+            </li>
             <li class="h2-item"><a href="#settings">Settings</a></li>
             <li class="h2-item"><a href="#shortcuts">Keyboard Shortcuts</a></li>
             <li class="h2-item"><a href="#troubleshooting">Troubleshooting</a></li>
@@ -826,6 +831,44 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </div>
         </div>
 
+        <h4 id="watch-export">Exporting Watch Alerts to a File</h4>
+        <p>Watch alerts can also be written to a JSON file of your choosing, so other applications (a monitoring
+            script, a dashboard, a notifier) can pick them up. Set these in <strong>Settings →
+                <a href="#settings-advanced">Advanced</a></strong>:</p>
+        <table>
+            <thead>
+            <tr>
+                <th>Property</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><code>watch.alert.export.enabled</code></td>
+                <td>Set to <code>true</code> to turn the export on (default <code>false</code>)</td>
+            </tr>
+            <tr>
+                <td><code>watch.alert.export.file</code></td>
+                <td>Full path of the file to write, e.g. <code>C:\alerts\klunk-alerts.json</code></td>
+            </tr>
+            <tr>
+                <td><code>watch.alert.export.max.entries</code></td>
+                <td>Keep only the newest N alerts in the file (default <code>1000</code>)</td>
+            </tr>
+            </tbody>
+        </table>
+        <p>The file is rewritten each time the alert list changes (new hits, cleared alerts, or a closed log), so it
+            always mirrors the current list. It holds a JSON array with one object per alert:</p>
+        <pre><code>[ {
+  "watchName" : "Potential hang",
+  "severity" : "WARN",
+  "query" : "Message LIKE '%Potential hang on request id=%'",
+  "windowName" : "server.log",
+  "logTimestamp" : "2026-10-18 09:14:02.317",
+  "detectedAt" : "2026-10-18T09:14:05.112-04:00",
+  "messagePreview" : "Potential hang on request id=4711 ..."
+} ]</code></pre>
+
         <h3 id="tailing">Live Tailing</h3>
         <ol>
             <li>Click <strong>Tail</strong> (▶) in the viewer toolbar.</li>
@@ -887,7 +930,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 in the format itself).
             </li>
             <li><strong>Display Timezone</strong> — the timezone timestamps are rendered in in the table (independent
-                of the source timezone).
+                of the source timezone). New logs start in the <em>Default display timezone</em> set under
+                Settings &rarr; General Settings (UTC unless you change it).
             </li>
             <li><strong>Append non-matching lines to previous row's last field</strong> — when a physical line
                 doesn't match the pattern (e.g. a stack-trace continuation line), append it to the previous row
@@ -1423,6 +1467,54 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <p>Raise the threshold if you have ample RAM and prefer the faster in-memory experience. Lower it if you see
             high memory usage with large files.</p>
 
+        <h3 id="memory-tuning">Memory Tuning Tips</h3>
+        <p>Two settings decide how much memory Klunk uses: the <strong>virtualization threshold</strong> above, and
+            the <strong>Java memory limit</strong> (how much RAM the app may grow to). Change them together — a high
+            threshold needs a high limit, and a low limit needs a low threshold.</p>
+        <p><strong>Changing the Java memory limit</strong> — open <code>Klunk.cfg</code> in a text editor and edit
+            the <code>-Xmx</code> value on the <code>java-options</code> line under <code>[JavaOptions]</code> (the
+            default is <code>-Xmx2g</code>, i.e. up to 2 GB):</p>
+        <ul>
+            <li>Windows: <code>Klunk\app\Klunk.cfg</code></li>
+            <li>macOS: <code>Klunk.app/Contents/app/Klunk.cfg</code> (right-click <strong>Klunk.app</strong> →
+                <strong>Show Package Contents</strong>)
+            </li>
+            <li>Linux: <code>Klunk/lib/app/Klunk.cfg</code></li>
+        </ul>
+        <div class="note">
+            <div><strong>Restart required:</strong> the Java memory limit is only read when Klunk starts, so after saving
+                <code>Klunk.cfg</code>, close all Klunk windows (including undocked viewers) and start it again. The virtualization threshold doesn't need a restart; it applies
+                to logs you open or reload afterward.
+            </div>
+        </div>
+        <div class="note">
+            <div>Installing an update replaces <code>Klunk.cfg</code>, so make the change again after upgrading. (will fix this) Leave
+                the <code>-Xms</code> value (the starting size) as it is; the memory limit is only a ceiling, and Klunk
+                hands unused memory back to the system.
+            </div>
+        </div>
+
+        <h4>Machines with little memory (8 GB or less), or when you want Klunk to use less memory</h4>
+        <ul>
+            <li><strong>Lower the threshold</strong> to around <code>10000</code>–<code>20000</code> in
+                <strong>Settings → Advanced</strong>. Every open viewer keeps up to that many rows in memory, so this
+                is the setting that saves the most. Larger logs are read from disk instead, which works well on an
+                SSD.
+            </li>
+            <li><strong>Lower the Java memory limit</strong> to <code>-Xmx1g</code>. Going lower is not recommended
+                if you find need to load larger logs.
+            </li>
+            <li><strong>Close viewers you're not using.</strong> Each viewer, including each merged view, holds its own
+                rows.
+            </li>
+            <li><strong>About Task Manager / Activity Monitor:</strong> Klunk can look bigger there than its memory
+                limit. Most of the difference is the session database being read through the system's file cache,
+                which the system takes back as soon as other programs need it. If you'd rather not see it, add
+                <code>log.db.mmap</code> in <strong>Settings → Advanced</strong> and set it to <code>false</code>,
+                then restart (filters that scan a whole large log get slower).
+            </li>
+        </ul>
+
         <hr>
 
         <!-- SETTINGS -->
@@ -1544,10 +1636,10 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                  alt="Redaction panel with a Find text / Replace with table and Add / Remove buttons">
         </figure>
 
-        <h3>Advanced</h3>
+        <h3 id="settings-advanced">Advanced</h3>
         <p>Directly edit raw configuration properties not exposed elsewhere in the UI — useful for the
-            <a href="#performance">virtualization tuning</a> properties and any <code>watch.alert.*</code> export
-            settings. Some changes may require a restart.</p>
+            <a href="#performance">virtualization tuning</a> properties and the <code>watch.alert.*</code>
+            <a href="#watch-export">alert export</a> settings. Some changes may require a restart.</p>
         <figure class="shot">
             <img src="screenshots/settings-advanced.png"
                  alt="Advanced settings: a Property/Value table showing log.file.check.enabled, log.file.check.interval.secs, log.virtualization.threshold, log.virtualization.pagesize, log.tail.interval.seconds, and watch.alert.* properties">
