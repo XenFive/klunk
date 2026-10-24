@@ -41,6 +41,7 @@
             <li class="sub">
                 <ul>
                     <li><a href="#local-files">Local Files</a></li>
+                    <li><a href="#search-files">Search Files</a></li>
                     <li><a href="#databases">External Databases</a></li>
                     <li><a href="#kubernetes">Kubernetes</a></li>
                     <li><a href="#sftp">SFTP</a></li>
@@ -74,6 +75,7 @@
                     <li><a href="#tailing">Live Tailing</a></li>
                     <li><a href="#analysis">Log Analysis</a></li>
                     <li><a href="#load-settings">Reload &amp; Load Settings</a></li>
+                    <li><a href="#export">Exporting a Log</a></li>
                 </ul>
             </li>
             <li class="h2-item"><a href="#compare">Comparing</a></li>
@@ -169,6 +171,87 @@
         <div class="note">
             <div>For <strong>CSV files</strong>, you'll be prompted to choose the delimiter (comma, tab,
                 pipe, semicolon, or custom). You will also be able to select if first row should be treated as a header row to define the column mames
+            </div>
+        </div>
+
+        <h3 id="search-files">Search Files</h3>
+        <p>Don't know which file has the problem, or the file is too big to open whole? Click
+            <strong>Search files…</strong> on the <strong>File</strong> tab to search folders and archives for text,
+            then import only the files that match — whole, or just the matching rows.</p>
+        <figure class="shot">
+            <img src="screenshots/search-files-dialog.png"
+                 alt="Search Files dialog: searching a folder and its archives for lines with both ERROR and orderId, four matching files listed with match counts, a preview of the matching lines, and Matching rows ±2 chosen for the import">
+        </figure>
+        <ol>
+            <li><strong>Look in:</strong> folders, archives or files to search. Separate several with <code>;</code>,
+                or add them with <strong>Folder…</strong> and <strong>Files…</strong>.
+            </li>
+            <li><strong>File names:</strong> which files to read, e.g. <code>*.log; *.txt</code> (blank = every file).
+                <strong>Subfolders</strong> searches folders inside the ones you picked, and
+                <strong>Inside archives</strong> searches the files inside zip, tar, tgz and gz archives without
+                extracting them (archives inside archives too).
+            </li>
+            <li><strong>Find:</strong> type the text to find. Click <strong>+ Term</strong> to add more terms (up to
+                eight). Each term has <strong>Aa</strong> (match case) and <strong>.*</strong> (regular expression)
+                toggles.
+            </li>
+            <li><strong>Match:</strong>
+                <ul>
+                    <li><strong>Any term</strong> or <strong>All terms</strong> — whether one term is enough or every
+                        term must be found.</li>
+                    <li><strong>Anywhere in file</strong> or <strong>On one line</strong> — with All terms, whether
+                        the terms may be on different lines or must be on the same line.</li>
+                    <li><strong>Stop at first match</strong> — faster on large folders: each file is read only up to
+                        its first match, so <strong>Matches</strong> shows <em>Yes</em> instead of a count.</li>
+                </ul>
+            </li>
+            <li>Click <strong>Search</strong> (<strong>Stop</strong> ends it early). Matching files are listed as
+                they're found, with their match count, size, date and first matching line. Select a file to see its
+                matching lines below the list.
+            </li>
+            <li>Tick the files to import (the header checkbox ticks all or none), choose how to import them, and click
+                <strong>Add files</strong>. They're added to <strong>Browsed Files</strong>; click
+                <strong>Import</strong> as usual, with <strong>Merge files</strong> if you want one combined view.
+            </li>
+        </ol>
+        <p><strong>Import</strong> has two choices:</p>
+        <ul>
+            <li><strong>Whole files</strong> — every row, like a normal import.</li>
+            <li><strong>Matching rows ± N rows of context</strong> — only the rows that match, plus N rows before
+                and after each one (0 to 1000), like <code>grep -B N -A N</code>. Browsed Files and the window title
+                show the search, e.g. <code>app.log [ERROR ±2]</code>. Only text-pattern logs can be loaded this way;
+                other files are imported whole.
+            </li>
+        </ul>
+        <p>In a <strong>Matching rows</strong> window:</p>
+        <figure class="shot">
+            <img src="screenshots/search-files-gap-bars.png"
+                 alt="A Matching rows window: two ERROR rows, each with two dimmed context rows before and after, and bars reading 38, 41 and 31 hidden lines where lines were left out">
+        </figure>
+        <ul>
+            <li>Context rows are dimmed so the matches stand out.</li>
+            <li>A bar between rows shows how many lines were left out there. Click it to read those lines from the
+                file and show them in place; a long gap offers the first 100, the last 100 or all of its lines.
+                Lines you show stay shown after a reload or restart.
+            </li>
+            <li>The bars appear only in the plain view: with no filter, time range, bookmarks view or sorting.</li>
+            <li><a href="#tailing">Tailing</a> shows <em>every</em> new line written to the file, matching or not.
+                Only the window's last file is tailed, and not inside an archive.
+            </li>
+            <li>In a <a href="#merging">merged view</a> the rows are kept, but there are no gap bars, no dimming and
+                no tailing of these sources.
+            </li>
+        </ul>
+        <div class="tip">
+            <div>Opening a whole file larger than 500 MB asks first, and offers <strong>Search instead…</strong>,
+                which opens Search Files on that file with <strong>Matching rows</strong> selected.
+            </div>
+        </div>
+        <div class="note">
+            <div>Dimming and tailing can be turned off in <a href="#settings-advanced">Settings → Advanced</a>
+                (<code>log.findInFiles.dimContextRows</code>, <code>log.findInFiles.tail</code>); the 500 MB warning
+                size is <code>log.open.largeFileWarnMB</code> (0 turns the warning off). Reopening a file from the recent-files list loads it
+                whole.
             </div>
         </div>
 
@@ -303,6 +386,67 @@ GET https://api.example.com/logs?page=3
         <div class="note">
             <div>Headers and pagination settings are saved with the URL's MRU entry, so re-importing (or
                 double-clicking) a previously used URL reuses the same request options automatically.
+            </div>
+        </div>
+
+        <h4 id="url-limits">Import Limits &amp; Redirects</h4>
+        <p>Klunk treats a URL's response as untrusted data, and these settings stop a slow, huge or misbehaving
+            server from hanging the import, running the app out of memory, or receiving your credentials
+            somewhere they weren't meant to go. All three are under
+            <strong>Settings → <a href="#settings-advanced">Advanced</a></strong> and apply to the next import,
+            no restart needed.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Default</th>
+                    <th>What it does</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>log.parser.url.read.timeout.seconds</code></td>
+                    <td><code>180</code></td>
+                    <td>Longest wait, in seconds, for more data from the server before the import fails with an
+                        error. It's not a limit on the whole download: a slow but steady response still completes.
+                        <code>0</code> = wait forever.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>log.parser.url.max.body.mb</code></td>
+                    <td><code>256</code></td>
+                    <td>Largest response, in MB, for each request (each page, when paginated). The whole response
+                        is held in memory while it's parsed, so a bigger one fails with a <em>Response is larger
+                        than … MB</em> error instead of running out of memory. Raise it for a big single-file
+                        download, or use pagination. <code>0</code> = no limit.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>log.parser.url.safeRedirects</code></td>
+                    <td><code>true</code></td>
+                    <td>When the server redirects the request elsewhere:
+                        <ul>
+                            <li>a redirect from <strong>HTTPS to plain HTTP</strong> is refused, as is one to
+                                anything other than http/https;
+                            </li>
+                            <li>your <a href="#url-request-options">headers</a> (API keys, tokens) are only sent
+                                to the original server. If a redirect points to a different host, port or scheme,
+                                the request goes on without them;
+                            </li>
+                            <li>at most 5 redirects are followed.</li>
+                        </ul>
+                        <code>false</code> follows every redirect and keeps sending the headers, the behavior of
+                        earlier versions.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="note">
+            <div>If a URL that worked before now fails to authenticate, it probably redirects to another host
+                that also needs your headers. Paste the final URL instead, or, if you trust both hosts, set
+                <code>log.parser.url.safeRedirects</code> to <code>false</code>.
             </div>
         </div>
 
@@ -464,8 +608,10 @@ GET https://api.example.com/logs?page=3
                  alt="Analyze Group dialog with a Group dropdown and Analyze / Cancel buttons">
         </figure>
 
-        <p>The resulting <strong>Group Analysis</strong> report aggregates severity counts and an hourly
-            issue-frequency chart across every file in the group, plus a per-file breakdown table (rows, errors,
+        <p>The resulting <strong>Group Analysis</strong> report aggregates severity counts and an
+            issue-frequency chart across every file in the group (its bars widen with the time span: 5 minutes for
+            an hour of logs, up to a week per bar for logs spanning months; time with no issues shows as
+            empty space), plus a per-file breakdown table (rows, errors,
             warnings). Additional tabs cover <strong>Issues &amp; Clusters</strong> and <strong>Token Linkage</strong>
             for deeper cross-file correlation.</p>
         <figure class="shot">
@@ -941,6 +1087,40 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </li>
         </ul>
         <p>Click <strong>Reload</strong> to apply the changes.</p>
+
+        <h3 id="export">Exporting a Log</h3>
+        <p>Click the export icon in the viewer toolbar or press <kbd>Ctrl+E</kbd> to save the log to a file.
+            Choose how it's written:</p>
+        <ul>
+            <li><strong>Delimiter</strong> — what separates the columns: pipe (default), comma, tab, semicolon,
+                space, or any text you type. Space-delimited output is suggested as <code>export.log</code>, the
+                others as <code>export.csv</code>.
+            </li>
+            <li><strong>Include column headers</strong> — write the column names as the first line.</li>
+            <li><strong>Quote values when needed (CSV)</strong> — wrap values that contain the delimiter, quotes or
+                line breaks in double quotes, so the file opens cleanly as CSV and imports back intact.
+            </li>
+            <li><strong>Redact output</strong> — mask IP addresses, host names, emails, passwords and tokens with
+                placeholders like <code>[IP_1]</code>, after your custom <a href="#settings">Redaction</a>
+                substitutions.
+            </li>
+        </ul>
+        <p>Then pick <strong>Filtered view</strong> to export exactly the rows on screen (current filter, time
+            range and bookmark filter), or <strong>All data</strong> for every row of the log. Timestamps are
+            written as ISO-8601 with an offset (e.g. <code>2026-10-19T09:30:00.123-04:00</code>) in the viewer's
+            display timezone, so an exported file re-imports with a working time column.</p>
+        <div class="note">
+            <div><strong>Spreadsheet safety.</strong> Log text can come from anyone, and a value such as
+                <code>=HYPERLINK("http://…")</code> would run as a formula when the export is opened in Excel,
+                LibreOffice or Google Sheets. So values starting with <code>=</code>, <code>+</code>,
+                <code>-</code> or <code>@</code> (other than plain numbers like <code>-5</code>) are written with a
+                leading <code>'</code>, which makes the spreadsheet show them as text. The <code>'</code> stays in
+                the file, so it also appears if you re-import the export here. For an exact copy, set
+                <code>log.export.formulaSafe</code> to <code>false</code> in
+                <strong>Settings → <a href="#settings-advanced">Advanced</a></strong> (default
+                <code>true</code>; applies to the next export).
+            </div>
+        </div>
 
         <hr>
 
@@ -1639,7 +1819,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <h3 id="settings-advanced">Advanced</h3>
         <p>Directly edit raw configuration properties not exposed elsewhere in the UI — useful for the
             <a href="#performance">virtualization tuning</a> properties and the <code>watch.alert.*</code>
-            <a href="#watch-export">alert export</a> settings. (TODO: create full list of available properties) Some changes may require a restart.</p>
+            <a href="#watch-export">alert export</a> settings, and the <a href="#url-limits">URL import limits</a>. (TODO: create full list of available properties) Some changes may require a restart.</p>
         <figure class="shot">
             <img src="screenshots/settings-advanced.png"
                  alt="Advanced settings: a Property/Value table showing log.file.check.enabled, log.file.check.interval.secs, log.virtualization.threshold, log.virtualization.pagesize, log.tail.interval.seconds, and watch.alert.* properties">

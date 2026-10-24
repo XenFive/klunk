@@ -17,6 +17,18 @@ You may not:
 - Reverse engineer, decompile, or disassemble the Software
 - Remove or alter any proprietary notices or labels on the Software
 
+THIRD-PARTY COMPONENTS
+The Software includes third-party components that are licensed under their
+own terms, not under this license. This includes OpenJFX (JavaFX), licensed
+under the GNU General Public License version 2 with the Classpath Exception,
+of which one file (javafx/scene/control/skin/VirtualFlow.java) has been
+modified by Licensor. The license terms, notices and source code for these
+components are provided with the Software (in META-INF/third-party inside the
+application jar and in the application's legal folder). Those terms take
+precedence over this license for those components, and nothing in this
+license, including the RESTRICTIONS above, limits any rights you have under
+them.
+
 DISCLAIMER OF WARRANTIES
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS
