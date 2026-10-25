@@ -125,7 +125,7 @@
             <li>Pick a source type — <strong>File</strong>, <strong>SFTP</strong>, <strong>Kubernetes</strong>,
                 <strong>Database</strong>, or <strong>URL</strong> — and load it.
                 <div class="note">
-                    <div>Source type tabs for types other than file or url are disabled in the <strong>Import data</strong> dialog by default. These datasources can be added through the <strong>Settings</strong> dialog.</div>
+                    <div>The <strong>SFTP</strong>, <strong>Kubernetes</strong> and <strong>Database</strong> tabs need a datasource first. Until you have one, the tab shows a <strong>Create … Datasource</strong> button that opens the datasource editor. You can also add datasources through the <strong>Settings</strong> dialog.</div>
                 </div>
             </li>
             <li>The viewer attempts to auto-detect the log format (pattern) and opens in a new tab.
@@ -1079,6 +1079,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 of the source timezone). New logs start in the <em>Default display timezone</em> set under
                 Settings &rarr; General Settings (UTC unless you change it).
             </li>
+            <li><strong>Encoding</strong> (local files and SFTP) — the character set the file is read in.
+                <em>Auto</em> detects it per file and shows what it found, e.g. <em>Auto (detected: UTF-8)</em>:
+                a byte-order mark or valid UTF-8 is used as is, otherwise the encoding is guessed from the text
+                (Windows-1251, Big5, Shift_JIS, GB18030, …), and if it can't be guessed the
+                <a href="#settings-general">default for non-UTF-8 files</a> is used. Pick or type another
+                encoding (any Java charset name, e.g. <code>ISO-8859-15</code>) if accented or non-Latin
+                characters show up garbled. UTF-16 files are supported too.
+            </li>
             <li><strong>Append non-matching lines to previous row's last field</strong> — when a physical line
                 doesn't match the pattern (e.g. a stack-trace continuation line), append it to the previous row
                 instead of dropping it or creating a malformed row.
@@ -1770,10 +1778,10 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </table>
         </div>
 
-        <h3>General Settings</h3>
+        <h3 id="settings-general">General Settings</h3>
         <figure class="shot">
             <img src="screenshots/settings-general.png"
-                 alt="General Settings panel: working directory, external editor path, Force purge database on close, and Scroll to last row checkboxes">
+                 alt="General Settings panel: external editor path, Force purge database on close and Scroll to last row checkboxes, Default display timezone, and Encoding of non-UTF-8 files">
         </figure>
         <div class="table-wrap">
             <table>
@@ -1784,10 +1792,6 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Working directory</td>
-                    <td>Default directory for log files and user data</td>
-                </tr>
                 <tr>
                     <td>External editor path</td>
                     <td>Application used to open raw log files from the launch icon</td>
@@ -1801,6 +1805,20 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tr>
                     <td>Scroll to the last row when a log file/source is initially opened</td>
                     <td>Jump straight to the newest entry on open</td>
+                </tr>
+                <tr>
+                    <td>Default display timezone</td>
+                    <td>Timezone newly opened logs show timestamps in (UTC unless you change it). Logs already open,
+                        restored sessions, and logs whose <a href="#load-settings">Display Timezone</a> you set keep
+                        theirs
+                    </td>
+                </tr>
+                <tr>
+                    <td>Encoding of non-UTF-8 files</td>
+                    <td>Used for files that aren't UTF-8 and whose encoding can't be guessed from the text
+                        (Windows-1252 unless you change it). Applies to files opened or reloaded from then on; a
+                        log's own <a href="#load-settings">Encoding</a> setting overrides it
+                    </td>
                 </tr>
                 </tbody>
             </table>
