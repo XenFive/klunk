@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klunk - Log Viewer — Where Klunk Keeps Its Files</title>
+    <link rel="canonical" href="https://www.kookaklunka.com/klunk/FILE_LOCATIONS.html">
+    <link rel="stylesheet" href="shared-styles.css">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#134f8f">
+</head>
+<body>
+
+<header class="site-header">
+    <a class="logo" href="index.html">Klunk <span>Log Viewer</span></a>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+        <a href="ABOUT.html">About</a>
+    </nav>
+</header>
+
+<div class="page-hero">
+    <h1>Where Klunk Keeps Its Files</h1>
+    <p>Find the log file, the config file and everything else Klunk saves, on Windows, macOS and Linux.</p>
+</div>
+
+<div class="doc-shell no-sidebar">
+    <article>
+
+        <div class="tip">
+            <div>
+                <strong>Quickest way to the log file:</strong> click the <strong>About</strong> button in the main toolbar, then click
+                <strong>View Log</strong>. Klunk opens its own log in a viewer.
+            </div>
+        </div>
+
+        <h2 id="data-folder">1. The data folder</h2>
+        <p>Klunk keeps almost everything in one folder, its <em>data folder</em>. Where that is depends on how
+            you run Klunk:</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr><th>Platform</th><th>Data folder</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Windows</td>
+                    <td>The folder that contains <code>Klunk.exe</code></td>
+                </tr>
+                <tr>
+                    <td>macOS (<code>Klunk.app</code>)</td>
+                    <td><code>~/Library/Application Support/Klunk</code></td>
+                </tr>
+                <tr>
+                    <td>Linux (packaged app)</td>
+                    <td><code>~/.local/share/Klunk</code><br>
+                        (or <code>$XDG_DATA_HOME/Klunk</code> if <code>XDG_DATA_HOME</code> is set)</td>
+                </tr>
+                <tr>
+                    <td>Any platform, run as <code>java -jar</code></td>
+                    <td>The folder that contains the jar</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>On macOS, <code>~/Library</code> is hidden in Finder. Use <strong>Go &rarr; Go to Folder&hellip;</strong>
+            (<kbd>Shift</kbd>+<kbd>Cmd</kbd>+<kbd>G</kbd>) and paste the path. On Linux, folders starting with
+            <code>.</code> are hidden; press <kbd>Ctrl</kbd>+<kbd>H</kbd> in most file managers to show them.</p>
+
+        <h3>What's in it</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr><th>File or folder</th><th>What it is</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>logs/klunk.log</code></td>
+                    <td>Klunk's own application log. Older logs are kept beside it as
+                        <code>klunk-&lt;date-time&gt;.log.gz</code>. Attach these when you report a problem.</td>
+                </tr>
+                <tr>
+                    <td><code>config.properties</code></td>
+                    <td>Your settings, saved datasources, patterns, filter presets and recent files.
+                        It only holds what you've changed; everything else uses the built-in defaults.</td>
+                </tr>
+                <tr>
+                    <td><code>config.properties.&lt;date-time&gt;.bak</code></td>
+                    <td>Automatic backups of <code>config.properties</code> (the last 4 are kept).
+                        To roll back, close Klunk and copy one over <code>config.properties</code>.</td>
+                </tr>
+                <tr>
+                    <td><code>session.json</code></td>
+                    <td>The open windows, filters and bookmarks restored on the next launch.</td>
+                </tr>
+                <tr>
+                    <td><code>groups/</code></td>
+                    <td>Saved file groups, one <code>.json</code> file each.</td>
+                </tr>
+                <tr>
+                    <td><code>logviewer.db</code></td>
+                    <td>Klunk's working database of loaded log rows. It can grow large and can be deleted
+                        safely while Klunk is closed. To keep it elsewhere, add
+                        <code>log.database.location=&lt;folder&gt;</code> to <code>config.properties</code>.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 id="home-folder">2. Keys, in your home folder</h2>
+        <p>Keys are kept in a <code>.logviewer</code> folder in your home folder, not in the data folder:</p>
+        <ul>
+            <li>Windows: <code>%USERPROFILE%\.logviewer</code> (for example <code>C:\Users\you\.logviewer</code>)</li>
+            <li>macOS: <code>~/.logviewer</code> (<code>/Users/you/.logviewer</code>)</li>
+            <li>Linux: <code>~/.logviewer</code> (<code>/home/you/.logviewer</code>)</li>
+        </ul>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr><th>File</th><th>What it is</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>secret.key</code></td>
+                    <td>Encrypts the passwords, SSH passphrases and kubeconfigs saved in
+                        <code>config.properties</code>. If you delete it, or copy <code>config.properties</code>
+                        to another computer without it, you'll need to enter those credentials again.</td>
+                </tr>
+                <tr>
+                    <td><code>keys/id_rsa</code>, <code>keys/id_rsa.pub</code></td>
+                    <td>The SSH key pair made by <strong>Settings &rarr; Generate New Key</strong>.
+                        Give the server the <code>.pub</code> file; never share <code>id_rsa</code>.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warn">
+            <div>
+                <code>secret.key</code>, <code>keys/id_rsa</code> and <code>config.properties</code> together
+                give access to your saved servers. Keep them private and don't attach them to bug reports.
+            </div>
+        </div>
+
+        <h2 id="temp">3. Temporary files</h2>
+        <p>Files downloaded over SFTP, extracted from archives, pasted or dropped in, and converted copies go in
+            the system temp folder, named <code>klunk-temp-&hellip;</code>. Klunk removes them when it closes, and
+            clears any left behind by a crash on a later start.</p>
+        <ul>
+            <li>Windows: <code>%TEMP%</code></li>
+            <li>macOS: the folder in <code>$TMPDIR</code></li>
+            <li>Linux: <code>/tmp</code></li>
+        </ul>
+
+        <h2 id="move">4. Moving the data folder</h2>
+        <p>If Klunk is installed somewhere you can't write to (such as <code>Program Files</code>), or you want its
+            data elsewhere, create a text file named <code>launch.properties</code> next to <code>Klunk.exe</code>
+            (or the jar) with one line:</p>
+        <pre><code>working.dir=D:/KlunkData</code></pre>
+        <p>Use <code>working.dir=USER_HOME</code> to put the data folder in <code>.logviewer</code> in your home
+            folder. A relative path is taken as relative to the Klunk folder. The change takes effect the next time
+            Klunk starts; copy your existing files across if you want to keep them.</p>
+
+        <h2 id="reset">5. Starting fresh</h2>
+        <p>"Starting fresh" means putting Klunk back the way it was when you first installed it, either
+            completely or one part at a time.</p>
+        <p>This never touches your own log files. Klunk only reads them, and what it deletes here are its own
+            copies and settings.</p>
+        <p>Close Klunk first, then delete (or rename, so you can undo it) any of these from the data folder.
+            Klunk recreates each one with default values the next time it starts.</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr><th>Remove</th><th>What you lose</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>session.json</code></td>
+                    <td>The windows, filters, bookmarks and time ranges that were open last time. Klunk starts
+                        with no logs open.</td>
+                </tr>
+                <tr>
+                    <td><code>logviewer.db</code></td>
+                    <td>Nothing permanent. It only holds rows loaded from your logs, and Klunk loads them
+                        again from the original files when you reopen them.</td>
+                </tr>
+                <tr>
+                    <td><code>config.properties</code></td>
+                    <td>All your settings, plus saved datasources (database, SFTP, Kubernetes), custom log
+                        patterns, filter presets and recent files. To undo only recent changes, restore a
+                        <code>.bak</code> backup instead.</td>
+                </tr>
+                <tr>
+                    <td><code>groups/</code></td>
+                    <td>Your saved file groups.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p><strong>Full reset:</strong> remove everything in the table above, plus the <code>logs/</code>
+            folder and the <code>.logviewer</code> folder in your home folder. On macOS and Linux you can simply
+            delete the whole data folder. On Windows don't, because it's also where <code>Klunk.exe</code> lives.
+            A full reset also removes <code>secret.key</code> and any SSH keys Klunk generated, so
+            servers set up to accept that key will refuse it until you add the new one.</p>
+
+        <a class="back-to-top" href="#data-folder">↑ Back to top</a>
+
+    </article>
+</div>
+
+<footer class="site-footer">
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="USER_GUIDE.html">User Guide</a>
+        <a href="PRIVACY.html">Privacy</a>
+        <a href="TERMS.html">Terms</a>
+        <a href="ABOUT.html">About</a>
+    </nav>
+    <p>Klunk - Log Viewer &mdash; free to use. &copy; 2026 KookaKlunka Studios, LLC.</p>
+</footer>
+
+</body>
+</html>
