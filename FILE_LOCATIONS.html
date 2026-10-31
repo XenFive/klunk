@@ -52,7 +52,8 @@
                 <tbody>
                 <tr>
                     <td>Windows</td>
-                    <td>The folder that contains <code>Klunk.exe</code></td>
+                    <td>The <code>app</code> folder inside the Klunk folder, i.e. <code>Klunk\app\</code>
+                        (next to <code>klunk.jar</code>, not next to <code>Klunk.exe</code>)</td>
                 </tr>
                 <tr>
                     <td>macOS (<code>Klunk.app</code>)</td>
@@ -163,11 +164,11 @@
 
         <h2 id="move">4. Moving the data folder</h2>
         <p>If Klunk is installed somewhere you can't write to (such as <code>Program Files</code>), or you want its
-            data elsewhere, create a text file named <code>launch.properties</code> next to <code>Klunk.exe</code>
-            (or the jar) with one line:</p>
+            data elsewhere, create a text file named <code>launch.properties</code> next to <code>klunk.jar</code>
+            (on Windows, in <code>Klunk\app\</code>; when run as <code>java -jar</code>, next to the jar) with one line:</p>
         <pre><code>working.dir=D:/KlunkData</code></pre>
         <p>Use <code>working.dir=USER_HOME</code> to put the data folder in <code>.logviewer</code> in your home
-            folder. A relative path is taken as relative to the Klunk folder. The change takes effect the next time
+            folder. A relative path is taken as relative to the folder <code>launch.properties</code> is in. The change takes effect the next time
             Klunk starts; copy your existing files across if you want to keep them.</p>
 
         <h2 id="reset">5. Starting fresh</h2>
@@ -210,7 +211,7 @@
 
         <p><strong>Full reset:</strong> remove everything in the table above, plus the <code>logs/</code>
             folder and the <code>.logviewer</code> folder in your home folder. On macOS and Linux you can simply
-            delete the whole data folder. On Windows don't, because it's also where <code>Klunk.exe</code> lives.
+            delete the whole data folder. On Windows don't, because it's also where <code>klunk.jar</code> lives: delete only the files listed above.
             A full reset also removes <code>secret.key</code> and any SSH keys Klunk generated, so
             servers set up to accept that key will refuse it until you add the new one.</p>
 

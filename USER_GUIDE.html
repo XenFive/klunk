@@ -36,6 +36,7 @@
     <aside class="toc-sidebar">
         <h3>Contents</h3>
         <ul style="list-style:none;padding:0">
+            <li class="h2-item"><a href="#install">Installing &amp; Updating</a></li>
             <li class="h2-item"><a href="#quick-start">Quick Start</a></li>
             <li class="h2-item"><a href="#importing">Importing Logs</a></li>
             <li class="sub">
@@ -114,8 +115,116 @@
     <!-- ── Article ── -->
     <article>
 
+        <!-- INSTALLING AND UPDATING -->
+        <h2 id="install">Installing and Updating</h2>
+        <p>Klunk doesn't currently have an installer. Each download is a zip archive: unzip it to a folder you can write
+            to and run Klunk from there. A lean Java runtime is included, so it runs without requiring any existing or new Java installation.</p>
+
+        <h3>Installing</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Platform</th>
+                <th>Download</th>
+                <th>Where to unzip it</th>
+                <th>Run</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Windows</td>
+                <td><code>Klunk-windows.zip</code></td>
+                <td>A folder you own, for example <code>C:\Users\you\Apps\</code> or <code>D:\Tools\</code>. This
+                    creates a <code>Klunk</code> folder there. Avoid <code>Program Files</code>: Klunk keeps its
+                    settings inside its own folder, and a normal user can't write there.
+                </td>
+                <td><code>Klunk\Klunk.exe</code></td>
+            </tr>
+            <tr>
+                <td>macOS (Apple Silicon)</td>
+                <td><code>Klunk-macos.zip</code></td>
+                <td rowspan="2">Unzip it, then drag <code>Klunk.app</code> into <strong>Applications</strong>.
+                    Don't run it straight from Downloads: macOS runs apps there from a read-only copy.
+                </td>
+                <td rowspan="2"><code>Klunk.app</code>. The first time, macOS blocks it because it isn't signed.
+                    The <code>README.txt</code> in the zip explains how to allow it.
+                </td>
+            </tr>
+            <tr>
+                <td>macOS (Intel)</td>
+                <td><code>Klunk-macos-x64.zip</code></td>
+            </tr>
+            <tr>
+                <td>Linux</td>
+                <td><code>Klunk-linux-x64.zip</code> or <code>Klunk-linux-arm64.zip</code></td>
+                <td>Anywhere, for example <code>~/Apps/</code>. It can also go somewhere read-only such as
+                    <code>/opt</code> (unzip with <code>sudo</code>), since Klunk keeps its settings in your home
+                    folder.
+                </td>
+                <td><code>Klunk/bin/Klunk</code>. If it won't start, run
+                    <code>chmod +x Klunk/bin/Klunk</code> first.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="note">
+            <div>Windows may show a SmartScreen warning, or your antivirus may flag <code>Klunk.exe</code>, because
+                Klunk isn't code-signed. Click <strong>More info</strong> → <strong>Run anyway</strong>.
+            </div>
+        </div>
+
+        <h3>Updating</h3>
+        <p><strong>About → Check for Updates</strong> tells you when a new version is out and links to the
+            download. To install it:</p>
+        <ol>
+            <li>Close Klunk, including any undocked viewer windows.</li>
+            <li>Replace the program with the new download:
+                <ul>
+                    <li><strong>Windows:</strong> unzip the new <code>Klunk-windows.zip</code> into the
+                        <strong>same</strong> folder you unzipped the old one into, and choose to replace the
+                        existing files. <strong>Don't delete the old <code>Klunk</code> folder first</strong>: your
+                        settings are inside it, in <code>Klunk\app\</code>.
+                    </li>
+                    <li><strong>macOS:</strong> drag the new <code>Klunk.app</code> into
+                        <strong>Applications</strong> and choose <strong>Replace</strong>. macOS asks you to allow
+                        the new copy once, as on the first install.
+                    </li>
+                    <li><strong>Linux:</strong> delete the old <code>Klunk</code> folder and unzip the new one in
+                        its place.
+                    </li>
+                </ul>
+            </li>
+            <li>Start Klunk. It opens with your previous windows, settings and datasources.</li>
+        </ol>
+        <div class="note">
+            <div><strong>Updating doesn't touch your files.</strong> The download contains only the program. Your
+                settings (<code>config.properties</code> and its backups), saved datasources and patterns, session,
+                file groups, Klunk's database and its own logs aren't in it, so replacing the program leaves them as
+                they were. The same goes for your keys in the <code>.logviewer</code> folder in your home folder.
+                Klunk never changes your log files, during an update or otherwise. On macOS and Linux, all of this
+                is kept outside the program folder anyway. For exact locations, see
+                <a href="FILE_LOCATIONS.html">Where Klunk Keeps Its Files</a>.
+            </div>
+        </div>
+        <div class="note">
+            <div>The one file an update does replace is <code>Klunk.cfg</code>, so if you raised the
+                <a href="#memory-tuning">memory limit</a>, set it again after updating.
+            </div>
+        </div>
+
+        <hr>
+
         <!-- QUICK START -->
         <h2 id="quick-start">Quick Start</h2>
+        <div class="note">
+            <div><strong>New to Klunk? Try the walkthroughs.</strong> Klunk has a built-in
+                <strong>Quick Start Guide</strong> with short, hands-on walkthroughs that use sample logs: finding the
+                problem in a log, lining up two logs, creating a pattern, connecting a datasource, watching a log live
+                and searching a folder of logs, plus an FAQ. It opens on first launch and after each update (with a
+                <strong>What's New</strong> page). To open it any time, click the <strong>Help</strong> button
+                (<strong>?</strong>) in the Log Manager toolbar and choose <strong>Quick Start</strong>.
+            </div>
+        </div>
         <ol>
             <li>Launch the application — the <strong>Import Data</strong> dialog opens automatically.
                 <div class="note">
@@ -198,11 +307,14 @@
             <li><strong>Match:</strong>
                 <ul>
                     <li><strong>Any term</strong> or <strong>All terms</strong> — whether one term is enough or every
-                        term must be found.</li>
+                        term must be found.
+                    </li>
                     <li><strong>Anywhere in file</strong> or <strong>On one line</strong> — with All terms, whether
-                        the terms may be on different lines or must be on the same line.</li>
+                        the terms may be on different lines or must be on the same line.
+                    </li>
                     <li><strong>Stop at first match</strong> — faster on large folders: each file is read only up to
-                        its first match, so <strong>Matches</strong> shows <em>Yes</em> instead of a count.</li>
+                        its first match, so <strong>Matches</strong> shows <em>Yes</em> instead of a count.
+                    </li>
                 </ul>
             </li>
             <li>Click <strong>Search</strong> (<strong>Stop</strong> ends it early). Matching files are listed as
@@ -418,7 +530,7 @@ GET https://api.example.com/logs?page=3
                     <td><code>256</code></td>
                     <td>Largest response, in MB, for each request (each page, when paginated). The whole response
                         is held in memory while it's parsed, so a bigger one fails with a <em>Response is larger
-                        than … MB</em> error instead of running out of memory. Raise it for a big single-file
+                            than … MB</em> error instead of running out of memory. Raise it for a big single-file
                         download, or use pagination. <code>0</code> = no limit.
                     </td>
                 </tr>
@@ -895,11 +1007,11 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tbody>
                 <tr>
                     <td>Jump to next bookmark</td>
-                    <td>Click <strong>↓</strong> in the viewer header, or <kbd>Ctrl+Down</kbd></td>
+                    <td>Click <strong>↓</strong> in the viewer header, or <kbd>Alt+Down</kbd></td>
                 </tr>
                 <tr>
                     <td>Jump to previous</td>
-                    <td>Click <strong>↑</strong>, or <kbd>Ctrl+Up</kbd></td>
+                    <td>Click <strong>↑</strong>, or <kbd>Alt+Up</kbd></td>
                 </tr>
                 <tr>
                     <td>Show bookmarks only</td>
@@ -1807,6 +1919,11 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td>Jump straight to the newest entry on open</td>
                 </tr>
                 <tr>
+                    <td>Follow new rows from tailing when the last row is showing</td>
+                    <td>When you're scrolled to the bottom, tailing (or a reload that tails) moves you down to the
+                        newest row. Scrolled anywhere else, you stay where you are. On by default</td>
+                </tr>
+                <tr>
                     <td>Default display timezone</td>
                     <td>Timezone newly opened logs show timestamps in (UTC unless you change it). Logs already open,
                         restored sessions, and logs whose <a href="#load-settings">Display Timezone</a> you set keep
@@ -1885,6 +2002,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td>Focus the window-search filter</td>
                 </tr>
                 <tr>
+                    <td><kbd>Ctrl+V</kbd></td>
+                    <td>Open copied files or log text (outside a text box)</td>
+                </tr>
+                <tr>
+                    <td><kbd>Space</kbd></td>
+                    <td>Check or uncheck the highlighted rows</td>
+                </tr>
+                <tr>
                     <td><kbd>Ctrl+W</kbd></td>
                     <td>Close selected windows</td>
                 </tr>
@@ -1908,6 +2033,60 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </table>
         </div>
 
+        <h3>Import Window</h3>
+        <div class="table-wrap">
+            <table class="shortcuts">
+                <thead>
+                <tr>
+                    <th>Shortcut</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><kbd>Ctrl+O</kbd></td>
+                    <td>Browse for files to import</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+Shift+F</kbd></td>
+                    <td>Search files</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+Enter</kbd></td>
+                    <td>Import</td>
+                </tr>
+                <tr>
+                    <td><kbd>Escape</kbd></td>
+                    <td>Close the Import window</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+1</kbd></td>
+                    <td>File tab</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+2</kbd></td>
+                    <td>SFTP tab</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+3</kbd></td>
+                    <td>Kubernetes tab</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+4</kbd></td>
+                    <td>Database tab</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+5</kbd></td>
+                    <td>URL tab</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+6</kbd></td>
+                    <td>Groups tab (once a group is saved)</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
         <h3>Log Viewer</h3>
         <div class="table-wrap">
             <table class="shortcuts">
@@ -1919,8 +2098,12 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 </thead>
                 <tbody>
                 <tr>
+                    <td><kbd>Ctrl+R</kbd></td>
+                    <td>Reload the log from its source</td>
+                </tr>
+                <tr>
                     <td><kbd>Ctrl+F</kbd></td>
-                    <td>Open / focus Find bar</td>
+                    <td>Open / focus the Find box</td>
                 </tr>
                 <tr>
                     <td><kbd>F3</kbd></td>
@@ -1931,28 +2114,64 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td>Find previous</td>
                 </tr>
                 <tr>
+                    <td><kbd>Ctrl+L</kbd></td>
+                    <td>Focus the filter box</td>
+                </tr>
+                <tr>
                     <td><kbd>Ctrl+Shift+L</kbd></td>
                     <td>Clear the filter</td>
                 </tr>
                 <tr>
-                    <td><kbd>Enter</kbd></td>
-                    <td>Open Row Detail for selected row</td>
+                    <td><kbd>Escape</kbd></td>
+                    <td>In the filter box: undo an edit you haven't applied, or clear the filter</td>
                 </tr>
                 <tr>
-                    <td><kbd>Ctrl+A</kbd></td>
-                    <td>Select all visible rows</td>
+                    <td><kbd>Ctrl+T</kbd></td>
+                    <td>Start / stop tailing</td>
                 </tr>
                 <tr>
-                    <td><kbd>Ctrl+C</kbd></td>
-                    <td>Copy selected rows to clipboard (tab-separated)</td>
+                    <td><kbd>Ctrl+S</kbd></td>
+                    <td>Log Settings</td>
                 </tr>
                 <tr>
-                    <td><kbd>Ctrl+↑</kbd></td>
+                    <td><kbd>Ctrl+G</kbd></td>
+                    <td>Set the time range</td>
+                </tr>
+                <tr>
+                    <td><kbd>Space</kbd></td>
+                    <td>Bookmark the selected rows, or remove their bookmark</td>
+                </tr>
+                <tr>
+                    <td><kbd>Alt+↑</kbd></td>
                     <td>Jump to previous bookmark</td>
                 </tr>
                 <tr>
-                    <td><kbd>Ctrl+↓</kbd></td>
+                    <td><kbd>Alt+↓</kbd></td>
                     <td>Jump to next bookmark</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+B</kbd></td>
+                    <td>Show only bookmarked rows (press again to show all)</td>
+                </tr>
+                <tr>
+                    <td><kbd>Enter</kbd></td>
+                    <td>Open Row Detail for the selected row</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+C</kbd></td>
+                    <td>Copy the selected rows, with a line of column names first</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+A</kbd></td>
+                    <td>Select all rows</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+Shift+A</kbd></td>
+                    <td>Analyze</td>
+                </tr>
+                <tr>
+                    <td><kbd>Tab / Shift+Tab</kbd></td>
+                    <td>Move the selected cell right / left</td>
                 </tr>
                 <tr>
                     <td><kbd>↑ / ↓</kbd></td>
@@ -1967,8 +2186,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td>Export Log…</td>
                 </tr>
                 <tr>
-                    <td><kbd>F5</kbd></td>
-                    <td>Reload log from source</td>
+                    <td><kbd>Ctrl+H</kbd></td>
+                    <td>Show the Log Manager</td>
                 </tr>
                 </tbody>
             </table>

@@ -1,4 +1,4 @@
-2026-03-12T08:00:00.000Z [main] INFO  com.example.shop.ShopApplication - Starting shop-web v4.18.2 (cold start)
+    2026-03-12T08:00:00.000Z [main] INFO  com.example.shop.ShopApplication - Starting shop-web v4.18.2 (cold start)
 2026-03-12T08:00:00.412Z [main] INFO  com.example.shop.config.AppConfig - Active profile: prod, region: eu-west
 2026-03-12T08:00:01.362Z [main] INFO  com.example.shop.db.ConnectionPool - Pool 'orders-db' started (max 20 connections)
 2026-03-12T08:00:02.002Z [main] INFO  com.example.shop.client.PaymentClient - Payment endpoint http://payments:8443, timeout 30000 ms
