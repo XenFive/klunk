@@ -64,20 +64,20 @@
 
     <div class="dl-actions">
         <a class="btn-download" id="btn-download"
-           href="https://github.com/XenFive/klunk/releases/tag/v0.9.95">
+           href="https://github.com/XenFive/klunk/releases/tag/v0.9.96">
             <span class="arrow">&#x2B07;</span> <span id="btn-download-label">Download</span>
         </a>
     </div>
     <!-- Versions in these URLs (and VERSION in the script below) are stamped from app.version in
          default.properties by the stamp-version step in pom.xml -->
     <p class="dl-platforms">
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.95/Klunk-windows.zip">Windows</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.95/Klunk-macos.zip">macOS (Apple Silicon)</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.95/Klunk-macos-x64.zip">macOS (Intel)</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.95/Klunk-linux-x64.zip">Linux x64</a>
-        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.95/Klunk-linux-arm64.zip">Linux ARM64</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.96/Klunk-windows.zip">Windows</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.96/Klunk-macos.zip">macOS (Apple Silicon)</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.96/Klunk-macos-x64.zip">macOS (Intel)</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.96/Klunk-linux-x64.zip">Linux x64</a>
+        <a href="https://github.com/XenFive/klunk/releases/download/v0.9.96/Klunk-linux-arm64.zip">Linux ARM64</a>
     </p>
-    <p class="dl-meta">Current version: <span id="dl-version">v0.9.95</span> &middot; (this beta version is valid until 4/15/2027)</p>
+    <p class="dl-meta">Current version: <span id="dl-version">v0.9.96</span> &middot; (this beta version is valid until 4/15/2027)</p>
     <p> Free to use &middot; Available for Linux, Windows and macOS</p>
 </section>
 
@@ -93,71 +93,135 @@
 
     <div class="feature-grid">
         <div class="feature-card">
-            <div class="icon">📂</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2 2 7l10 5 10-5-10-5z"/>
+                    <path d="m2 12 10 5 10-5"/>
+                    <path d="m2 17 10 5 10-5"/>
+                </svg>
+            </div>
             <strong>Multiple Data Sources</strong>
             <p>Local files, databases, Kubernetes pods, SFTP, HTTP get/post URLs. Opens logs directly inside
                 <code>.zip</code>, <code>.gz</code>, <code>.tar</code> and <code>.tar.gz</code> archives, locally or over SFTP.
                 <em>Search Files</em> searches through files and can import just the matching files or rows.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">🔀</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="18" cy="18" r="3"/>
+                    <circle cx="6" cy="6" r="3"/>
+                    <path d="M6 21V9a9 9 0 0 0 9 9"/>
+                </svg>
+            </div>
             <strong>Log Merging</strong>
             <p>Combine files into one chronological stream with color-coded sources — or keep them separate and
                 use <em>Synch All</em> to scroll every open log to the same time.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">🔍</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
+                </svg>
+            </div>
             <strong>Advanced Filtering</strong>
             <p>SQL-like syntax — <code>LIKE</code>, <code>=</code>, <code>AND</code>, <code>OR</code>, nested
                 groups.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">🔖</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                </svg>
+            </div>
             <strong>Bookmarks</strong>
             <p>Pin important rows with multicolor bookmarks, comments, and time markers — then filter down to
                 just what you've flagged, plus <em>Bookmark time</em> to mark the same moment across every open log.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">🧩</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1"/>
+                    <path d="M16 21h1a2 2 0 0 0 2-2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/>
+                    <path d="M12 8v8M8.5 10l7 4M15.5 10l-7 4"/>
+                </svg>
+            </div>
             <strong>Customisable Patterns</strong>
             <p>Regex-based pattern engine supports Log4j, Logback, CSV, JSON, XML, key-value and custom formats.
                 Formats are auto-detected, and a generator builds new patterns from a sample line.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">🗄</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                    <path d="M3 5v14a9 3 0 0 0 18 0V5"/>
+                    <path d="M3 12a9 3 0 0 0 18 0"/>
+                </svg>
+            </div>
             <strong>Adaptive Storage</strong>
             <p>Smaller logs stay fully in memory for speed; larger ones switch to SQLite-backed paging and handle
                 millions of rows. The switch-over threshold is configurable in Settings.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">📡</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+            </div>
             <strong>Live Tailing</strong>
             <p>Real-time monitoring with automatic file-rotation detection.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">💾</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                    <path d="M17 21v-8H7v8"/>
+                    <path d="M7 3v5h8"/>
+                </svg>
+            </div>
             <strong>Session Persistence</strong>
             <p>Saves and restores opened files, filters, window positions, and bookmarks.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">⏱</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2v20"/>
+                    <rect x="7" y="5" width="10" height="4" rx="2"/>
+                    <rect x="7" y="15" width="10" height="4" rx="2"/>
+                </svg>
+            </div>
             <strong>Visual Time Slider</strong>
             <p>Dual-thumb vertical slider with error/warning markers and live viewport tracking.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">🎨</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18M9 21V9"/>
+                </svg>
+            </div>
             <strong>Interactive UI</strong>
             <p>Dockable tabs, in-text search with highlighting, multicolor bookmarks, timestamp timezone
                 conversion, light/dark theme, customizable table font/colors.</p>
         </div>
         <div class="feature-card">
-            <div class="icon">📊</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 3v18h18"/>
+                    <path d="M8 17v-4M13 17V7M18 17v-7"/>
+                </svg>
+            </div>
             <strong>Log Analysis</strong>
             <p>Error/warning reports and charts with best-effort redaction of sensitive data (includes custom
                 find/replace overrides) before anything is copied or exported. (useful for AI prompting)</p>
         </div>
         <div class="feature-card">
-            <div class="icon">⚖</div>
+            <div class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M12 3v18"/>
+                    <path d="M6.5 8h2.5M6.5 12h2.5M6.5 16h2.5M15 8h2.5M15 12h2.5"/>
+                </svg>
+            </div>
             <strong>Compare</strong>
             <p>Side-by-side diff of pasted text or log rows with changed characters highlighted. Also compares lists
                 ignoring order, and the gaps between timestamps.</p>
@@ -222,10 +286,10 @@
 <script>
     (function () {
         // Stamped from app.version in default.properties by the build (stamp-version in pom.xml)
-        var VERSION = "v0.9.95";
+        var VERSION = "v0.9.96";
         // Release assets on GitHub; keep these names identical across every release
         var BASE = "https://github.com/XenFive/klunk/releases/download/" + VERSION + "/";
-        var BASETEMP = "https://github.com/XenFive/klunk/releases/download/v0.9.95/";
+        var BASETEMP = "https://github.com/XenFive/klunk/releases/download/v0.9.96/";
         var ASSETS = {
             windows: BASE + "Klunk-windows.zip",
             mac: BASE + "Klunk-macos.zip",
