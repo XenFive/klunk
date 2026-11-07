@@ -94,6 +94,8 @@
                     <li><a href="#auto-detect">Auto-Detection</a></li>
                     <li><a href="#pattern-types">Pattern Types</a></li>
                     <li><a href="#pattern-editor">Pattern Editor</a></li>
+                    <li><a href="#db-patterns">Database Patterns</a></li>
+                    <li><a href="#ai-patterns">Patterns with an AI</a></li>
                     <li><a href="#regex-generator">Regex Generator</a></li>
                     <li><a href="#change-pattern">Changing a Pattern</a></li>
                 </ul>
@@ -375,7 +377,8 @@
             <li>Pick a saved datasource, or create one via the <strong>DB Datasource Editor</strong> (host, port,
                 database, credentials).
             </li>
-            <li>Choose the target table and a <strong>Log Pattern</strong> describing its columns.</li>
+            <li>Choose the target table and a <strong>Log Pattern</strong>: leave it empty to import every
+                column, or pick a <a href="#db-patterns">database pattern</a> to rename, order or size them.</li>
             <li>Click <strong>Import</strong>.</li>
         </ol>
         <div class="note">
@@ -788,6 +791,15 @@ GET https://api.example.com/logs?page=3
         <h3 id="row-detail">Row Detail View</h3>
         <p>Double-click a row (or press <kbd>Enter</kbd>) to open the <strong>Row Detail</strong> panel. It shows
             every field fully wrapped, with one-click copy for individual fields or the entire entry.</p>
+        <p>Right-click a row and choose <strong>View</strong> to open the selected rows as text. Its toolbar
+            reformats the selection, or all the text when nothing is selected: <strong>JSON</strong> and
+            <strong>XML</strong> pretty-print, <strong>Trace</strong> splits a flattened stack trace,
+            <strong>Decode</strong> handles Base64, JWT, hex, URL encoding, escapes and epoch times, and
+            <strong>CSV</strong> puts each delimited item on its own line.</p>
+        <p>The <strong>CSV</strong> menu's <strong>Custom...</strong> splits on any text you type, adding a
+            line break after each one and keeping the separator. Type <code>\n</code> to break a log that
+            wrote its line breaks as the two characters <code>\n</code>; <code>\t</code> matches both a
+            written <code>\t</code> and a real tab.</p>
 
         <h3 id="filtering">Filtering Logs</h3>
         <p>The <strong>filter bar</strong> at the top of every viewer accepts SQL-style WHERE expressions. Press
@@ -1073,6 +1085,10 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <code>WARN</code>, <code>ERROR</code>) to also raise a watch alert during tailing and on file open —
                 leave it at <strong>None (annotation only)</strong> for a silent bookmark.
             </li>
+            <li>Optionally pick a <strong>Highlight Color</strong> for the rows it matches: the default amber, or one
+                of the palette colors after the ten bookmark colors (set them under <strong>Log Colors</strong>). In the
+                bookmarks view's filter, every annotation color counts as <strong>Annotations</strong>.
+            </li>
             <li><strong>Save</strong>.</li>
         </ol>
         <figure class="shot">
@@ -1158,6 +1174,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </li>
             <li><strong>Errors</strong> / <strong>Warnings</strong> — the individual matching rows.</li>
             <li><strong>Frequency</strong> — a time-bucketed breakdown of activity.</li>
+            <li><strong>Time Gaps</strong> — stretches with no rows (at least a minute, and ten times the usual time
+                between rows), from the last row before each gap to the first row after it. For a log written in
+                bursts with regular pauses, such as a job that runs every few minutes, a gap must also be three
+                times its usual pause, so the pauses between runs aren't listed (<code>log.analysis.timeGaps.periodic</code>). <strong>Last row
+                before</strong> / <strong>First row after</strong> select that row in the viewer. In a merged view or
+                a group analysis it also lists times one file went quiet while the others kept logging. Turn it off
+                with <code>log.analysis.timeGaps</code> in Settings → Advanced.
+            </li>
         </ul>
         <p>At the bottom:</p>
         <ul>
@@ -1182,7 +1206,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         </figure>
         <ul>
             <li><strong>File Type</strong> / <strong>Log Pattern</strong> — switch which <a href="#patterns">pattern</a>
-                is used to parse the file.
+                is used to parse the file. A database window lists only <a href="#db-patterns">database
+                patterns</a> and <strong>(All table columns)</strong>.
             </li>
             <li><strong>Source Timezone</strong> — the timezone the raw timestamps are written in (if not embedded
                 in the format itself).
@@ -1203,7 +1228,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 doesn't match the pattern (e.g. a stack-trace continuation line), append it to the previous row
                 instead of dropping it or creating a malformed row.
             </li>
-            <li><strong>Filter Annotations</strong> — jump straight to managing annotations that apply to this file.
+            <li><strong>Bookmark annotations for this file</strong> — on by default, except for files over the row
+                limit set in <strong>Settings → Annotations</strong> (1,000,000 unless changed) or when <strong>Apply bookmark annotations on load</strong> is off in Settings. Takes effect
+                right away: turning it off removes this file's annotation bookmarks, hides
+                <strong>Filter Annotations</strong> and notes "Annotations: off" in the description box. The
+                choice is remembered for the file (in the session and the recent-files list).
+            </li>
+            <li><strong>Filter Annotations</strong> — (shown when <strong>Bookmark annotations</strong> is on)
+                re-runs the annotations against this file and bookmarks the matching rows.
             </li>
         </ul>
         <p>Click <strong>Reload</strong> to apply the changes.</p>
@@ -1220,8 +1252,9 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             <li><strong>Quote values when needed (CSV)</strong> — wrap values that contain the delimiter, quotes or
                 line breaks in double quotes, so the file opens cleanly as CSV and imports back intact.
             </li>
-            <li><strong>Redact output</strong> — mask IP addresses, host names, emails, passwords and tokens with
-                placeholders like <code>[IP_1]</code>, after your custom <a href="#settings">Redaction</a>
+            <li><strong>Redact output</strong> — mask IP addresses, host names, emails, passwords, tokens (including
+                JWTs), API keys, private keys and cookie values with
+                placeholders like <code>[IP_1_LEN8]</code>, after your custom <a href="#settings">Redaction</a>
                 substitutions.
             </li>
         </ul>
@@ -1459,7 +1492,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 </tr>
                 <tr>
                     <td><strong>Database</strong></td>
-                    <td>Column layout discovered from the DB schema</td>
+                    <td>All the table's columns, or the ones a <a href="#db-patterns">database pattern</a> lists</td>
                     <td>External DB tables</td>
                 </tr>
                 <tr>
@@ -1494,8 +1527,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 sample line, then adjust each column's <strong>Column Name</strong>, <strong>Column Type</strong>,
                 and <strong>Column Size</strong> (see <a href="#column-types-sizes">Column types and sizes</a>).
             </li>
-            <li><strong>Save Pattern</strong>. Patterns can also be <strong>Import</strong>ed / <strong>Export</strong>ed
-                as files to share between installs.
+            <li><strong>Save Pattern</strong>. Patterns can also be <strong>Export</strong>ed as files to share
+                between installs. <strong>Import...</strong> takes a pattern file or pasted pattern text.
             </li>
         </ol>
         <figure class="shot">
@@ -1603,6 +1636,106 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 </tr>
                 </tbody>
             </table>
+        </div>
+
+        <h3 id="db-patterns">Database Patterns</h3>
+        <p>Without a pattern, a database import shows every column of the table under its own name. A
+            <strong>Database</strong> pattern lets you choose which columns come first, rename them, set their type
+            and width, and leave columns out.</p>
+        <ol>
+            <li>In the <a href="#pattern-editor">Log Pattern Editor</a>, set <strong>Pattern Type</strong> to
+                <strong>DB</strong> and give the pattern a name. There's no sample line or regex for a database.
+            </li>
+            <li>Click <strong>+ Add Column</strong> for each column you want, in the order you want them, and fill
+                in:
+                <ul>
+                    <li><strong>DB Column</strong> &mdash; the table column to read, e.g. <code>created_at</code>.
+                        Upper/lower case doesn't matter.</li>
+                    <li><strong>Column Name</strong> &mdash; the header to show. Leave it empty to use the DB
+                        column's name.</li>
+                    <li><strong>Column Type</strong> and <strong>Column Size</strong> &mdash; as for any pattern
+                        (see <a href="#column-types-sizes">Column types and sizes</a>).</li>
+                </ul>
+            </li>
+            <li>Keep <strong>Also import the table's other columns</strong> ticked to show the remaining columns
+                after yours, with default widths. Untick it to show only the columns you listed.
+            </li>
+            <li><strong>Save Pattern</strong>, then pick it as the <strong>Log Pattern</strong> on the Import
+                window's <a href="#databases">Database</a> tab.
+            </li>
+        </ol>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>DB Column</th>
+                    <th>Column Name</th>
+                    <th>Column Type</th>
+                    <th>Result</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>created_at</code></td>
+                    <td><code>timestamp</code></td>
+                    <td><code>datetime</code></td>
+                    <td>The time column: enables the time slider and time-range import</td>
+                </tr>
+                <tr>
+                    <td><code>severity</code></td>
+                    <td><code>level</code></td>
+                    <td><code>level</code></td>
+                    <td>Rows colored by severity, errors and warnings counted</td>
+                </tr>
+                <tr>
+                    <td><code>host</code></td>
+                    <td><em>(empty)</em></td>
+                    <td><code>string</code></td>
+                    <td>Shown as <code>host</code></td>
+                </tr>
+                <tr>
+                    <td><code>msg</code></td>
+                    <td><code>Message</code></td>
+                    <td><code>string</code></td>
+                    <td>Shown as <code>Message</code>; give it the <code>FILL</code> size</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="note">
+            <div>The time column must be <em>named</em> <code>timestamp</code> (any case), and its values must be
+                ISO-8601 times with an offset, e.g. <code>2026-01-15T10:23:45Z</code>. Only the columns shown are
+                fetched from the database. If a DB Column isn't in the table, the import stops and names it.
+            </div>
+        </div>
+        <p>To change the pattern of a database window that's already open, open <a href="#load-settings">Log
+            Settings</a> (the gear icon). Its <strong>File Type</strong> is <strong>Database</strong>, and
+            <strong>Log Pattern</strong> lists your database patterns plus <strong>(All table columns)</strong>.
+            Pick one and click <strong>Reload</strong>.</p>
+
+        <h3 id="ai-patterns">Writing a Pattern with an AI Assistant</h3>
+        <p>An AI chat (ChatGPT, Claude, Copilot...) can write a pattern for you from a few lines of your log:</p>
+        <ol>
+            <li>In the <a href="#pattern-editor">Log Pattern Editor</a>, click <strong>Copy AI Prompter</strong>
+                (top right). It copies instructions that explain Klunk's pattern format to the AI.
+            </li>
+            <li>Paste them into a <em>new</em> AI chat and send. The AI asks what kind of log you have and for a
+                sample.
+            </li>
+            <li>Paste 3&ndash;5 real lines of your log (for JSON or XML, one or two complete records; for a
+                database, the table's column names and types). Include unusual lines such as stack traces.
+            </li>
+            <li>Copy the pattern it writes (a block of JSON).</li>
+            <li>In the Log Pattern Editor, click <strong>Import...</strong>, keep <strong>Paste pattern</strong>
+                selected, paste, and click <strong>Import</strong>. Text around the JSON, such as the AI's
+                explanation, is ignored. Check the result with <strong>Apply Configuration</strong>, then
+                <strong>Save Pattern</strong>.
+            </li>
+        </ol>
+        <div class="tip">
+            <div>Log lines can hold user names, hosts or tokens. Remove anything sensitive from the sample before
+                pasting it into an online AI.
+            </div>
         </div>
 
         <h3 id="regex-generator">Regex Pattern Generator</h3>
@@ -1880,7 +2013,13 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 </tr>
                 <tr>
                     <td>Apply bookmark annotations on load</td>
-                    <td>Whether annotations are auto-applied when a matching file is opened</td>
+                    <td>Whether annotations are auto-applied when a matching file is opened (override per
+                        file in <a href="#load-settings">Load Settings</a>)</td>
+                </tr>
+                <tr>
+                    <td>Skip files with more than … rows</td>
+                    <td>Files with more rows than this (default 1,000,000) start with annotations off; 0 skips
+                        every file. Only used while <strong>Apply bookmark annotations on load</strong> is on</td>
                 </tr>
                 <tr>
                     <td>Use external database for annotations</td>
@@ -1945,7 +2084,10 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <p>Literal find/replace substitutions (case-insensitive) applied <em>before</em> pattern-based redaction when
             generating <a href="#analysis">Log Analysis</a> or <a href="#grouping">Group Analysis</a> reports — e.g.
             replacing a real company or hostname with a generic placeholder before pasting a report into an AI
-            assistant.</p>
+            assistant. <strong>Replace with</strong> fills in as you type the find text, with a placeholder like
+            <code>[REDACT_1_LEN9]</code> (a number for the row, and the length of the text it hides). Overwrite it
+            with your own text if you prefer. Leaving it empty removes the text, and <strong>Unredact text</strong>
+            can't bring it back.</p>
         <figure class="shot">
             <img src="screenshots/settings-redaction.png"
                  alt="Redaction panel with a Find text / Replace with table and Add / Remove buttons">
@@ -2003,7 +2145,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 </tr>
                 <tr>
                     <td><kbd>Ctrl+V</kbd></td>
-                    <td>Open copied files or log text (outside a text box)</td>
+                    <td>Open copied files or log text (outside a text box). Rows copied from a viewer open
+                        as CSV, with their column names as headers</td>
                 </tr>
                 <tr>
                     <td><kbd>Space</kbd></td>
