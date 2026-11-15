@@ -37,10 +37,16 @@
         <h3>Contents</h3>
         <ul style="list-style:none;padding:0">
             <li class="h2-item"><a href="#install">Installing &amp; Updating</a></li>
+            <li class="sub">
+                <ul>
+                    <li><a href="#open-with">Opening Files with Klunk</a></li>
+                </ul>
+            </li>
             <li class="h2-item"><a href="#quick-start">Quick Start</a></li>
             <li class="h2-item"><a href="#importing">Importing Logs</a></li>
             <li class="sub">
                 <ul>
+                    <li><a href="#drag-drop-paste">Drag, Drop and Paste</a></li>
                     <li><a href="#local-files">Local Files</a></li>
                     <li><a href="#search-files">Search Files</a></li>
                     <li><a href="#databases">External Databases</a></li>
@@ -52,6 +58,7 @@
             <li class="h2-item"><a href="#log-manager">Log Manager</a></li>
             <li class="sub">
                 <ul>
+                    <li><a href="#filter-selected">Filtering Several Windows</a></li>
                     <li><a href="#docking">Docking &amp; Undocking</a></li>
                     <li><a href="#layouts">Window Layouts</a></li>
                     <li><a href="#merging">Merging Logs</a></li>
@@ -106,9 +113,15 @@
             <li class="sub">
                 <ul>
                     <li><a href="#memory-tuning">Memory Tuning Tips</a></li>
+                    <li><a href="#catchall-fast-load">Faster Loads with Catchall</a></li>
                 </ul>
             </li>
             <li class="h2-item"><a href="#settings">Settings</a></li>
+            <li class="sub">
+                <ul>
+                    <li><a href="#custom-colors">Custom Colors</a></li>
+                </ul>
+            </li>
             <li class="h2-item"><a href="#shortcuts">Keyboard Shortcuts</a></li>
             <li class="h2-item"><a href="#troubleshooting">Troubleshooting</a></li>
         </ul>
@@ -214,6 +227,76 @@
             </div>
         </div>
 
+        <h3 id="open-with">Opening Files with Klunk (Open With / Default App)</h3>
+        <p>You can open a log straight from your file manager with <strong>Open With</strong>, or make Klunk the default
+            app for a file type such as <code>.log</code>, so double-clicking those files opens them in Klunk. Klunk
+            never makes itself the default; you choose that.</p>
+        <p>If Klunk is already running, the file opens in that window. If not, Klunk starts, restores your session
+            and then opens the file. Opening several files at once gives each one its own viewer window.</p>
+
+        <h4>Windows</h4>
+        <ol>
+            <li>In File Explorer, right-click a <code>.log</code> file and choose <strong>Open with</strong> →
+                <strong>Choose another app</strong>.
+            </li>
+            <li>Scroll down and click <strong>Choose an app on your PC</strong> (or <strong>More apps</strong> →
+                <strong>Look for another app on this PC</strong>), then browse to <code>Klunk\Klunk.exe</code>.
+            </li>
+            <li>To make it the default, click <strong>Always</strong> (or tick <strong>Always use this app to open .log
+                files</strong>). To open just this file, click <strong>Just once</strong>.
+            </li>
+        </ol>
+        <p>Repeat for other extensions you use, such as <code>.txt</code>, <code>.out</code> or <code>.csv</code>.
+            You can change it later under <strong>Settings → Apps → Default apps</strong> by searching for the
+            extension.</p>
+
+        <h4>macOS</h4>
+        <ol>
+            <li>In Finder, select a <code>.log</code> file and choose <strong>File → Get Info</strong> (⌘I).</li>
+            <li>Under <strong>Open with</strong>, pick <strong>Klunk</strong>. Klunk is listed for logs, plain text,
+                CSV, JSON and XML files. For other files, choose <strong>Other…</strong>, set
+                <strong>Enable</strong> to <strong>All Applications</strong> and select <code>Klunk.app</code> in
+                Applications.
+            </li>
+            <li>Click <strong>Change All…</strong> and confirm, so every <code>.log</code> file opens in Klunk.</li>
+        </ol>
+        <p>To open a single file without changing the default, right-click it and choose <strong>Open With</strong> →
+            <strong>Klunk</strong>. You can also drop files on Klunk's Dock icon.</p>
+        <div class="note">
+            <div>Move <code>Klunk.app</code> to <strong>Applications</strong> and open it once (allowing it as described
+                in the zip's <code>README.txt</code>) before you set it as the default. Otherwise macOS keeps blocking it
+                when you open a file, and may not list it under <strong>Open with</strong> yet.
+            </div>
+        </div>
+
+        <h4>Linux</h4>
+        <p>Desktop environments find apps through <code>.desktop</code> files. Create one for Klunk:</p>
+        <ol>
+            <li>Save the following as <code>~/.local/share/applications/klunk.desktop</code>, replacing
+                <code>/home/you/Apps/Klunk</code> with the folder you unzipped Klunk into:
+                <pre><code>[Desktop Entry]
+Type=Application
+Name=Klunk
+Comment=Log viewer
+Exec=/home/you/Apps/Klunk/bin/Klunk %F
+Icon=/home/you/Apps/Klunk/lib/Klunk.png
+Terminal=false
+Categories=Utility;Development;
+MimeType=text/x-log;text/plain;</code></pre>
+            </li>
+            <li>Klunk now appears under <strong>Open With</strong> in your file manager (you may need to log out and
+                back in). Right-click a log file → <strong>Open With</strong> → <strong>Klunk</strong>, or use
+                <strong>Properties → Open With</strong> to make it the default.
+            </li>
+            <li>Or set the default from a terminal:
+                <pre><code>xdg-mime default klunk.desktop text/x-log</code></pre>
+                This covers <code>.log</code> files. Using <code>text/plain</code> instead would open every plain text
+                file in Klunk.
+            </li>
+        </ol>
+        <p>The <code>%F</code> passes the selected files to Klunk. If you move the Klunk folder, update both paths in
+            the file.</p>
+
         <hr>
 
         <!-- QUICK START -->
@@ -225,6 +308,14 @@
                 and searching a folder of logs, plus an FAQ. It opens on first launch and after each update (with a
                 <strong>What's New</strong> page). To open it any time, click the <strong>Help</strong> button
                 (<strong>?</strong>) in the Log Manager toolbar and choose <strong>Quick Start</strong>.
+            </div>
+        </div>
+        <div class="note">
+            <div><strong>The quickest way in: drop it or paste it.</strong> Drag one or more log files, a whole
+                archive (<code>.zip</code>, <code>.tar.gz</code>, <code>.gz</code>…) or a URL onto any Klunk window and
+                it opens straight away. Copied log text works too: click an empty part of the window and press
+                <kbd>Ctrl+V</kbd> (<kbd>⌘V</kbd> on macOS). No dialog needed. See
+                <a href="#drag-drop-paste">Drag, Drop and Paste</a>.
             </div>
         </div>
         <ol>
@@ -266,10 +357,69 @@
                  alt="Import Data dialog with File/SFTP/Kubernetes/Database/URL tabs, browse/drag-drop area, and File Type / Pattern / Merge files options">
         </figure>
 
+        <h3 id="drag-drop-paste">Drag, Drop and Paste</h3>
+        <p>You don't need the Import dialog to open a log. Drop it, or paste it, anywhere in Klunk's window: the Log
+            Manager, an empty area or a log viewer. Klunk detects the format and opens it.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Drop or paste</th>
+                    <th>What happens</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>One log file</td>
+                    <td>Opens in a new viewer.</td>
+                </tr>
+                <tr>
+                    <td>Several files</td>
+                    <td>Each opens in its own viewer. To combine them into one timeline, use
+                        <a href="#merging">Merge</a> afterwards, or drop them on the Import dialog and tick
+                        <strong>Merge files</strong>.</td>
+                </tr>
+                <tr>
+                    <td>An archive: <code>.zip</code>, <code>.tar</code>, <code>.tar.gz</code> / <code>.tgz</code>,
+                        <code>.gz</code></td>
+                    <td>Opens an archive browser listing the files inside (archives inside archives too). Pick the
+                        ones you want; nothing is extracted by hand.</td>
+                </tr>
+                <tr>
+                    <td>Log text (copied from an editor, terminal, chat or ticket)</td>
+                    <td>Opens as a log, just like a file. Paste with <kbd>Ctrl+V</kbd> (<kbd>⌘V</kbd> on macOS),
+                        or drag selected text onto the window.</td>
+                </tr>
+                <tr>
+                    <td>Files copied in Explorer / Finder / your file manager</td>
+                    <td>Paste with <kbd>Ctrl+V</kbd>: same as dropping them.</td>
+                </tr>
+                <tr>
+                    <td>Rows copied from a Klunk viewer</td>
+                    <td>Open as a new table with the same columns.</td>
+                </tr>
+                <tr>
+                    <td>An <code>http://</code> or <code>https://</code> link</td>
+                    <td>Opens as a <a href="#url">URL source</a>.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="note">
+            <div><strong>Pasting</strong> works in the main Klunk window (the Log Manager and docked viewers); dropping
+                works in undocked viewer windows too. Click an empty part of the window first: if a text box (such as
+                the filter bar) has the cursor, <kbd>Ctrl+V</kbd> pastes into that box instead.<br>
+                <strong>With the Import dialog open</strong>, dropped or pasted items are added to its list instead
+                of opening right away, so you can choose a pattern or merge them first.
+            </div>
+        </div>
+
         <h3 id="local-files">Local Files</h3>
         <ol>
             <li>Select the <strong>File</strong> tab.</li>
-            <li>Click <strong>Browse…</strong> or drag and drop one or more files onto the drop area.</li>
+            <li>Click <strong>Browse…</strong>, or drag files onto the dialog, or paste them (<kbd>Ctrl+V</kbd>). They're
+                added to the list so you can pick a pattern or merge them before importing. To skip the dialog
+                entirely, see <a href="#drag-drop-paste">Drag, Drop and Paste</a>.</li>
             <li>Choose a <strong>File Type</strong> (Generic, or a specific type) and a <strong>Pattern</strong> —
                 leave as <strong>Auto Detect</strong> to let the app pick the best match.
             </li>
@@ -378,7 +528,8 @@
                 database, credentials).
             </li>
             <li>Choose the target table and a <strong>Log Pattern</strong>: leave it empty to import every
-                column, or pick a <a href="#db-patterns">database pattern</a> to rename, order or size them.</li>
+                column, or pick a <a href="#db-patterns">database pattern</a> to rename, order or size them.
+            </li>
             <li>Click <strong>Import</strong>.</li>
         </ol>
         <div class="note">
@@ -573,7 +724,7 @@ GET https://api.example.com/logs?page=3
             error/warning summary, and date range.</p>
         <figure class="shot">
             <img src="screenshots/log-manager.png"
-                 alt="Log Manager with one open viewer, its info summary, and the toolbar row (query filter, Filter Selected, Selected: actions, Group)">
+                 alt="Log Manager with one open viewer, its info summary, and the toolbar row (query box and Filter Selected for filtering the checked windows, Selected: actions, Group)">
         </figure>
 
         <div class="table-wrap">
@@ -603,8 +754,9 @@ GET https://api.example.com/logs?page=3
 
         <p><strong>Toolbar actions:</strong></p>
         <ul>
-            <li><strong>Query filter</strong> — filters the list of windows itself (not their contents) by name.</li>
-            <li><strong>Filter Selected</strong> — opens a merged, filtered view scoped to the selected windows.</li>
+            <li><strong>Query box / Filter Selected</strong> — applies one filter to every checked window (see
+                <a href="#filter-selected">Filtering Several Windows at Once</a>).
+            </li>
             <li><strong>Selected: + / 🔀 / ✕</strong> — with one or more rows checked: <strong>Merge</strong> the
                 selected windows, <strong>Group</strong> the selected windows, or <strong>Close</strong> the selected
                 windows.
@@ -613,6 +765,30 @@ GET https://api.example.com/logs?page=3
                 logs for matching entries.
             </li>
         </ul>
+
+        <h3 id="filter-selected">Filtering Several Windows at Once</h3>
+        <p>The query box in the Log Manager toolbar runs the same filter in every <strong>checked</strong> window,
+            so you can search several logs in one step.</p>
+        <ol>
+            <li>Check the windows to search in the Log Manager list.</li>
+            <li>Type a query in the box (the same syntax as a viewer's own filter bar, see
+                <a href="#filtering">Filtering Logs</a>), or pick a recent one from its drop-down.
+            </li>
+            <li>Press <kbd>Enter</kbd> or click <strong>Filter Selected</strong>.</li>
+        </ol>
+        <p>The query is placed in each checked window's own filter bar and run there, so each window shows its own
+            matching rows. You can change or clear it in one window without affecting the others. Unchecked windows
+            are left alone. The <strong>✕</strong> next to the box clears the filter in every checked window.</p>
+        <p>Each docked window's tab shows whether a filter is active and whether it found anything:</p>
+        <ul>
+            <li><strong>No filter icon</strong>: no filter is active in that window.</li>
+            <li><strong>Orange filter icon</strong>: a filter is active and has hits.</li>
+            <li><strong>Brown filter icon</strong>: a filter is active but matched no rows.</li>
+        </ul>
+        <div class="note">
+            <div>The icon reflects any active filter in the window, including a bookmark filter, not only one sent
+                from the Log Manager. Undocked windows have no tab, so check their filter bar instead.</div>
+        </div>
 
         <h3 id="docking">Docking and Undocking</h3>
         <p>Every new view opens as a <strong>tab</strong> inside the main Log Docker by default.</p>
@@ -854,7 +1030,7 @@ logger LIKE 'com.example.db.%' AND message LIKE '%ms%' AND level != 'DEBUG'</cod
         <h3 id="filter-out">Filter-Out (Exclusion)</h3>
         <p>Use <strong>Filter Out</strong> to hide noise without changing the main filter.</p>
         <ol>
-            <li>Click <strong>Filter Out</strong> in the toolbar.</li>
+            <li>Click <strong>Filter Out</strong> in the toolbar, or press <kbd>Ctrl+Shift+O</kbd>.</li>
             <li>Enter exclusion rules using the same syntax as the main filter.</li>
             <li>Apply. Matching rows are hidden.</li>
         </ol>
@@ -891,6 +1067,10 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td><kbd>Shift+F3</kbd></td>
                 </tr>
                 <tr>
+                    <td>Turn the find text into a filter</td>
+                    <td><kbd>Shift+Enter</kbd> in the find field</td>
+                </tr>
+                <tr>
                     <td>Toggle case-sensitive find</td>
                     <td>Click the <strong>Aa</strong> toggle next to the field</td>
                 </tr>
@@ -907,8 +1087,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </div>
         </div>
 
-        <p><strong>Turn the find text into a filter:</strong> click the magnifier button beside the find field
-            (tooltip <em>Add filter for find text</em>) to build a query that matches the current find text
+        <p><strong>Turn the find text into a filter:</strong> press <kbd>Shift+Enter</kbd> in the find field, or
+            click the magnifier button beside it (tooltip <em>Add filter for find text</em>), to build a query that matches the current find text
             across <em>every</em> column — <code>col1 LIKE '%text%' OR col2 LIKE '%text%' …</code> — apply it to
             the filter bar, and clear the find field. Where Find only highlights matches in the loaded rows,
             this narrows the table to matching rows and runs over the full dataset, including SQLite-paged
@@ -1178,9 +1358,15 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 between rows), from the last row before each gap to the first row after it. For a log written in
                 bursts with regular pauses, such as a job that runs every few minutes, a gap must also be three
                 times its usual pause, so the pauses between runs aren't listed (<code>log.analysis.timeGaps.periodic</code>). <strong>Last row
-                before</strong> / <strong>First row after</strong> select that row in the viewer. In a merged view or
+                    before</strong> / <strong>First row after</strong> select that row in the viewer. In a merged view or
                 a group analysis it also lists times one file went quiet while the others kept logging. Turn it off
                 with <code>log.analysis.timeGaps</code> in Settings → Advanced.
+            </li>
+            <li><strong>Bookmarks</strong> — the bookmarked rows, by color, each color with a note for the report.
+                Bookmarks can take up much of a report: untick <strong>Include in report</strong> to leave a color
+                out, or <strong>Include all bookmarks in the report</strong> to leave them all out. They stay listed
+                on the tab, whose title says how many rows are left out. Your choice is remembered for later
+                reports, in <code>log.analysis.report.bookmarksLeftOut</code> in Settings → Advanced.
             </li>
         </ul>
         <p>At the bottom:</p>
@@ -1207,7 +1393,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <ul>
             <li><strong>File Type</strong> / <strong>Log Pattern</strong> — switch which <a href="#patterns">pattern</a>
                 is used to parse the file. A database window lists only <a href="#db-patterns">database
-                patterns</a> and <strong>(All table columns)</strong>.
+                    patterns</a> and <strong>(All table columns)</strong>.
             </li>
             <li><strong>Source Timezone</strong> — the timezone the raw timestamps are written in (if not embedded
                 in the format itself).
@@ -1488,7 +1674,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tr>
                     <td><strong>Catchall</strong></td>
                     <td>One column per line, no parsing, no timestamp</td>
-                    <td>Any unknown format</td>
+                    <td>Any unknown format; very large files (<a href="#catchall-fast-load">loads faster</a>)</td>
                 </tr>
                 <tr>
                     <td><strong>Database</strong></td>
@@ -1650,11 +1836,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 in:
                 <ul>
                     <li><strong>DB Column</strong> &mdash; the table column to read, e.g. <code>created_at</code>.
-                        Upper/lower case doesn't matter.</li>
+                        Upper/lower case doesn't matter.
+                    </li>
                     <li><strong>Column Name</strong> &mdash; the header to show. Leave it empty to use the DB
-                        column's name.</li>
+                        column's name.
+                    </li>
                     <li><strong>Column Type</strong> and <strong>Column Size</strong> &mdash; as for any pattern
-                        (see <a href="#column-types-sizes">Column types and sizes</a>).</li>
+                        (see <a href="#column-types-sizes">Column types and sizes</a>).
+                    </li>
                 </ul>
             </li>
             <li>Keep <strong>Also import the table's other columns</strong> ticked to show the remaining columns
@@ -1948,6 +2137,40 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             </li>
         </ul>
 
+        <h4>Keep the session database on a fast drive</h4>
+        <p>Large logs are written to Klunk's session database (<code>logviewer.db</code>) as they load, and
+            scrolling and filtering them reads from it. If Klunk's data folder is on a hard disk, moving the
+            database to an SSD can make large loads, scrolling and filtering noticeably faster.
+            Set <code>log.database.location</code> in <strong>Settings → Advanced</strong> to a folder,
+            for example <code>D:\klunk-db</code>, then restart Klunk. Leave it empty to use the data folder.
+            The database only holds loaded rows, so the new location starts empty and your logs load again from
+            their files. "Matching rows" imports from <a href="#search-files">Search Files</a> write few rows,
+            so they mostly depend on the drive the log files are on.</p>
+
+        <h3 id="catchall-fast-load">Faster Loads with the Catchall Pattern</h3>
+        <p>For a very large file you mainly want to search, open it with the <strong>CatchAll [*]</strong> pattern
+            to load it faster. Catchall stores each line as it is, in a single <strong>Message</strong> column.
+            It doesn't split the line into columns, read a timestamp or build a timestamp index, so each line takes
+            less work to load, which can greatly reduce the loading time of a very large file.</p>
+        <ol>
+            <li>In the Import window, add the file and set <strong>Pattern</strong> to <strong>CatchAll [*]</strong>
+                instead of Auto Detect.</li>
+            <li>Click <strong>Import</strong>.</li>
+        </ol>
+        <p>What you give up:</p>
+        <ul>
+            <li><strong>No timestamp:</strong> no time slider, time-range filters,
+                <a href="#synch-all">Synch All</a> or time-ordered merging.</li>
+            <li><strong>No columns or level colors:</strong> filter on the whole line instead, for example
+                <code>Message LIKE '%ERROR%'</code>.</li>
+            <li><strong>One row per line:</strong> a multi-line entry, such as a stack trace, shows as several
+                rows.</li>
+        </ul>
+        <p>When you've found the part you need, select those rows, copy them
+            (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and paste (<kbd>Ctrl</kbd>+<kbd>V</kbd>) in the app: the pasted lines
+            open in a new viewer window of their own. If you only need the lines that
+            match a search, a <a href="#search-files">Search Files</a> "matching rows" import is often faster still.</p>
+
         <hr>
 
         <!-- SETTINGS -->
@@ -2014,12 +2237,14 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tr>
                     <td>Apply bookmark annotations on load</td>
                     <td>Whether annotations are auto-applied when a matching file is opened (override per
-                        file in <a href="#load-settings">Load Settings</a>)</td>
+                        file in <a href="#load-settings">Load Settings</a>)
+                    </td>
                 </tr>
                 <tr>
                     <td>Skip files with more than … rows</td>
                     <td>Files with more rows than this (default 1,000,000) start with annotations off; 0 skips
-                        every file. Only used while <strong>Apply bookmark annotations on load</strong> is on</td>
+                        every file. Only used while <strong>Apply bookmark annotations on load</strong> is on
+                    </td>
                 </tr>
                 <tr>
                     <td>Use external database for annotations</td>
@@ -2060,7 +2285,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tr>
                     <td>Follow new rows from tailing when the last row is showing</td>
                     <td>When you're scrolled to the bottom, tailing (or a reload that tails) moves you down to the
-                        newest row. Scrolled anywhere else, you stay where you are. On by default</td>
+                        newest row. Scrolled anywhere else, you stay where you are. On by default
+                    </td>
                 </tr>
                 <tr>
                     <td>Default display timezone</td>
@@ -2101,6 +2327,72 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             <img src="screenshots/settings-advanced.png"
                  alt="Advanced settings: a Property/Value table showing log.file.check.enabled, log.file.check.interval.secs, log.virtualization.threshold, log.virtualization.pagesize, log.tail.interval.seconds, and watch.alert.* properties">
         </figure>
+
+        <h3 id="custom-colors">Custom Colors (user-dark.css / user-light.css)</h3>
+        <p>You can recolor Klunk without changing the program. Every color it draws (backgrounds,
+            text, borders, buttons, selection, log-level rows, menus, tooltips and popups) comes from a set of
+            named color variables, and a small style sheet of your own can redefine any of them.</p>
+        <ul>
+            <li><code>user-dark.css</code> is used with the dark theme.</li>
+            <li><code>user-light.css</code> is used with the light theme.</li>
+        </ul>
+        <p>You can have one, both or neither. Klunk loads the file after its own theme, so your values win.
+            Any color you leave out keeps its normal value.</p>
+
+        <h4>1. Get a sample file</h4>
+        <p>Start from a sample. Each one lists every color variable for its theme, with a comment saying where the
+            color is used:</p>
+        <ul>
+            <li><a href="samples/user-dark.css" download>user-dark.css</a>: "Midnight", darker backgrounds with
+                a slight blue tint and a teal accent
+            </li>
+            <li><a href="samples/user-light.css" download>user-light.css</a>: "Paper", a cool paper white with
+                slate text and a blue-teal accent
+            </li>
+        </ul>
+        <p>If your browser opens the file instead of saving it, right-click the link and choose
+            <strong>Save link as…</strong>. Keep the file name exactly <code>user-dark.css</code> or
+            <code>user-light.css</code>.</p>
+
+        <h4>2. Put it next to config.properties</h4>
+        <p>Save the file in Klunk's data folder, the same folder as <code>config.properties</code>. Its location
+            depends on your platform; see <a href="FILE_LOCATIONS.html#data-folder">Where Klunk Keeps Its Files</a>.
+            Klunk looks for the file only there.</p>
+
+        <h4>3. Edit the colors</h4>
+        <p>Open the file in any text editor and change the values. Colors can be hex (<code>#1f6f94</code>),
+            <code>rgb(…)</code> / <code>rgba(…)</code> (use alpha for tints and shadows) or color names. For
+            example:</p>
+        <pre><code>.root,
+.tooltip,
+.context-menu,
+.combo-box-popup,
+.date-picker-popup,
+.annotation-popup-container {
+    -user-color-bg: #101318;        /* windows and panes */
+    -user-color-table-bg: #0b0d10;  /* the log table */
+    -user-color-selection: #145a7a; /* selected rows */
+}</code></pre>
+        <p>Delete lines you don't want to change, and Klunk keeps its own color for those.</p>
+        <div class="note">
+            <div><strong>Keep the selector list at the top as it is.</strong> Tooltips, menus, drop-down lists, date
+                pickers and the annotation popup are drawn in their own small windows. They only see colors set on
+                their own name in that list. If you shorten the list, those popups keep the theme's colors.
+            </div>
+        </div>
+
+        <h4>4. See the result</h4>
+        <p>Klunk reads the file when it applies the theme. To see your changes, restart Klunk, or turn
+            <strong>Enable Dark Mode</strong> off and on again in <a href="#settings">Settings → Appearance</a>.
+            If something looks wrong, check Klunk's log (<strong>About → View Log</strong>). A mistyped value
+            shows up there as a CSS warning, and that color stays at the theme's value.</p>
+        <p>To go back to the normal colors, delete or rename the file and restart Klunk.</p>
+        <div class="note">
+            <div>Only colors are supported. Rules in the file that change sizes, fonts or layout may break with a
+                future Klunk version. New versions can add color variables; anything your file doesn't set uses the
+                new default, so an older file keeps working.
+            </div>
+        </div>
 
         <hr>
 
@@ -2146,7 +2438,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tr>
                     <td><kbd>Ctrl+V</kbd></td>
                     <td>Open copied files or log text (outside a text box). Rows copied from a viewer open
-                        as CSV, with their column names as headers</td>
+                        as CSV, with their column names as headers
+                    </td>
                 </tr>
                 <tr>
                     <td><kbd>Space</kbd></td>
@@ -2257,12 +2550,20 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                     <td>Find previous</td>
                 </tr>
                 <tr>
+                    <td><kbd>Shift+Enter</kbd></td>
+                    <td>In the Find box: turn the find text into a filter</td>
+                </tr>
+                <tr>
                     <td><kbd>Ctrl+L</kbd></td>
                     <td>Focus the filter box</td>
                 </tr>
                 <tr>
                     <td><kbd>Ctrl+Shift+L</kbd></td>
                     <td>Clear the filter</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+Shift+O</kbd></td>
+                    <td>Open Filter Out (hide matching rows)</td>
                 </tr>
                 <tr>
                     <td><kbd>Escape</kbd></td>

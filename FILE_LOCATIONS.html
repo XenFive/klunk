@@ -99,6 +99,11 @@
                         To roll back, close Klunk and copy one over <code>config.properties</code>.</td>
                 </tr>
                 <tr>
+                    <td><code>user-dark.css</code>, <code>user-light.css</code></td>
+                    <td>Optional. Your own colors for the dark or light theme; you create these. See
+                        <a href="USER_GUIDE.html#custom-colors">Custom Colors</a>.</td>
+                </tr>
+                <tr>
                     <td><code>session.json</code></td>
                     <td>The open windows, filters and bookmarks restored on the next launch.</td>
                 </tr>
@@ -109,8 +114,8 @@
                 <tr>
                     <td><code>logviewer.db</code></td>
                     <td>Klunk's working database of loaded log rows. It can grow large and can be deleted
-                        safely while Klunk is closed. To keep it elsewhere, add
-                        <code>log.database.location=&lt;folder&gt;</code> to <code>config.properties</code>.</td>
+                        safely while Klunk is closed. To keep it elsewhere (a fast SSD helps with large logs),
+                        set <code>log.database.location</code> to a folder in Settings → Advanced and restart.</td>
                 </tr>
                 </tbody>
             </table>

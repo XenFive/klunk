@@ -1,0 +1,151 @@
+/*
+ * user-dark.css - "Midnight" colour override for the dark theme.
+ *
+ * Copy this file next to config.properties. The app adds it after dark.css, so these values win.
+ * Colours only: every colour the app draws comes from these -user-color-* variables, so this one
+ * block recolours everything. Delete the file to go back to the bundled palette.
+ *
+ * Keep the selector list as it is: tooltips, menus, combo-box and date-picker lists and the
+ * annotation popup render in their own window, and only see variables declared on their own
+ * style class. A variable left out keeps its dark.css value.
+ *
+ * Backgrounds are a step darker than the bundled theme, with a slight blue tint, and the accent
+ * is teal/cyan. Each background level stays a few shades apart, so panels, inputs and raised
+ * controls are still easy to tell apart.
+ *
+ * Note: label text inside popups follows -user-color-text, not -user-color-tooltip-text /
+ * -user-color-menu-text (the theme's `.text` rule wins there).
+ */
+
+.root,
+.tooltip,
+.context-menu,
+.combo-box-popup,
+.date-picker-popup,
+.annotation-popup-container {
+    /* Backgrounds, darkest to lightest */
+    -user-color-table-bg: #0b0d10; /* log table */
+    -user-color-bg: #101318; /* windows, panes */
+    -user-color-surface-overlay: #14181e; /* overlays, docked panels */
+    -user-color-table-header-bg: #12161b;
+    -user-color-input: #181c23; /* text fields, combo boxes */
+    -user-color-surface-raised: #1f242c; /* raised controls */
+    -user-color-tab-bar-bg: #0b0d10; /* strip behind the tabs */
+    -user-color-tab-bar-line: #0b0d10; /* ...its top and side edge */
+    -user-color-tab-bar-border: #1c2128; /* ...its bottom edge */
+
+    /* Text */
+    -user-color-text: #c9d1dc;
+    -user-color-text-muted: #7d8794;
+    -user-color-text-bright: #f2f5f8;
+    -user-color-text-inverse: #0b0d10;
+    -user-color-text-prompt: #6b7581;
+    -user-color-on-accent: #f2f5f8; /* text/icons on accent or primary fills */
+
+    /* Borders */
+    -user-color-border: #262c35;
+    -user-color-border-hover: #5c6b7d;
+    -user-color-border-light: #343b46; /* drop zone, loading window */
+    -user-color-border-grey: #3f4753; /* dashed boxes, watch panel */
+    -user-color-table-header-border: #1c2128;
+
+    /* Buttons */
+    -user-color-btn: #181c23;
+    -user-color-btn-hover: #2b8fb3;
+    -user-color-btn-pressed: #262c35;
+    -user-color-btn-accent: #2f7d6d;
+    -user-color-btn-selected: #2f7d6d;
+    -user-color-remove-btn-bg: #a8505a; /* "X" on the Import overlay's file list */
+    -user-color-remove-btn-text: #0b0d10;
+
+    /* Selection & primary */
+    -user-color-selection: #145a7a;
+    -user-color-selection-cell: rgba(95, 190, 230, 0.18);
+    -user-color-primary: #1f6f94;
+    -user-color-primary-hover: #3fae7a;
+    -user-color-accent: #1f8a8f;
+    -user-color-accent-hover: #3aa6b5;
+    -user-color-link: #4aa8e0;
+
+    /* Icons */
+    -user-color-icon-hover: #3aa6d8;
+    -user-color-icon-pressed: #6cc4f0;
+    -user-color-delimiter-icon: #c9d1dc; /* glyphs in CSV delimiter pickers */
+    -user-color-swatch-outline: #05070a; /* outline of group colour squares */
+    -user-color-delete-icon: #d0505c; /* delete-from-history in filter dropdowns */
+
+    /* Log levels (row backgrounds: dark, but clearly tinted) */
+    -user-color-error-bg: #4a2228;
+    -user-color-warn-bg: #4a4020;
+    -user-color-level-error-text: #f07178; /* level column in Analyze bookmark lists */
+    -user-color-level-warn-text: #f0a050;
+
+    /* Action states */
+    -user-color-filter-active: #d4913a;
+    -user-color-search-active: #c45a5a;
+    -user-color-search-active-hover: #d83a3a;
+    -user-color-tail-fetch: #3d7fb0;
+    -user-color-reload: #2f7d6d;
+    -user-color-preset-query: #5ab4e6; /* preset filter queries in dropdowns */
+    -user-color-docker-filter-hit: #ff8a3d; /* docker tab filter icon: filter has results */
+    -user-color-docker-filter-idle: #8a7358; /* ...filter active, no results */
+    -user-color-valid-border: #3fae7a; /* kube pod filter in use */
+
+    /* Status messages */
+    -user-color-status-ok: #6fcf8f;
+    -user-color-status-warn: #ffb347;
+    -user-color-status-error: #f07178;
+    -user-color-error-text: #f07178;
+    -user-color-success-text: #8fd9a8;
+
+    /* Attention & focus */
+    -user-color-focus-ring: #2b9fd8;
+    -user-color-focus-tint: rgba(43, 159, 216, 0.30);
+    -user-color-important: #ffb347;
+    -user-color-important-bg: rgba(255, 179, 71, 0.12);
+    -user-color-important-border: rgba(255, 179, 71, 0.35);
+    -user-color-important-bg-hover: rgba(255, 179, 71, 0.20);
+
+    /* Popups & menus */
+    -user-color-tooltip-bg: #1f242c;
+    -user-color-tooltip-text: #e6ebf0;
+    -user-color-menu-bg: #101318;
+    -user-color-menu-text: #f2f5f8;
+    -user-color-menu-hover: #145a7a;
+    -user-color-annotation-popup-bg: #181c23;
+    -user-color-annotation-popup-border: #3aa6d8;
+
+    /* Overlays & shadows (darker backgrounds need a stronger shadow to read) */
+    -user-color-overlay: rgba(0, 0, 0, 0.55);
+    -user-color-overlay-light: rgba(0, 0, 0, 0.40);
+    -user-color-shadow-soft: rgba(0, 0, 0, 0.25);
+    -user-color-shadow-badge: rgba(0, 0, 0, 0.65);
+    -user-color-shadow-card: rgba(0, 0, 0, 0.65);
+    -user-color-shadow-icon: rgba(0, 0, 0, 0.65);
+    -user-color-shadow-popup: rgba(0, 0, 0, 0.6);
+
+    /* Docker toolbar gradient */
+    -user-color-toolbar-top: #1f242c;
+    -user-color-toolbar-bottom: #101318;
+
+    /* Compare dialog diffs */
+    -user-color-diff-added-bg: #16301f;
+    -user-color-diff-removed-bg: #3a1a1e;
+    -user-color-diff-row-bg: #151a20;
+    -user-color-diff-added-inline: #2e6e42;
+    -user-color-diff-removed-inline: #7e3a40;
+    -user-color-diff-same: #6fcf8f;
+    -user-color-diff-different: #e88080;
+
+    /* Regex generator: captured-group tints */
+    -user-color-regex-group-0: rgba(58, 166, 216, 0.35);
+    -user-color-regex-group-1: rgba(63, 174, 122, 0.35);
+    -user-color-regex-group-2: rgba(255, 179, 71, 0.35);
+    -user-color-regex-group-3: rgba(176, 110, 220, 0.35);
+
+    /* Quick Start guide, charts, misc */
+    -user-color-callout-tip: #3fae7a;
+    -user-color-callout-note: #3aa6d8;
+    -user-color-chart-border: #4a525c;
+    -user-color-capped-thumb: #5c6b7d; /* scroll thumb of a capped multi-line cell */
+}

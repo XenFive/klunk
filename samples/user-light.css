@@ -1,0 +1,155 @@
+/*
+ * user-light.css - "Paper" colour override for the light theme.
+ *
+ * Copy this file next to config.properties. The app adds it after light.css, so these values win.
+ * Colours only: every colour the app draws comes from these -user-color-* variables, so this one
+ * block recolours everything. Delete the file to go back to the bundled palette.
+ *
+ * Keep the selector list as it is: tooltips, menus, combo-box and date-picker lists and the
+ * annotation popup render in their own window, and only see variables declared on their own
+ * style class. A variable left out keeps its light.css value.
+ *
+ * Backgrounds are a clean, slightly cool paper white with slate text, and the accent is a calm
+ * blue-teal. Each background level stays a few shades apart, so panels, inputs and raised
+ * controls are still easy to tell apart.
+ *
+ * Note: label text inside popups follows -user-color-text, not -user-color-tooltip-text /
+ * -user-color-menu-text (the theme's `.text` rule wins there).
+ */
+
+.root,
+.tooltip,
+.context-menu,
+.combo-box-popup,
+.date-picker-popup,
+.annotation-popup-container {
+    /* Backgrounds */
+    -user-color-bg: #eef1f4; /* windows, panes */
+    -user-color-table-bg: #f8f9fb; /* log table */
+    -user-color-input: #ffffff; /* text fields, combo boxes */
+    -user-color-surface-raised: #e3e8ed; /* raised controls */
+    -user-color-surface-overlay: #f2f4f7; /* overlays, docked panels */
+    -user-color-table-header-bg: #e1e6ec;
+    -user-color-accordion-title-bg: #cfd6de; /* accordion pane title bars */
+    -user-color-accordion-bg: #e6eaef; /* accordion pane bodies */
+    -user-color-tab-bar-bg: #d8dee5; /* strip behind the tabs */
+    -user-color-tab-bar-line: #c6cdd6; /* ...its top and side edge */
+    -user-color-tab-bar-border: #b4bdc8; /* ...its bottom edge */
+
+    /* Text */
+    -user-color-text: #1f2933;
+    -user-color-text-muted: #66727f;
+    -user-color-text-bright: #0b1117;
+    -user-color-text-inverse: #ffffff;
+    -user-color-text-prompt: #8a95a1;
+    -user-color-on-accent: #ffffff; /* text/icons on accent or primary fills */
+    -user-color-text-highlight: #1f6fb2; /* highlighted text background */
+    -user-color-text-highlight-text: #ffffff;
+
+    /* Borders */
+    -user-color-border: #c5cdd6;
+    -user-color-border-hover: #8796a6;
+    -user-color-border-light: #d3d9e0; /* drop zone, loading window */
+    -user-color-border-grey: #9aa5b1; /* dashed boxes, watch panel */
+    -user-color-table-header-border: #c5cdd6;
+
+    /* Buttons */
+    -user-color-btn: #e3e8ed;
+    -user-color-btn-hover: #d0d8e1;
+    -user-color-btn-pressed: #bcc6d1;
+    -user-color-btn-accent: #3f8f86;
+    -user-color-btn-selected: #2f6f68;
+    -user-color-remove-btn-bg: #d27a80; /* "X" on the Import overlay's file list */
+    -user-color-remove-btn-text: #1f2933;
+
+    /* Selection & primary */
+    -user-color-selection: #b9d7f0;
+    -user-color-selection-cell: rgba(40, 110, 180, 0.16);
+    -user-color-primary: #3d7fb8;
+    -user-color-primary-hover: #4f95d0;
+    -user-color-accent: #4fa89c;
+    -user-color-accent-hover: #2f7f9e;
+    -user-color-link: #1a62b0;
+
+    /* Icons */
+    -user-color-icon-hover: #1f7ad6;
+    -user-color-icon-pressed: #0f56a0;
+    -user-color-delimiter-icon: #1f2933; /* glyphs in CSV delimiter pickers */
+    -user-color-swatch-outline: #1f2933; /* outline of group colour squares */
+    -user-color-delete-icon: #a3202d; /* delete-from-history in filter dropdowns */
+
+    /* Log levels (row backgrounds: light, but clearly tinted) */
+    -user-color-error-bg: #f6e0e2;
+    -user-color-warn-bg: #f5eed7;
+    -user-color-level-error-text: #c62833; /* level column in Analyze bookmark lists */
+    -user-color-level-warn-text: #c26a00;
+
+    /* Action states */
+    -user-color-filter-active: #d0a060;
+    -user-color-search-active: #cc7f7f;
+    -user-color-search-active-hover: #b84f4f;
+    -user-color-tail-fetch: #4d8fd6;
+    -user-color-reload: #4fa07a;
+    -user-color-preset-query: #1f7ad6; /* preset filter queries in dropdowns */
+    -user-color-docker-filter-hit: #e86a10; /* docker tab filter icon: filter has results */
+    -user-color-docker-filter-idle: #8a7358; /* ...filter active, no results */
+    -user-color-valid-border: #3f9f6a; /* kube pod filter in use */
+
+    /* Status messages */
+    -user-color-status-ok: #2e8540;
+    -user-color-status-warn: #c27400;
+    -user-color-status-error: #c62833;
+    -user-color-error-text: #c62833;
+    -user-color-success-text: #1e5c2a;
+
+    /* Attention & focus */
+    -user-color-focus-ring: #1f7ad6;
+    -user-color-focus-tint: rgba(31, 122, 214, 0.18);
+    -user-color-important: #d4620a;
+    -user-color-important-bg: rgba(212, 98, 10, 0.10);
+    -user-color-important-border: rgba(212, 98, 10, 0.30);
+    -user-color-important-bg-hover: rgba(212, 98, 10, 0.18);
+
+    /* Popups & menus */
+    -user-color-tooltip-bg: #e3e8ed;
+    -user-color-tooltip-text: #1f2933;
+    -user-color-menu-bg: #f8f9fb;
+    -user-color-menu-text: #1f2933;
+    -user-color-menu-hover: #b9d7f0;
+    -user-color-annotation-popup-bg: #f8f9fb;
+    -user-color-annotation-popup-border: #4f9fd6;
+
+    /* Overlays & shadows */
+    -user-color-overlay: rgba(15, 25, 35, 0.40);
+    -user-color-overlay-light: rgba(15, 25, 35, 0.28);
+    -user-color-shadow-soft: rgba(15, 25, 35, 0.10);
+    -user-color-shadow-badge: rgba(15, 25, 35, 0.35);
+    -user-color-shadow-card: rgba(15, 25, 35, 0.20);
+    -user-color-shadow-icon: rgba(15, 25, 35, 0.25);
+    -user-color-shadow-popup: rgba(15, 25, 35, 0.45);
+
+    /* Docker toolbar gradient */
+    -user-color-toolbar-top: #e8ecf0;
+    -user-color-toolbar-bottom: #cfd6de;
+
+    /* Compare dialog diffs */
+    -user-color-diff-added-bg: #ddf0e2;
+    -user-color-diff-removed-bg: #f6dfe1;
+    -user-color-diff-row-bg: #fbfcfd;
+    -user-color-diff-added-inline: #a8dbb5;
+    -user-color-diff-removed-inline: #eeaab0;
+    -user-color-diff-same: #2e7d3a;
+    -user-color-diff-different: #b33a3a;
+
+    /* Regex generator: captured-group tints */
+    -user-color-regex-group-0: rgba(31, 122, 214, 0.28);
+    -user-color-regex-group-1: rgba(63, 159, 106, 0.28);
+    -user-color-regex-group-2: rgba(232, 150, 20, 0.30);
+    -user-color-regex-group-3: rgba(150, 70, 190, 0.26);
+
+    /* Quick Start guide, charts, misc */
+    -user-color-callout-tip: #3f9f6a;
+    -user-color-callout-note: #1f7ad6;
+    -user-color-chart-border: #8796a6;
+    -user-color-capped-thumb: #9aa5b1; /* scroll thumb of a capped multi-line cell */
+}
