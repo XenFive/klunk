@@ -962,6 +962,13 @@ GET https://api.example.com/logs?page=3
                 header doesn't re-sort them.
             </li>
             <li><strong>Column widths</strong> are saved with the session.</li>
+            <li><strong>Selecting:</strong> Click selects a cell; <kbd>Ctrl+click</kbd> adds or removes a cell and
+                <kbd>Shift+click</kbd> selects a block of cells. Add <kbd>Alt</kbd> to work with whole rows instead:
+                <kbd>Alt+click</kbd> selects just that row, <kbd>Ctrl+Alt+click</kbd> adds it to (or removes it
+                from) the selection, <kbd>Alt+Shift+click</kbd> selects every row from the last one you clicked to
+                this one, and <kbd>Alt+Shift+↑</kbd> / <kbd>Alt+Shift+↓</kbd> extend (or shrink) the selection one
+                whole row at a time. On a Mac, use <kbd>⌘</kbd> for Ctrl and <kbd>Option</kbd> for Alt.
+            </li>
         </ul>
 
         <h3 id="row-detail">Row Detail View</h3>
@@ -981,6 +988,13 @@ GET https://api.example.com/logs?page=3
         <p>The <strong>filter bar</strong> at the top of every viewer accepts SQL-style WHERE expressions. Press
             <kbd>Enter</kbd> to apply; click the <strong>X</strong> next to it, press <kbd>Ctrl+Shift+L</kbd>, or press <kbd>Escape</kbd> in the field to clear (Escape first undoes an edit you haven't applied). Previously used filters appear in the dropdown,
             and the row count updates immediately to show how many entries match.</p>
+        <p id="show-in-full-log"><strong>Show in Full Log:</strong> while a filter or
+            <a href="#bookmark-filters">Show bookmarks only</a> is on, right-click a row and choose
+            <strong>Show in Full Log</strong>. The filter is cleared and that row is selected in the full log, so you
+            can see what happened around it. Double-clicking the row does the same. If you'd rather double-click
+            selected a word, as it does in an unfiltered view, set
+            <code>log.table.doubleClickLeavesFilter</code> to <code>false</code> in
+            <a href="#settings-advanced">Settings → Advanced</a>. The menu item still works.</p>
 
         <h3 id="syntax">Filter Query Syntax</h3>
         <p>Column names match the pattern's field names: <code>timestamp</code>, <code>level</code>,
@@ -1173,18 +1187,18 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <h3 id="bookmarks">Bookmarks and Highlights</h3>
         <p>Bookmarks let you pin important rows for navigation, review, and later filtering.</p>
         <p><strong>Creating a bookmark:</strong> right-click a row → <strong>Bookmark</strong> (uses the last-used
-            color), or <strong>Bookmark [choose color]</strong> to pick a color from the palette (10 colors). A
+            color), or <strong>Bookmark [Choose Color]</strong> to pick a color from the palette (10 colors). A
             colored marker appears on the row background and on the time slider.</p>
 
         <p>Right-clicking an already-bookmarked row shows options to manage it:</p>
         <figure class="shot">
             <img src="screenshots/log-file-viewer-menu-bookmarks.png"
-                 alt="Row context menu with Bookmark, Bookmark [choose color] color palette, Bookmark time…, Copy, View, Filter, Filter Out, Annotate, Select All">
+                 alt="Row context menu with Bookmark, Bookmark [Choose Color] color palette, Bookmark Time…, Copy, View, Filter, Filter Out, Annotate, Select All">
         </figure>
         <ul>
-            <li><strong>Remove bookmark</strong> — clears the bookmark from the row.</li>
-            <li><strong>Change color</strong> — reassign the bookmark's color.</li>
-            <li><strong>Bookmark comment…</strong> — attach a free-text note to the bookmarks of this color, useful context when
+            <li><strong>Remove Bookmark</strong> — clears the bookmark from the row.</li>
+            <li><strong>Change Color [Choose]</strong> — reassign the bookmark's color.</li>
+            <li><strong>Bookmark Comment…</strong> — attach a free-text note to the bookmarks of this color, useful context when
                 reviewing or feeding an analysis to an AI prompt.
             </li>
         </ul>
@@ -1214,12 +1228,12 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         </div>
 
         <h3 id="bookmark-time">Bookmark Time (Time Correlation)</h3>
-        <p><strong>Bookmark time…</strong> (on the row context menu) bookmarks every row whose timestamp falls
+        <p><strong>Bookmark Time…</strong> (on the row context menu) bookmarks every row whose timestamp falls
             within a configurable leeway of the selected row, in every open log (including this one) or in a chosen
             <a href="#grouping">group</a>. It's the fastest way to line up related events across several logs that
             don't share a common request ID.</p>
         <ol>
-            <li>Right-click the row of interest → <strong>Bookmark time…</strong>. If several rows are selected, the
+            <li>Right-click the row of interest → <strong>Bookmark Time…</strong>. If several rows are selected, the
                 window runs from the earliest to the latest of them.
             </li>
             <li>Choose a <strong>Leeway</strong> window (±5 ms up to ±1 min, default ±50 ms, or a custom value).</li>
@@ -1247,6 +1261,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         </figure>
         <p>Toggle individual colors (or <strong>Annotations</strong> / <strong>Notes</strong>, the special bookmark
             categories) on or off, then <strong>OK</strong> to apply.</p>
+        <p>To see a bookmarked row among its neighbours, right-click it and choose
+            <a href="#show-in-full-log">Show in Full Log</a>, or double-click it.</p>
 
         <h3 id="annotations">Annotation Bookmarks</h3>
         <p>Annotations are saved queries that are automatically applied as bookmarks whenever a matching log file is
@@ -2371,7 +2387,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
 .context-menu,
 .combo-box-popup,
 .date-picker-popup,
-.annotation-popup-container {
+.annotation-popup-container,
+.toast {
     -user-color-bg: #101318;        /* windows and panes */
     -user-color-table-bg: #0b0d10;  /* the log table */
     -user-color-selection: #145a7a; /* selected rows */
@@ -2379,7 +2396,7 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <p>Delete lines you don't want to change, and Klunk keeps its own color for those.</p>
         <div class="note">
             <div><strong>Keep the selector list at the top as it is.</strong> Tooltips, menus, drop-down lists, date
-                pickers and the annotation popup are drawn in their own small windows. They only see colors set on
+                pickers, the annotation popup and the short notices that fade out are drawn in their own small windows. They only see colors set on
                 their own name in that list. If you shorten the list, those popups keep the theme's colors.
             </div>
         </div>
@@ -2623,6 +2640,22 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
                 <tr>
                     <td><kbd>↑ / ↓</kbd></td>
                     <td>Move selection one row</td>
+                </tr>
+                <tr>
+                    <td><kbd>Alt+click</kbd></td>
+                    <td>Select just that whole row</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl+Alt+click</kbd></td>
+                    <td>Add or remove a whole row, keeping the rest of the selection</td>
+                </tr>
+                <tr>
+                    <td><kbd>Alt+Shift+click</kbd></td>
+                    <td>Select whole rows from the last clicked row to this one</td>
+                </tr>
+                <tr>
+                    <td><kbd>Alt+Shift+↑ / ↓</kbd></td>
+                    <td>Select whole rows, extending one row at a time</td>
                 </tr>
                 <tr>
                     <td><kbd>Page Up/Down</kbd></td>
