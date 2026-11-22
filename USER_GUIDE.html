@@ -988,6 +988,12 @@ GET https://api.example.com/logs?page=3
         <p>The <strong>filter bar</strong> at the top of every viewer accepts SQL-style WHERE expressions. Press
             <kbd>Enter</kbd> to apply; click the <strong>X</strong> next to it, press <kbd>Ctrl+Shift+L</kbd>, or press <kbd>Escape</kbd> in the field to clear (Escape first undoes an edit you haven't applied). Previously used filters appear in the dropdown,
             and the row count updates immediately to show how many entries match.</p>
+        <p id="filter-plain-text"><strong>Plain text searches the message:</strong> you don't need to write a query.
+            Type any text, such as <code>timeout</code>, and press <kbd>Enter</kbd> to show the rows whose
+            <strong>message</strong> column contains it. The filter box then shows the query it ran,
+            <code>message like '%timeout%'</code>, which you can edit to narrow the search further. As with any
+            <code>LIKE</code> filter, case doesn't matter for plain English letters (A–Z). Text that names a
+            column the log doesn't have shows a warning first, then searches the message the same way.</p>
         <p id="show-in-full-log"><strong>Show in Full Log:</strong> while a filter or
             <a href="#bookmark-filters">Show bookmarks only</a> is on, right-click a row and choose
             <strong>Show in Full Log</strong>. The filter is cleared and that row is selected in the full log, so you
@@ -1412,7 +1418,10 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <ul>
             <li><strong>File Type</strong> / <strong>Log Pattern</strong> — switch which <a href="#patterns">pattern</a>
                 is used to parse the file. A database window lists only <a href="#db-patterns">database
-                    patterns</a> and <strong>(All table columns)</strong>.
+                    patterns</a> and <strong>(All table columns)</strong>. For a local file, the list starts with
+                <strong>(Auto-detect)</strong>: choose it and click <strong>Reload</strong> to have the app pick the
+                pattern again, the same way it does when a file is first opened, so you don't need to know which
+                pattern fits. A short notice names the pattern it found, and the file opens with it next time.
             </li>
             <li><strong>Source Timezone</strong> — the timezone the raw timestamps are written in (if not embedded
                 in the format itself).
@@ -1656,8 +1665,15 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <h3 id="auto-detect">Auto-Detection</h3>
         <p>When you open a file, the application scans the first several hundred lines and tries every known pattern in
             order of specificity. If a pattern matches, it is selected automatically.</p>
+        <p>Patterns you created yourself are tried before the built-in ones, so a built-in pattern that also fits
+            the file can't take it from yours. To try the built-in patterns first instead, set
+            <code>log.detect.userPatternsFirst</code> to <code>false</code> in
+            <a href="#settings-advanced">Settings → Advanced</a>.</p>
         <p>If auto-detection fails, the file is opened with the <strong>Catchall</strong> pattern, which loads every
             line as a single unstructured message column with no timestamp.</p>
+        <p>To run detection again on a file that's already open, for example after opening it with Catchall or
+            after adding a pattern that fits it, choose <strong>(Auto-detect)</strong> in
+            <a href="#load-settings">Load Settings</a> and click <strong>Reload</strong>.</p>
 
         <h3 id="pattern-types">Built-in Pattern Types</h3>
         <div class="table-wrap">
@@ -1973,7 +1989,8 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
         <h3 id="change-pattern">Changing a Pattern After Load</h3>
         <p>You can switch patterns on an already-loaded file without closing and re-opening it: click the gear icon
             in the viewer toolbar to open <a href="#load-settings">Load Settings</a>, change <strong>Log
-                Template</strong>, and click <strong>Reload</strong>.</p>
+                Pattern</strong>, and click <strong>Reload</strong>. If you don't know which pattern fits a local
+            file, choose <strong>(Auto-detect)</strong> and let the app pick it.</p>
         <div class="note">
             <div>Switching from Catchall (no timestamp) to a pattern with timestamps adds the timestamp column
                 and enables the time slider.
@@ -2189,6 +2206,9 @@ message LIKE '%actuator/health%' OR logger LIKE 'io.micrometer.%'</code></pre>
             (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and paste (<kbd>Ctrl</kbd>+<kbd>V</kbd>) in the app: the pasted lines
             open in a new viewer window of their own. If you only need the lines that
             match a search, a <a href="#search-files">Search Files</a> "matching rows" import is often faster still.</p>
+        <p>To get the columns and timestamps back later, choose <strong>(Auto-detect)</strong> in
+            <a href="#load-settings">Load Settings</a> and click <strong>Reload</strong>: the file is loaded
+            again with the pattern that fits it.</p>
 
         <hr>
 
